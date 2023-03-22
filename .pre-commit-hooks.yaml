@@ -1,3 +1,10 @@
+-   id: rust
+    name: rust
+    description: Metahooks from file rust.pre-commit-config.yaml
+    language: python
+    entry: pre-commit-meta-hooks-run '/home/gideon/PycharmProjects/pre-commit-hooks/rust.pre-commit-config.yaml'
+    verbose: true
+
 -   id: python
     name: python
     description: Metahooks from file python.pre-commit-config.yaml
