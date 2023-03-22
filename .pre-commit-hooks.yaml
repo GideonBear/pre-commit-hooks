@@ -1,0 +1,6 @@
+-   id: python
+    name: python
+    description: Metahooks from file python.pre-commit-config.yaml
+    language: python
+    entry: pre-commit-meta-hooks-run '/home/gideon/PycharmProjects/pre-commit-hooks/python.pre-commit-config.yaml'
+    verbose: true
