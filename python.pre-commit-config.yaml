@@ -1,6 +1,10 @@
 minimum_pre_commit_version: '3.0.3'
 
 repos:
+-   repo: local
+    language: system
+    entry: echo $HERE
+
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
