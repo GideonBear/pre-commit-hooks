@@ -1,0 +1,99 @@
+minimum_pre_commit_version: '3.0.3'
+
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+    -   id: check-case-conflict
+    -   id: check-executables-have-shebangs
+    -   id: check-json
+    -   id: check-merge-conflict
+    -   id: check-shebang-scripts-are-executable
+    -   id: check-symlinks
+    -   id: check-toml
+    -   id: check-vcs-permalinks
+    -   id: check-xml
+    -   id: check-yaml
+    -   id: double-quote-string-fixer  # TODO: check if this works like flake8-quotes
+    -   id: end-of-file-fixer
+    -   id: fix-encoding-pragma
+        args: [--remove]
+    -   id: mixed-line-ending
+        args: [--fix=lf]
+    -   id: pretty-format-json
+        args: [--autofix, --indent=4]
+    -   id: trailing-whitespace
+
+-   repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: v2.0.1
+    hooks:
+    -   id: autopep8
+        args:
+        -   --in-place
+        -   --ignore
+        -   E12,E13,E501,E71,E72,W5,W6
+
+-   repo: https://github.com/pycqa/isort
+    rev: '5.12.0'
+    hooks:
+    -   id: isort
+        args:
+        -   --add-import
+        -   'from __future__ import annotations'
+        -   --lines-after-imports=2
+        -   --remove-redundant-aliases
+        # TODO: --known-local-folder?
+
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.0.0
+    hooks:
+    -   id: mypy
+        args:  # Removes default `--ignore-missing-imports`
+        -   --show-error-codes
+        -   --pretty
+        -   --enable-error-code=redundant-self
+        -   --enable-error-code=redundant-expr
+        -   --enable-error-code=truthy-bool
+        -   --enable-error-code=truthy-iterable
+        -   --enable-error-code=ignore-without-code
+        -   --enable-error-code=unused-awaitable
+        -   --enable-error-code=possibly-undefined
+        -   --warn-unused-configs
+        -   --disallow-untyped-calls
+        -   --disallow-untyped-defs
+        -   --disallow-incomplete-defs
+        -   --check-untyped-defs
+        -   --disallow-untyped-decorators
+        #-   --disallow-any-unimported  # It already warns for the import
+        -   --disallow-any-generics
+        -   --disallow-any-explicit
+        -   --disallow-subclassing-any
+        -   --warn-redundant-casts
+        -   --warn-unused-ignores
+        -   --warn-no-return
+        -   --warn-return-any
+        -   --warn-unreachable
+        -   --no-implicit-reexport
+        -   --strict-concatenate
+        -   --strict-equality
+        -   --implicit-optional
+        exclude: '^tests/'
+        additional_dependencies: []  # TODO: static or dynamic dependencies?
+
+# TODO
+#-   repo: https://github.com/asottile/add-trailing-comma
+#    rev: v2.4.0
+#    hooks:
+#    -   id: add-trailing-comma
+#        args: [--py36-plus]
+
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v3.3.1
+    hooks:
+    -   id: pyupgrade
+        args: [--py37-plus]
+
+-   repo: https://github.com/GideonBear/pre-commit-enforce-https
+    rev: v1.0.0
+    hooks:
+    -   id: enforce-https
