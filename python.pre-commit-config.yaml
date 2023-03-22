@@ -6,7 +6,7 @@ repos:
     -   id: test
         name: test
         language: system
-        entry: echo /home/gideon/.cache/pre-commit/repokco_4zbz/py_env-python3.9/lib/python3.9/site-packages
+        entry: echo $HERE
         verbose: true
 
 -   repo: https://github.com/pre-commit/pre-commit-hooks
