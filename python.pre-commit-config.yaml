@@ -4,6 +4,7 @@ repos:
 -   repo: local
     hooks:
     -   id: test
+        name: test
         language: system
         entry: echo /home/gideon/.cache/pre-commit/repokco_4zbz/py_env-python3.9/lib/python3.9/site-packages
         verbose: true
