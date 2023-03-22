@@ -2,9 +2,11 @@ minimum_pre_commit_version: '3.0.3'
 
 repos:
 -   repo: local
-    language: system
-    entry: echo $HERE
-    verbose: true
+    hooks:
+    -   id: test
+        language: system
+        entry: echo /home/gideon/.cache/pre-commit/repokco_4zbz/py_env-python3.9/lib/python3.9/site-packages
+        verbose: true
 
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
