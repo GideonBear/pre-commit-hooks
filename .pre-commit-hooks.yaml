@@ -1,11 +1,11 @@
 -   id: rust
     name: rust
-    language: python
-    entry: pre-commit-meta-hooks-inner-run 'rust.pre-commit-config.yaml'
+    language: script
+    entry: ./run 'rust.pre-commit-config.yaml'
     verbose: true
 
 -   id: python
     name: python
-    language: python
-    entry: pre-commit-meta-hooks-inner-run 'python.pre-commit-config.yaml'
+    language: script
+    entry: ./run 'python.pre-commit-config.yaml'
     verbose: true
