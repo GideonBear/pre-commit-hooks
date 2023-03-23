@@ -1,11 +1,11 @@
 -   id: rust
     name: rust
     language: script
-    entry: ./run.py 'rust.pre-commit-config.yaml'
+    entry: ./run.py rust.pre-commit-config.yaml
     verbose: true
 
 -   id: python
     name: python
     language: script
-    entry: ./run.py 'python.pre-commit-config.yaml'
+    entry: ./run.py python.pre-commit-config.yaml
     verbose: true
