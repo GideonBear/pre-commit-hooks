@@ -1,36 +1,14 @@
 minimum_pre_commit_version: '3.0.3'
 
+# TODO: different yaml formatting?
 repos:
--   repo: local
-    hooks:
-    -   id: test
-        name: test
-        language: system
-        entry: echo $HERE  # TODO
-        verbose: true
-
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
-    -   id: check-case-conflict
-    -   id: check-executables-have-shebangs
-    -   id: check-json
-    -   id: check-merge-conflict
-    -   id: check-shebang-scripts-are-executable
-    -   id: check-symlinks
-    -   id: check-toml
-    -   id: check-vcs-permalinks
-    -   id: check-xml
-    -   id: check-yaml
-    -   id: double-quote-string-fixer  # TODO: check if this works like flake8-quotes
-    -   id: end-of-file-fixer
+    -   id: check-ast
+    -   id: double-quote-string-fixer  # TODO: possibly use ruff or another tool for better formatting like flake8-quotes
     -   id: fix-encoding-pragma
         args: [--remove]
-    -   id: mixed-line-ending
-        args: [--fix=lf]
-    -   id: pretty-format-json
-        args: [--autofix, --indent=4]
-    -   id: trailing-whitespace
 
 -   repo: https://github.com/pre-commit/mirrors-autopep8
     rev: v2.0.1
@@ -47,16 +25,22 @@ repos:
     -   id: isort
         args:
         -   --add-import
-        -   'from __future__ import annotations'
+        -   from __future__ import annotations
         -   --lines-after-imports=2
         -   --remove-redundant-aliases
+        -   --multi-line-output=3
+        -   --trailing-comma
+        -   --use-parentheses
         # TODO: --known-local-folder?
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.0.0
     hooks:
     -   id: mypy
+        pass_filenames: false
         args:  # Removes default `--ignore-missing-imports`
+        -   .
+        -   --exclude=^(tests|old)/
         -   --show-error-codes
         -   --pretty
         -   --enable-error-code=redundant-self
@@ -85,8 +69,12 @@ repos:
         -   --strict-concatenate
         -   --strict-equality
         -   --implicit-optional
-        exclude: '^tests/'
-        additional_dependencies: []  # TODO: static or dynamic dependencies?
+        additional_dependencies:  # Everything I'll ever need
+        -   types-all
+        -   types-setuptools
+        -   types-playsound
+        -   selenium
+        -   pypdf
 
 # TODO
 #-   repo: https://github.com/asottile/add-trailing-comma
@@ -100,8 +88,3 @@ repos:
     hooks:
     -   id: pyupgrade
         args: [--py37-plus]
-
--   repo: https://github.com/GideonBear/pre-commit-enforce-https
-    rev: v1.0.0
-    hooks:
-    -   id: enforce-https

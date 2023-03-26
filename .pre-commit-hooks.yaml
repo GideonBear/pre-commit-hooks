@@ -9,3 +9,9 @@
     language: script
     entry: ./run.py python.pre-commit-config.yaml
     verbose: true
+
+-   id: general
+    name: general
+    language: script
+    entry: ./run.py general.pre-commit-config.yaml
+    verbose: true
