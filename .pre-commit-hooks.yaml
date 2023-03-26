@@ -2,6 +2,7 @@
     name: rust
     language: script
     entry: ./run.py rust.pre-commit-config.yaml
+    args: ['']
     verbose: true
     require_serial: true  # Workaround to run only once with all filenames
 
@@ -9,6 +10,7 @@
     name: python
     language: script
     entry: ./run.py python.pre-commit-config.yaml
+    args: ['']
     verbose: true
     require_serial: true  # Workaround to run only once with all filenames
 
@@ -16,5 +18,6 @@
     name: general
     language: script
     entry: ./run.py general.pre-commit-config.yaml
+    args: ['']
     verbose: true
     require_serial: true  # Workaround to run only once with all filenames
