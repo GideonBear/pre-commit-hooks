@@ -20,6 +20,6 @@ repos:
     -   id: trailing-whitespace
 
 -   repo: https://github.com/GideonBear/pre-commit-enforce-https
-    rev: v1.2.0
+    rev: v1.3.0
     hooks:
     -   id: enforce-https
