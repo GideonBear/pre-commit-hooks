@@ -12,6 +12,8 @@ def main() -> int:
     config = Path(__file__).parent / sys.argv[1]
     params = sys.argv[2].split(' ')
     params = [] if params == [''] else params
+    print(sys.argv)
+    print(params)
     files = sys.argv[3:]
 
     config = prepare_config(config, params)
