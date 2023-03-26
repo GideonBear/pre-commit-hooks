@@ -28,7 +28,7 @@ repos:
         -   from __future__ import annotations
         -   --lines-after-imports=2
         -   --remove-redundant-aliases
-        -   --multi-line-output=3
+        -   --multi-line=3
         -   --trailing-comma
         -   --use-parentheses
         # TODO: --known-local-folder?
