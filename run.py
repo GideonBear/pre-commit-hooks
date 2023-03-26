@@ -17,6 +17,7 @@ def main() -> int:
     files = sys.argv[3:]
 
     config = prepare_config(config, params)
+    print(config.read_text())
 
     retval = subprocess.call(
         # TODO: only `--color always` when color is on for this process? isatty?
