@@ -6,7 +6,6 @@ from pathlib import Path
 
 
 def main() -> int:
-    print('Args:', sys.argv)
     config = Path(__file__).parent / sys.argv[1]
     files = sys.argv[2:]
 
