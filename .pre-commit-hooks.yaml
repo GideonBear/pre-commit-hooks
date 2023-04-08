@@ -1,3 +1,11 @@
+-   id: pytest
+    name: pytest
+    language: script
+    entry: ./run.py pytest.pre-commit-config.yaml
+    args: ['']
+    verbose: true
+    require_serial: true  # Workaround to run only once with all filenames
+
 -   id: rust
     name: rust
     language: script

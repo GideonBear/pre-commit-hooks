@@ -1,0 +1,11 @@
+minimum_pre_commit_version: '3.0.3'
+
+repos:
+-   repo: local
+    hooks:
+    -   id: pytest
+        name: pytest
+        entry: python -m pytest
+        language: system
+        pass_filenames: false
+        types: [python]
