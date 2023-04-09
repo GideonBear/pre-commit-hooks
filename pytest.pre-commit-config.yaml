@@ -8,4 +8,4 @@ repos:
         entry: python -m pytest
         language: system
         pass_filenames: false
-        types: [python]
+        always_run: true
