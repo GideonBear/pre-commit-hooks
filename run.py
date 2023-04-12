@@ -17,8 +17,7 @@ def main() -> int:
     config = prepare_config(config, params)
 
     retval = subprocess.call(
-        # TODO: only `--color always` when color is on for this process? isatty?
-        ['pre-commit', 'run', '--color', 'always', '--config', config, '--files'] + files
+        ['pre-commit', 'run', '--config', config, '--files'] + files
     )
 
     config.unlink()
