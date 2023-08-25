@@ -88,3 +88,5 @@ repos:
     hooks:
     -   id: pyupgrade
         args: [--py37-plus]
+
+# TODO: unused imports/vars (autoflake or something?)
