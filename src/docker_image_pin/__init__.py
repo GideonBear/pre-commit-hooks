@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import string
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -31,12 +32,44 @@ def main() -> int:
 
     retval = 0
     for file in args.files:
+
+        def invalid(msg: str) -> None:
+            nonlocal retval
+            retval = 1
+            print(f"({file}) Invalid: {msg}")  # noqa: B023
+
         content = file.read_text()
 
-        new_content = content
+        for line in content.splitlines():
+            line = line.strip()  # noqa: PLW2901
+            if not line.startswith("image:"):
+                continue
+            line = line.removeprefix("image:").strip()  # noqa: PLW2901
+            try:
+                rest, sha = line.split("@")
+            except ValueError:
+                invalid("no '@'")
+                continue
+            try:
+                _url, version = rest.split(":")
+            except ValueError:
+                invalid("no ':' in leading part")
+                continue
 
-        if new_content != content:
-            file.write_text(new_content)
-            retval = 1
+            if version in {"latest", "stable"}:
+                invalid(f"uses dynamic tag '{version}' instead of pinned version")
+                continue
+
+            if not sha.startswith("sha256:"):
+                invalid("invalid hash (doesn't start with 'sha256:'")
+                continue
+            sha = sha.removeprefix("sha256:")
+            if not is_valid_sha256(sha):
+                invalid("invalid sha256 digest")
+                continue
 
     return retval
+
+
+def is_valid_sha256(s: str) -> bool:
+    return len(s) == 64 and all(c in string.hexdigits for c in s)  # noqa: PLR2004
