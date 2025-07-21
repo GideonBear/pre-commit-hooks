@@ -1,0 +1,7 @@
+-   id: docker-image-pin
+    name: docker-image-pin
+    description: Checks if Docker images are properly pinned in docker-compose.yml files
+    entry: docker-image-pin
+    language: python
+    types: [yaml]
+    files: docker-compose\.ya?ml$
