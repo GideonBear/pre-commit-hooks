@@ -4,7 +4,7 @@ requires = [ "hatchling" ]
 
 [project]
 name = "docker-image-pin"
-version = "0.1.1"
+version = "0.2.0"
 description = "Checks if Docker images are properly pinned in docker-compose.yml files"
 readme = "README.md"
 license = "GPL-3.0-only"
