@@ -27,7 +27,7 @@ def parse_args() -> Args:
     return parser.parse_args(namespace=Args())
 
 
-def main() -> int:
+def main() -> int:  # noqa: C901
     args = parse_args()
 
     retval = 0
@@ -41,10 +41,22 @@ def main() -> int:
         content = file.read_text()
 
         for line in content.splitlines():
-            line = line.strip()  # noqa: PLW2901
+            line = line.strip()
             if not line.startswith("image:"):
                 continue
-            line = line.removeprefix("image:").strip()  # noqa: PLW2901
+
+            if "#" in line:
+                line, comment = line.split("#")
+                line = line.strip()
+                comment = comment.strip()
+                if not comment.startswith("allow-"):
+                    invalid("comment on image did not start with 'allow-'")
+                    continue
+                allow = comment.removeprefix("allow-")
+            else:
+                allow = None
+
+            line = line.removeprefix("image:").strip()
             try:
                 rest, sha = line.split("@")
             except ValueError:
@@ -56,7 +68,7 @@ def main() -> int:
                 invalid("no ':' in leading part")
                 continue
 
-            if version in {"latest", "stable"}:
+            if version in {"latest", "stable"} and allow != version:
                 invalid(f"uses dynamic tag '{version}' instead of pinned version")
                 continue
 
