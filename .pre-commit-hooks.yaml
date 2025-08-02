@@ -3,5 +3,5 @@
     description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
     entry: docker-image-pin
     language: python
-    types: [yaml, dockerfile]
+    types_or: [yaml, dockerfile]
     files: docker-compose\.ya?ml$|Dockerfile$
