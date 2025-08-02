@@ -42,7 +42,7 @@ def main() -> int:  # noqa: C901
 
         for line in content.splitlines():
             line = line.strip()
-            if not line.startswith("image:"):
+            if not (line.startswith(("image:", "FROM"))):
                 continue
 
             if "#" in line:
@@ -57,6 +57,7 @@ def main() -> int:  # noqa: C901
                 allow = None
 
             line = line.removeprefix("image:").strip()
+            line = line.removeprefix("FROM").strip()
             try:
                 rest, sha = line.split("@")
             except ValueError:
