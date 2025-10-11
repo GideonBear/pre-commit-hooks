@@ -58,6 +58,9 @@ def process_line(file: Path, lnr: int, line: str) -> int:  # noqa: C901, PLR0911
         if comment.startswith("allow-"):
             allow = comment.removeprefix("allow-")
 
+    if allow == "all":
+        return 0
+
     line = line.removeprefix("image:").strip()
     line = line.removeprefix("FROM").strip()
     try:
