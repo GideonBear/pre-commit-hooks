@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from docker_image_pin.classes import Invalid, Logger
-from docker_image_pin.common import is_valid_sha256, process_version
-from docker_image_pin.default_allows import with_default
+from pre_commit_hooks.classes import Invalid, Logger
+from pre_commit_hooks.common import is_valid_sha256, process_version
+from pre_commit_hooks.default_allows import with_default
 
 
 def process_line(line: str, allow: str | None, logger: Logger) -> int:  # noqa: C901, PLR0911

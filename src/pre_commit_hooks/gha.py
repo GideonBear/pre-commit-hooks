@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from docker_image_pin.classes import Invalid
-from docker_image_pin.common import is_valid_sha1, process_version
-from docker_image_pin.default_allows import with_default
+from pre_commit_hooks.classes import Invalid
+from pre_commit_hooks.common import is_valid_sha1, process_version
+from pre_commit_hooks.default_allows import with_default
 
 
 if TYPE_CHECKING:
-    from docker_image_pin.classes import Logger
+    from pre_commit_hooks.classes import Logger
 
 
 def process_line(line: str, allow: str | None, logger: Logger) -> int:  # noqa: PLR0911

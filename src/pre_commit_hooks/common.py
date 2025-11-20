@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import string
 
-from docker_image_pin.classes import Invalid
+from pre_commit_hooks.classes import Invalid
 
 
 # TODO(GideonBear): query and replace the version with latest, if online

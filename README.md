@@ -1,4 +1,4 @@
-# docker-image-pin
+# pre-commit-hooks
 
 Based on https://nickcunningh.am/blog/how-to-automate-version-updates-for-your-self-hosted-docker-containers-with-gitea-renovate-and-komodo
 ```yml

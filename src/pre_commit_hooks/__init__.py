@@ -5,8 +5,8 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from docker_image_pin import docker, gha
-from docker_image_pin.classes import Logger
+from pre_commit_hooks import docker, gha
+from pre_commit_hooks.classes import Logger
 
 
 if TYPE_CHECKING:
@@ -19,7 +19,7 @@ class Args(argparse.Namespace):
 
 
 def parse_args() -> Args:
-    parser = ArgumentParser("docker-image-pin")
+    parser = ArgumentParser("pre-commit-hooks")
 
     parser.add_argument(
         "hook",

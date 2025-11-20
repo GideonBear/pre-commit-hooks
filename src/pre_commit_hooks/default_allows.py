@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
-    from docker_image_pin.classes import Logger
+    from pre_commit_hooks.classes import Logger
 
 
 # TODO(GideonBear): populate these automatically from top X docker images and GH actions

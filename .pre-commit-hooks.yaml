@@ -1,7 +1,14 @@
 -   id: docker-image-pin
     name: docker-image-pin
     description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
-    entry: docker-image-pin docker
+    entry: pre-commit-hooks docker
     language: python
     types_or: [yaml, dockerfile]
     files: docker-compose\.ya?ml$|Dockerfile$
+
+-   id: gha-pin
+    name: gha-pin
+    description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
+    entry: pre-commit-hooks gha
+    language: python
+    types_or: [yaml]
