@@ -5,7 +5,7 @@ from pre_commit_hooks.common import is_valid_sha256, process_version
 from pre_commit_hooks.default_allows import with_default
 
 
-def process_line(line: str, allow: str | None, logger: Logger) -> int:  # noqa: C901, PLR0911
+def process_line(_orig_line: str, line: str, allow: str | None, logger: Logger) -> int:  # noqa: C901, PLR0911
     if not line.strip().startswith(("image:", "FROM")):
         return 0
 

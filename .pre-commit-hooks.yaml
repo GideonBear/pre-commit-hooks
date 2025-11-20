@@ -12,3 +12,10 @@
     entry: pre-commit-hooks gha
     language: python
     types_or: [yaml]
+
+-   id: shfuncdecfmt
+    name: shfuncdecfmt
+    description: Shell function declaration formatter
+    entry: pre-commit-hooks shfuncdecfmt
+    language: python
+    types: [shell]

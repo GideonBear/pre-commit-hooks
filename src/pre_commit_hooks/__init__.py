@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks import docker, gha
+from pre_commit_hooks import docker, gha, shfuncdecfmt
 from pre_commit_hooks.classes import Logger
 
 
@@ -24,7 +24,7 @@ def parse_args() -> Args:
     parser.add_argument(
         "hook",
         type=str,
-        choices=("docker", "gha"),
+        choices=("docker", "gha", "shfuncdecfmt"),
     )
 
     parser.add_argument(
@@ -43,17 +43,39 @@ def main() -> int:
     for file in args.files:
         content = file.read_text()
 
-        for lnr, line in enumerate(content.splitlines()):
-            line_retval = process_line(file, lnr, line, args.hook)
-            if line_retval == 1:
-                retval = 1
+        if args.hook == "shfuncdecfmt":
+            new_content = shfuncdecfmt.process_file(content)
+        else:
+            new_content = ""
+            for lnr, line in enumerate(content.splitlines(keepends=True)):
+                line_retval = process_line(file, lnr, line, args.hook)
+                if isinstance(line_retval, str):
+                    new_content += line_retval
+                else:
+                    new_content += line
+                if line_retval == 1:
+                    retval = 1
+
+        if new_content != content:
+            file.write_text(new_content)
+            retval = 1
 
     return retval
 
 
-def process_line(file: Path, lnr: int, line: str, type_: str) -> int:
+def process_line(file: Path, lnr: int, line: str, hook: str) -> int | str:
+    """
+    Process a line.
+
+    Returns:
+        int: the return value (0 or 1)
+        str: the new line (implies return value
+            of 1 if it is different than the original line)
+
+    """  # noqa: DOC501 the AssertionError is unreachable
     logger = Logger(file, lnr)
 
+    orig_line = line
     line = line.strip()
 
     allow = None
@@ -61,7 +83,7 @@ def process_line(file: Path, lnr: int, line: str, type_: str) -> int:
         line, allow = line.split("# allow-")
         line = line.strip()
 
-    if type_ != "gha":  # noqa: SIM102
+    if hook != "gha":  # noqa: SIM102
         # Remove all other comments. GHA expects a comment.
         if "#" in line:
             line, _comment = line.split("#", maxsplit=1)
@@ -69,8 +91,8 @@ def process_line(file: Path, lnr: int, line: str, type_: str) -> int:
     if allow == "all":
         return 0
 
-    if type_ == "docker":
-        return docker.process_line(line, allow, logger)
-    if type_ == "gha":
-        return gha.process_line(line, allow, logger)
+    if hook == "docker":
+        return docker.process_line(orig_line, line, allow, logger)
+    if hook == "gha":
+        return gha.process_line(orig_line, line, allow, logger)
     raise AssertionError

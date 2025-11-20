@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from pre_commit_hooks.classes import Logger
 
 
-def process_line(line: str, allow: str | None, logger: Logger) -> int:  # noqa: PLR0911
+def process_line(_orig_line: str, line: str, allow: str | None, logger: Logger) -> int:  # noqa: PLR0911
     line = line.strip().removeprefix("- ")
     if not line.startswith("uses: "):
         return 0
@@ -29,7 +29,7 @@ def process_line(line: str, allow: str | None, logger: Logger) -> int:  # noqa: 
             return logger.invalid(
                 Invalid(
                     "no-version",
-                    "no '#' but using digest; add a comment with the used tag",
+                    "no '#' but using digest; add a comment with a tag",
                 )
             )
         if "v" in digest_or_version:

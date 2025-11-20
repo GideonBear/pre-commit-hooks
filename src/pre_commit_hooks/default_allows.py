@@ -19,7 +19,7 @@ default_allows = {
 }
 
 
-def with_default(allow: str | None, key: str, logger: Logger, type_: str) -> str | None:
+def with_default(allow: str | None, key: str, logger: Logger, hook: str) -> str | None:
     """
     Replace `allow` with the default, if any.
 
@@ -27,7 +27,7 @@ def with_default(allow: str | None, key: str, logger: Logger, type_: str) -> str
         The new value for `allow`
 
     """
-    default_allow = default_allows[type_].get(key)
+    default_allow = default_allows[hook].get(key)
     if default_allow:
         if allow:
             logger.warn(
