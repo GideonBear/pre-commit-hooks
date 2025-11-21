@@ -3,9 +3,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+import colorama
+from colorama import Fore
+
 
 if TYPE_CHECKING:
     from pathlib import Path
+
+
+colorama.init()
 
 
 @dataclass
@@ -17,11 +23,11 @@ class Logger:
         print(f"({self.file}:{self.lnr + 1}) {msg}")
 
     def invalid(self, error: Invalid | str) -> int:
-        self.log(f"Invalid: {error}")
+        self.log(f"{Fore.LIGHTRED_EX}Error{Fore.RESET}: {error}")
         return 1
 
     def warn(self, msg: str) -> None:
-        self.log(f"Warning: {msg}")
+        self.log(f"{Fore.YELLOW}Warning{Fore.RESET}: {msg}")
 
 
 @dataclass

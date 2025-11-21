@@ -15,7 +15,15 @@ default_allows = {
         "atdr.meo.ws/archiveteam/warrior-dockerfile": "latest",
         "lukaszlach/docker-tc": "latest",
     },
-    "gha": {},
+    "gha": {
+        # This action has a branch for each possible Rust version
+        # (stable, nightly, 1.80, etc.), and does not use normal versioning.
+        # Normal use includes
+        # `dtolnay/rust-toolchain@stable` and `dtolnay/rust-toolchain@1.88`.
+        # Let's give this a pass, even from the digest, to avoid making it
+        # too confusing.
+        "dtolnay/rust-toolchain": "no-digest-mutable-rev",
+    },
 }
 
 

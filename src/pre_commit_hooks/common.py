@@ -2,11 +2,9 @@ from __future__ import annotations
 
 import string
 
-from pre_commit_hooks.classes import Invalid
+from pre_commit_hooks.classes import Invalid, Logger
 
 
-# TODO(GideonBear): query and replace the version with latest, if online
-#  also add sha hashes to docker, etc.
 def process_version(version: str) -> Invalid | None:
     version = version.removeprefix("v")  # Optional prefix
     parts = version.split(".")
@@ -24,6 +22,11 @@ def process_version(version: str) -> Invalid | None:
             "Can the version be pinned further?",
         )
     if len(parts) == 1:
+        if not parts[0].isdecimal():
+            return Invalid(
+                "mutable-rev",
+                "used revision is not a version. Can you use a tag instead?",
+            )
         # major
         return Invalid(
             "major",
@@ -35,6 +38,24 @@ def process_version(version: str) -> Invalid | None:
         raise AssertionError(msg)
 
     return None
+
+
+def line_replace(line: str, a: str, b: str, logger: Logger) -> str:
+    if line.count(a) > 1:
+        logger.warn(
+            f"Skipping autofix because string to replace ({a}) occurs more than once"
+        )
+        return line
+    if line.count(a) == 0:
+        msg = f"Expected to find {a!r} in {line!r}"
+        raise Exception(msg)  # noqa: TRY002
+
+    return line.replace(a, b)
+
+
+def line_append(line: str, s: str) -> str:
+    line_without_newline = line.rstrip("\r\n")
+    return line_without_newline + s + line[len(line_without_newline) :]
 
 
 def is_valid_sha256(s: str) -> bool:

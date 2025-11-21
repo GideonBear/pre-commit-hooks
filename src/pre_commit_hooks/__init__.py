@@ -48,11 +48,14 @@ def main() -> int:
         else:
             new_content = ""
             for lnr, line in enumerate(content.splitlines(keepends=True)):
-                line_retval = process_line(file, lnr, line, args.hook)
-                if isinstance(line_retval, str):
-                    new_content += line_retval
+                line_ret = process_line(file, lnr, line, args.hook)
+                if isinstance(line_ret, tuple):
+                    new_line, line_retval = line_ret
+                    new_content += new_line
                 else:
+                    line_retval = line_ret
                     new_content += line
+
                 if line_retval == 1:
                     retval = 1
 
@@ -63,7 +66,7 @@ def main() -> int:
     return retval
 
 
-def process_line(file: Path, lnr: int, line: str, hook: str) -> int | str:
+def process_line(file: Path, lnr: int, line: str, hook: str) -> tuple[str, int] | int:
     """
     Process a line.
 
