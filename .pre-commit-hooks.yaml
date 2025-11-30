@@ -28,5 +28,5 @@
     description: Sync pre-commit additional_dependencies with uv.lock
     entry: pre-commit-hooks pcad
     language: python
-    pass_files: false
+    pass_filenames: false
     files: ^uv.lock$|^.pre-commit-config.yaml$
