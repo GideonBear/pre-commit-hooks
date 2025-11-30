@@ -11,7 +11,7 @@
     description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
     entry: pre-commit-hooks gha
     language: python
-    types_or: [yaml]
+    types: [yaml]
 
 -   id: shfuncdecfmt
     name: shfuncdecfmt
