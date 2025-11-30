@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks import docker, gha, shfuncdecfmt
+from pre_commit_hooks import docker, gha, pcad, shfuncdecfmt
 
 
 if TYPE_CHECKING:
@@ -18,6 +18,7 @@ hooks: dict[str, type[FileProcessor]] = {
     "docker": docker.Processor,
     "gha": gha.Processor,
     "shfuncdecfmt": shfuncdecfmt.Processor,
+    "pcad": pcad.Processor,
 }
 
 
@@ -31,7 +32,18 @@ def parse_args() -> Args:
 
     sub = parser.add_subparsers(dest="hook", required=True)
 
+    pcad = sub.add_parser("pcad")
+    pcad.add_argument(
+        "--configs",
+        dest="files",
+        nargs="*",
+        default=[Path(".pre-commit-config.yaml")],
+        type=Path,
+    )
+
     for hook in hooks:
+        if hook == "pcad":
+            continue
         p = sub.add_parser(hook)
         p.add_argument(
             "files",
@@ -45,13 +57,13 @@ def parse_args() -> Args:
 def main() -> int:
     args = parse_args()
 
-    processor_type = hooks[args.hook]
+    processor = hooks[args.hook]()
 
     retval = 0
     for file in args.files:
         content = file.read_text()
 
-        new_content, file_retval = processor_type().process_file(file, content)
+        new_content, file_retval = processor.process_file(file, content)
 
         if file_retval == 1:
             retval = 1

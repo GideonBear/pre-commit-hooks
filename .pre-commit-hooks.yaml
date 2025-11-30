@@ -19,3 +19,11 @@
     entry: pre-commit-hooks shfuncdecfmt
     language: python
     types: [shell]
+
+-   id: pre-commit-additional-dependencies
+    name: pre-commit-additional-dependencies
+    description: Sync pre-commit additional_dependencies with uv.lock
+    entry: pre-commit-hooks pcad
+    language: python
+    pass_files: false
+    files: ^uv.lock$|^.pre-commit-config.yaml$
