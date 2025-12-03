@@ -20,9 +20,6 @@
     language: python
     types: [shell]
 
-# TODO: test deze:
-#  test dat files & pass_files goed werkt
-#  test dat hij autofixt in een renovate lockfile PR
 -   id: pre-commit-additional-dependencies
     name: pre-commit-additional-dependencies
     description: Sync pre-commit additional_dependencies with uv.lock
