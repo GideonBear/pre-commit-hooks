@@ -39,3 +39,7 @@ myfun(){
 myfun() {
 ```
 Formats function declarations accordingly, and fixes whitespace.
+
+## pre-commit-additional-dependencies
+
+Syncs any `additional_dependencies` in your `.pre-commit-config.yaml` with `uv.lock`. Meant for use with `mirrors-mypy`.
