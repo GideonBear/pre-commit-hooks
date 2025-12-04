@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks import docker, gha, pcad, shfuncdecfmt
+from pre_commit_hooks import docker, gha, pcad, set_euo_pipefail, shfuncdecfmt
 
 
 if TYPE_CHECKING:
@@ -18,6 +18,7 @@ hooks: dict[str, type[FileProcessor]] = {
     "docker": docker.Processor,
     "gha": gha.Processor,
     "shfuncdecfmt": shfuncdecfmt.Processor,
+    "set-euo-pipefail": set_euo_pipefail.Processor,
     "pcad": pcad.Processor,
 }
 

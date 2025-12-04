@@ -20,6 +20,13 @@
     language: python
     types: [shell]
 
+-   id: set-euo-pipefail
+    name: set-euo-pipefail
+    description: Add `set -euo pipefail` to shell scripts
+    entry: pre-commit-hooks set-euo-pipefail
+    language: python
+    types: [shell]
+
 -   id: pre-commit-additional-dependencies
     name: pre-commit-additional-dependencies
     description: Sync pre-commit additional_dependencies with uv.lock
