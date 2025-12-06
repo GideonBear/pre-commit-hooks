@@ -12,6 +12,7 @@ default_allows = {
     "docker": {
         "debian": "major-minor",
         "postgres": "major-minor",
+        "erikvl87/languagetool": "major-minor",
         "atdr.meo.ws/archiveteam/warrior-dockerfile": "latest",
         "lukaszlach/docker-tc": "latest",
     },
