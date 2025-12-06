@@ -20,11 +20,13 @@ repos:
       - id: destroyed-symlinks
       - id: detect-private-key
       - id: end-of-file-fixer
+        exclude: "^tests/mocks/"
       - id: mixed-line-ending
         args: [ "--fix=lf" ]
       - id: fix-byte-order-marker
       - id: name-tests-test
         args: [ "--pytest-test-first" ]
+        exclude: "^tests/add_mock.py$"
       #      - id: no-commit-to-branch
       - id: pretty-format-json
         args:

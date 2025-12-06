@@ -19,3 +19,5 @@ FROM releaseargus/argus:latest  # Error: no '@'
 FROM releaseargus/argus@sha256:4f3ae64ad26e22f62a237277ef6e82229ff833adba77def32694e7b1db964a7a  # Error: no ':' in leading part
 FROM releaseargus/argus:0.26.3@4f3ae64ad26e22f62a237277ef6e82229ff833adba77def32694e7b1db964a7a  # Error: invalid digest (doesn't start with 'sha256:')
 FROM releaseargus/argus:0.26.3@sha256:4f3ae64ad26e22f62a237277ef6e82229ff833adba77def32694e7b1db964a7  # Error: invalid sha256 digest ('4f3ae64ad26e22f62a237277ef6e82229ff833adba77def32694e7b1db964a7')
+
+FROM lukaszlach/docker-tc:latest@sha256:faefaa9230b77acc95acceff073791c682339676e2de129f5221abb206d1e310

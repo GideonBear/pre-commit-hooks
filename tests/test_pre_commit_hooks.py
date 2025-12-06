@@ -3,11 +3,13 @@ from __future__ import annotations
 import re
 import shutil
 import tempfile
+import urllib.parse
 from functools import partial
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
+import requests_mock
 
 from pre_commit_hooks import main
 from pre_commit_hooks.classes import Logger
@@ -19,6 +21,10 @@ if TYPE_CHECKING:
 
 def remove_color(s: str) -> str:
     return re.sub(r"\x1b\[[0-9;]*m", "", s)
+
+
+def fs_url_decode(s: str) -> str:
+    return urllib.parse.unquote(s)
 
 
 class ATestLogger(Logger):
@@ -49,6 +55,7 @@ class ATestLogger(Logger):
         ),
         ("docker", "docker-compose.yml", None, ["docker-compose.yml"]),
         ("docker", "Dockerfile", None, ["Dockerfile"]),
+        ("gha", "workflow.yml", "workflow-out.yml", ["workflow.yml"]),
     ],
 )
 def test_pre_commit_hooks(
@@ -75,10 +82,17 @@ def test_pre_commit_hooks(
             except ValueError:
                 continue
             if comment.startswith(("Error:", "Warning:")):
-                expected_logs.append((tmp, lineno, comment))
+                expected_logs.extend(
+                    (tmp, lineno, msg) for msg in comment.split(" |AND| ")
+                )
 
         logs = []
-        main((hook, *args), logger_type=partial(ATestLogger, _logs=logs))
+        with requests_mock.Mocker() as m:
+            for mock in (Path(__file__).parent / "mocks").iterdir():
+                url = fs_url_decode(mock.name)
+                m.get(url, text=mock.read_text())
+
+            main((hook, *args), logger_type=partial(ATestLogger, _logs=logs))
 
         if out:
             assert Path(tmp).read_text(encoding="utf-8") == out.read_text()

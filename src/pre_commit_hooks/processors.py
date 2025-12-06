@@ -62,8 +62,12 @@ class LineProcessor(FileProcessor, ABC):
             line, allow = line.split("# allow-")
             line = line.strip()
 
-        if self.remove_comments and "#" in line:
-            line, _comment = line.split("#", maxsplit=1)
+        if self.remove_comments:
+            if "#" in line:
+                line, _comment = line.split("#", maxsplit=1)
+                line = line.strip()
+        elif "  #" in line:
+            line, _comment = line.split("  #", maxsplit=1)
             line = line.strip()
 
         if allow == "all":

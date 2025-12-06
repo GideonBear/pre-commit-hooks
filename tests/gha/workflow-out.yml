@@ -1,0 +1,19 @@
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1.0  # Error: [weird-version] version contains more than three parts (major.minor.patch.???)
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [major-minor] version contains only two parts (major.minor). Can the version be pinned further?
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [major] version contains only one part (major). Can the version be pinned further?
+
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [mutable-rev] used revision is not a version. Can you use a tag instead?
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [mutable-rev] used revision is not a version. Can you use a tag instead?
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [mutable-rev] used revision is not a version. Can you use a tag instead?
+
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-version] no '#' but using digest; add a comment with a tag
+uses: actions/checkout@v6.0.1  # Error: [no-digest] no '#', using version (v6.0.1) instead of digest.
+uses: actions/checkout@main  # Error: [no-digest-mutable-rev] no '#', using mutable rev (main) instead of digest; use a tag if possible, otherwise pin to digest only
+
+uses: actions/checkout  # Error: no '@'
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e # v6.0.1  # Error: invalid sha1 digest ('8e8c483db84b4bee98b60c0593521ed34d9990e')
+
+uses: dawidd6/action-homebrew-bump-formula@1446dca236b0440c6f02723a3f14f13be2c04ab0 # v7  # Error: [major] version contains only one part (major). Can the version be pinned further? |AND| Warning: Autofix found no further expanded versions. Consider adding '# allow-major'.
+
+uses: vedantmgoyal2009/winget-releaser@19e706d4c9121098010096f9c495a70a7518b30f # main  # Error: [mutable-rev] used revision is not a version. Can you use a tag instead? |AND| Warning: Could not find a tag matching commit 19e706d4c9121098010096f9c495a70a7518b30f. Consider adding `# allow-something`.

@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 from pre_commit_hooks.classes import Invalid
 from pre_commit_hooks.common import (
     is_valid_sha1,
-    line_append,
     line_replace,
     process_version,
 )
@@ -78,7 +77,9 @@ def process_line_no_comment(  # noqa: PLR0911
         full_version = get_full_version(action, digest, logger=logger)
         if full_version is None:
             return retval
-        return line_append(orig_line, f" # {full_version}"), retval
+        return line_replace(
+            orig_line, line, f"{line} # {full_version}", logger=logger
+        ), retval
 
     if "v" in digest_or_version:
         if allow == "no-digest":
