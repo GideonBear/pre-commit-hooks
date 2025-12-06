@@ -84,12 +84,26 @@ def process_line_no_comment(  # noqa: PLR0911
     if "v" in digest_or_version:
         if allow == "no-digest":
             return 0
-        return logger.invalid(
+        version = digest_or_version
+        retval = logger.invalid(
             Invalid(
                 "no-digest",
-                f"no '#', using version ({digest_or_version}) instead of digest.",
+                f"no '#', using version ({version}) instead of digest.",
             )
         )
+        digest_ret = get_digest(action, version, logger=logger)
+        if digest_ret is None:
+            return retval
+        digest = digest_ret
+        orig_line = line_replace(
+            orig_line, version, f"{digest} # {version}", logger=logger
+        )
+        ret = process_version_gha(
+            orig_line, action, digest, version, allow, logger=logger
+        )
+        if isinstance(ret, tuple):
+            return ret
+        return orig_line, retval
 
     if allow == "no-digest-mutable-rev":
         return 0
@@ -140,7 +154,7 @@ def process_version_gha(  # noqa: PLR0913
     return logger.invalid(error)
 
 
-def get_full_version(action: str, digest: str, logger: Logger) -> str | None:
+def get_full_version(action: str, digest: str, *, logger: Logger) -> str | None:
     if not is_connected():
         return None
 
@@ -166,3 +180,11 @@ def get_full_version(action: str, digest: str, logger: Logger) -> str | None:
     )
 
     return None
+
+
+def get_digest(action: str, version: str, *, logger: Logger) -> str | None:  # noqa: ARG001
+    if not is_connected():
+        return None
+
+    data = request(f"https://api.github.com/repos/{action}/git/ref/tags/{version}")
+    return data["object"]["sha"]  # type: ignore[no-any-return]

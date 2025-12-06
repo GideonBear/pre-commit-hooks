@@ -9,7 +9,7 @@ uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # stable  # Erro
 
 uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # Error: [no-version] no '#' but using digest; add a comment with a tag
 uses: actions/checkout@v6.0.1  # Error: [no-digest] no '#', using version (v6.0.1) instead of digest.
-uses: actions/checkout@v6  # Error: [no-digest] no '#', using version (v6) instead of digest.
+uses: actions/checkout@v6  # Error: [no-digest] no '#', using version (v6) instead of digest. |AND| Error: [major] version contains only one part (major). Can the version be pinned further?
 uses: actions/checkout@main  # Error: [no-digest-mutable-rev] no '#', using mutable rev (main) instead of digest; use a tag if possible, otherwise pin to digest only
 
 uses: actions/checkout  # Error: no '@'
