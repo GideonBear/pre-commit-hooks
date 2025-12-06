@@ -6,6 +6,7 @@ from pre_commit_hooks.processors import LineProcessor
 
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from pathlib import Path
 
     from pre_commit_hooks.classes import Logger
@@ -14,9 +15,11 @@ if TYPE_CHECKING:
 class Processor(LineProcessor):
     start_part: bool
 
-    def process_file(self, file: Path, content: str) -> tuple[str, int]:
+    def process_file(
+        self, file: Path, content: str, *, logger_type: Callable[[Path, int], Logger]
+    ) -> tuple[str, int]:
         self.reset()
-        return super().process_file(file, content)
+        return super().process_file(file, content, logger_type=logger_type)
 
     def reset(self) -> None:
         self.start_part = True

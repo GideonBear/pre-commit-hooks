@@ -7,11 +7,20 @@ from pre_commit_hooks.processors import FileProcessor
 
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from pathlib import Path
+
+    from pre_commit_hooks.classes import Logger
 
 
 class Processor(FileProcessor):
-    def process_file(self, _file: Path, content: str) -> tuple[str, int]:  # noqa: PLR6301
+    def process_file(  # noqa: PLR6301
+        self,
+        _file: Path,
+        content: str,
+        *,
+        logger_type: Callable[[Path, int], Logger],  # noqa: ARG002
+    ) -> tuple[str, int]:
         return re.sub(
             r"^(\s*)(function\s*)?([a-zA-Z_][a-zA-Z0-9_]*)\s*(?:\(\s*\))?\s*\{",
             r"\1\3() {",

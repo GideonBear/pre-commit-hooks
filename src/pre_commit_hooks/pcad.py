@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import tomllib
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 from pre_commit_hooks.classes import Invalid
@@ -10,16 +9,15 @@ from pre_commit_hooks.processors import LineProcessor
 
 
 if TYPE_CHECKING:
+    from pre_commit_hooks import Args
     from pre_commit_hooks.classes import Logger
 
 
 class Processor(LineProcessor):
-    lock = Path("uv.lock")
+    def __init__(self, args: Args) -> None:
+        super().__init__(args)
 
-    def __init__(self) -> None:
-        super().__init__()
-
-        with self.lock.open("rb") as f:
+        with args.lockfile.open("rb") as f:
             data = tomllib.load(f)
         self.packages = {package["name"]: package for package in data["package"]}
 
@@ -72,7 +70,7 @@ class Processor(LineProcessor):
                     )
                 )
             return line_replace(
-                orig_line, line, f"{package}=={target_version}", logger
+                orig_line, line, f"{package}=={target_version}", logger=logger
             ), 0
 
         return 0

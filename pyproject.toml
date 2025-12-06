@@ -27,6 +27,11 @@ urls.homepage = "https://github.com/GideonBear/pre-commit-hooks"
 
 scripts.pre-commit-hooks = "pre_commit_hooks:main"
 
+[dependency-groups]
+dev = [
+    "pytest>=9.0.1",
+]
+
 [tool.ruff]
 lint.select = [ "ALL" ]
 

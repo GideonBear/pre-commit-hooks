@@ -40,17 +40,12 @@ def process_version(version: str) -> Invalid | None:
     return None
 
 
-def line_replace(line: str, a: str, b: str, logger: Logger) -> str:
-    if line.count(a) > 1:
-        logger.warn(
-            f"Skipping autofix because string to replace ({a}) occurs more than once"
-        )
-        return line
+def line_replace(line: str, a: str, b: str, *, logger: Logger) -> str:  # noqa: ARG001
     if line.count(a) == 0:
         msg = f"Expected to find {a!r} in {line!r}"
         raise Exception(msg)  # noqa: TRY002
 
-    return line.replace(a, b)
+    return line.replace(a, b, 1)
 
 
 def line_append(line: str, s: str) -> str:

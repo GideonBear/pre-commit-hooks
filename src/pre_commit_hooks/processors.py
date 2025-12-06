@@ -3,26 +3,35 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks.classes import Logger
-
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from pathlib import Path
+
+    from pre_commit_hooks import Args
+    from pre_commit_hooks.classes import Logger
 
 
 class FileProcessor(ABC):
+    def __init__(self, _args: Args) -> None:  # noqa: B027
+        pass
+
     @abstractmethod
-    def process_file(self, file: Path, content: str) -> tuple[str, int]: ...
+    def process_file(
+        self, file: Path, content: str, *, logger_type: Callable[[Path, int], Logger]
+    ) -> tuple[str, int]: ...
 
 
 class LineProcessor(FileProcessor, ABC):
     remove_comments = True
 
-    def process_file(self, file: Path, content: str) -> tuple[str, int]:
+    def process_file(
+        self, file: Path, content: str, *, logger_type: Callable[[Path, int], Logger]
+    ) -> tuple[str, int]:
         new_content = ""
         retval = 0
         for lnr, line in enumerate(content.splitlines(keepends=True)):
-            line_ret = self.process_line_full(file, lnr, line)
+            line_ret = self.process_line_full(file, lnr, line, logger_type=logger_type)
             if isinstance(line_ret, tuple):
                 new_line, line_retval = line_ret
                 new_content += new_line
@@ -36,9 +45,14 @@ class LineProcessor(FileProcessor, ABC):
         return new_content, retval
 
     def process_line_full(
-        self, file: Path, lnr: int, line: str
+        self,
+        file: Path,
+        lnr: int,
+        line: str,
+        *,
+        logger_type: Callable[[Path, int], Logger],
     ) -> tuple[str, int] | int:
-        logger = Logger(file, lnr)
+        logger = logger_type(file, lnr)
 
         orig_line = line
         line = line.strip()
@@ -50,6 +64,7 @@ class LineProcessor(FileProcessor, ABC):
 
         if self.remove_comments and "#" in line:
             line, _comment = line.split("#", maxsplit=1)
+            line = line.strip()
 
         if allow == "all":
             return 0
