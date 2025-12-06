@@ -93,9 +93,7 @@ def process_line_no_comment(  # noqa: PLR0911
         )
         digest_ret = get_digest(action, version, logger=logger)
         if digest_ret is None:
-            ret = process_version_gha(
-                orig_line, action, None, version, allow, logger=logger
-            )
+            process_version_gha(orig_line, action, None, version, allow, logger=logger)
             return retval
         digest = digest_ret
         orig_line = line_replace(
