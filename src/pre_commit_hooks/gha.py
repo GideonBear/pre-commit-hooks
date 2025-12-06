@@ -93,6 +93,9 @@ def process_line_no_comment(  # noqa: PLR0911
         )
         digest_ret = get_digest(action, version, logger=logger)
         if digest_ret is None:
+            ret = process_version_gha(
+                orig_line, action, None, version, allow, logger=logger
+            )
             return retval
         digest = digest_ret
         orig_line = line_replace(
@@ -120,7 +123,7 @@ def process_line_no_comment(  # noqa: PLR0911
 def process_version_gha(  # noqa: PLR0913
     orig_line: str,
     action: str,
-    digest: str,
+    digest: str | None,
     version: str,
     allow: str | None,
     *,
@@ -132,6 +135,8 @@ def process_version_gha(  # noqa: PLR0913
 
     if error.id in {"major-minor", "major", "mutable-rev"}:
         retval = logger.invalid(error)
+        if digest is None:
+            return retval
         full_version = get_full_version(action, digest, logger=logger)
         if full_version is None:
             return retval

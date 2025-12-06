@@ -4,9 +4,11 @@ import re
 import shutil
 import tempfile
 import urllib.parse
+from contextlib import nullcontext
 from functools import partial
 from pathlib import Path
 from typing import TYPE_CHECKING
+from unittest.mock import patch
 
 import pytest
 import requests_mock
@@ -43,23 +45,25 @@ class ATestLogger(Logger):
 
 
 @pytest.mark.parametrize(
-    ("hook", "inp", "out", "args"),
+    ("hook", "inp", "out", "args", "offline"),
     [
-        ("shfuncdecfmt", "readme.sh", "readme-out.sh", ["readme.sh"]),
-        ("set-euo-pipefail", "basic.sh", None, ["basic.sh"]),
+        ("shfuncdecfmt", "readme.sh", "readme-out.sh", ["readme.sh"], False),
+        ("set-euo-pipefail", "basic.sh", None, ["basic.sh"], False),
         (
             "pcad",
             "basic.yaml",
             "basic-out.yaml",
             ["--configs", "basic.yaml", "--lockfile", "basic-uv.lock"],
+            False,
         ),
-        ("docker", "docker-compose.yml", None, ["docker-compose.yml"]),
-        ("docker", "Dockerfile", None, ["Dockerfile"]),
-        ("gha", "workflow.yml", "workflow-out.yml", ["workflow.yml"]),
+        ("docker", "docker-compose.yml", None, ["docker-compose.yml"], False),
+        ("docker", "Dockerfile", None, ["Dockerfile"], False),
+        ("gha", "workflow.yml", "workflow-out.yml", ["workflow.yml"], False),
+        ("gha", "workflow-offline.yml", None, ["workflow-offline.yml"], True),
     ],
 )
 def test_pre_commit_hooks(
-    hook: str, inp: str, out: str | None, args: Sequence[str]
+    hook: str, inp: str, out: str | None, args: Sequence[str], offline: bool
 ) -> None:
     hookdir = Path(__file__).parent / hook
     inp = hookdir / inp
@@ -87,7 +91,12 @@ def test_pre_commit_hooks(
                 )
 
         logs = []
-        with requests_mock.Mocker() as m:
+        with (
+            requests_mock.Mocker() as m,
+            patch(f"pre_commit_hooks.{hook}.is_connected", return_value=False)
+            if offline
+            else nullcontext(),
+        ):
             for mock in (Path(__file__).parent / "mocks").iterdir():
                 url = fs_url_decode(mock.name)
                 m.get(url, text=mock.read_text())
@@ -96,4 +105,6 @@ def test_pre_commit_hooks(
 
         if out:
             assert Path(tmp).read_text(encoding="utf-8") == out.read_text()
+        else:
+            assert Path(tmp).read_text(encoding="utf-8") == inp.read_text()
         assert logs == expected_logs
