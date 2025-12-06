@@ -14,10 +14,6 @@ if TYPE_CHECKING:
 class Processor(LineProcessor):
     start_part: bool
 
-    def __init__(self) -> None:
-        super().__init__()
-        self.reset()
-
     def process_file(self, file: Path, content: str) -> tuple[str, int]:
         self.reset()
         return super().process_file(file, content)
