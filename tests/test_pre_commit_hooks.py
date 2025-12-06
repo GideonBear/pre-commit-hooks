@@ -47,6 +47,8 @@ class ATestLogger(Logger):
             "basic-out.yaml",
             ["--configs", "basic.yaml", "--lockfile", "basic-uv.lock"],
         ),
+        ("docker", "docker-compose.yml", None, ["docker-compose.yml"]),
+        ("docker", "Dockerfile", None, ["Dockerfile"]),
     ],
 )
 def test_pre_commit_hooks(

@@ -47,7 +47,7 @@ class Processor(LineProcessor):
                     return logger.invalid(error)
 
         if not digest.startswith("sha256:"):
-            return logger.invalid("invalid digest (doesn't start with 'sha256:'")
+            return logger.invalid("invalid digest (doesn't start with 'sha256:')")
         digest = digest.removeprefix("sha256:")
         if not is_valid_sha256(digest):
             return logger.invalid(f"invalid sha256 digest ('{digest}')")
