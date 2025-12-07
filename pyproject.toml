@@ -34,6 +34,8 @@ dev = [
 ]
 
 [tool.ruff]
+format.preview = true
+
 lint.select = [ "ALL" ]
 
 lint.ignore = [
