@@ -1,6 +1,6 @@
 # pre-commit-hooks
 
-## docker-image-pin & gha-pin
+## `docker-image-pin` & `gha-pin`
 Based on https://nickcunningh.am/blog/how-to-automate-version-updates-for-your-self-hosted-docker-containers-with-gitea-renovate-and-komodo
 ```yml
 # bad - don't do this
@@ -26,7 +26,7 @@ This has an added benefit when using Dependabot or Renovate, as PRs will bump th
 instead of just the digest, prompting the bot to link/embed the correct release notes
 instead of only a compare link.
 
-## shfuncdecfmt
+## `shfuncdecfmt`
 ```bash
 # Bad:
 function myfun {
@@ -40,6 +40,6 @@ myfun() {
 ```
 Formats function declarations accordingly, and fixes whitespace.
 
-## pre-commit-additional-dependencies
+## `pre-commit-additional-dependencies`
 
 Syncs any `additional_dependencies` in your `.pre-commit-config.yaml` with `uv.lock`. Meant for use with `mirrors-mypy`.
