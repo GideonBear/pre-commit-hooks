@@ -40,6 +40,10 @@ myfun() {
 ```
 Formats function declarations accordingly, and fixes whitespace.
 
+## `set-euo-pipefail`
+
+Fails if you don't have `set -euo pipefail` at the top of your shell script.
+
 ## `pre-commit-additional-dependencies`
 
 Syncs any `additional_dependencies` in your `.pre-commit-config.yaml` with `uv.lock`. Meant for use with `mirrors-mypy`.
