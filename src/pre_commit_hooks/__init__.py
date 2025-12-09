@@ -9,7 +9,7 @@ from pre_commit_hooks.classes import Logger
 
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Sequence
+    from collections.abc import Sequence
     from pathlib import Path
 
     from pre_commit_hooks.processors import FileProcessor
@@ -44,7 +44,7 @@ def parse_args(argv: Sequence[str] | None) -> Args:
 def main(
     argv: Sequence[str] | None = None,
     *,
-    logger_type: Callable[[Path, int], Logger] = Logger,
+    logger_type: type[Logger] = Logger,
 ) -> int:
     args = parse_args(argv)
 

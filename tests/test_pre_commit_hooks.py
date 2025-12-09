@@ -5,7 +5,6 @@ import shutil
 import tempfile
 import urllib.parse
 from contextlib import nullcontext
-from functools import partial
 from pathlib import Path
 from typing import TYPE_CHECKING
 from unittest.mock import patch
@@ -18,7 +17,7 @@ from pre_commit_hooks.classes import Logger
 
 
 if TYPE_CHECKING:
-    from collections.abc import MutableSequence, Sequence
+    from collections.abc import Sequence
 
 
 def remove_color(s: str) -> str:
@@ -29,19 +28,21 @@ def fs_url_decode(s: str) -> str:
     return urllib.parse.unquote(s)
 
 
+logs: list[tuple[Path, int, str]] | None = None
+
+
 class ATestLogger(Logger):
     def __init__(
         self,
         *args,  # noqa: ANN002
-        _logs: MutableSequence[tuple[Path, int, str]],
         **kwargs,  # noqa: ANN003
     ) -> None:
         super().__init__(*args, **kwargs)
-        self._logs = _logs
 
     def log(self, msg: str) -> None:
         super().log(msg)
-        self._logs.append((self.file, self.lnr, remove_color(msg)))
+        assert logs is not None
+        logs.append((self.file, self.lnr, remove_color(msg)))
 
 
 @pytest.mark.parametrize(
@@ -91,6 +92,8 @@ def test_pre_commit_hooks(
                     (tmp, lineno, msg) for msg in comment.split(" |AND| ")
                 )
 
+        global logs  # noqa: PLW0603
+        assert logs is None
         logs = []
         with (
             requests_mock.Mocker() as m,
@@ -102,10 +105,12 @@ def test_pre_commit_hooks(
                 url = fs_url_decode(mock.name)
                 m.get(url, text=mock.read_text())
 
-            main((hook, *args), logger_type=partial(ATestLogger, _logs=logs))
+            main((hook, *args), logger_type=ATestLogger)
 
         if out:
             assert Path(tmp).read_text(encoding="utf-8") == out.read_text()
         else:
             assert Path(tmp).read_text(encoding="utf-8") == inp.read_text()
         assert logs == expected_logs
+
+        logs = None

@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from argparse import ArgumentParser
-    from collections.abc import Callable
 
     from pre_commit_hooks import Args
     from pre_commit_hooks.classes import Logger
@@ -17,9 +16,15 @@ class FileProcessor(ABC):
     def __init__(self, _args: Args) -> None:  # noqa: B027
         pass
 
-    @abstractmethod
     def process_file(
-        self, file: Path, content: str, *, logger_type: Callable[[Path, int], Logger]
+        self, file: Path, content: str, *, logger_type: type[Logger]
+    ) -> tuple[str, int]:
+        logger = logger_type.from_file(file)
+        return self.process_file_internal(content, logger=logger)
+
+    @abstractmethod
+    def process_file_internal(
+        self, content: str, *, logger: Logger
     ) -> tuple[str, int]: ...
 
     @classmethod
@@ -34,13 +39,11 @@ class FileProcessor(ABC):
 class LineProcessor(FileProcessor, ABC):
     remove_comments = True
 
-    def process_file(
-        self, file: Path, content: str, *, logger_type: Callable[[Path, int], Logger]
-    ) -> tuple[str, int]:
+    def process_file_internal(self, content: str, *, logger: Logger) -> tuple[str, int]:
         new_content = ""
         retval = 0
         for lnr, line in enumerate(content.splitlines(keepends=True)):
-            line_ret = self.process_line(file, lnr, line, logger_type=logger_type)
+            line_ret = self.process_line(lnr, line, logger=logger)
             if isinstance(line_ret, tuple):
                 new_line, line_retval = line_ret
                 new_content += new_line
@@ -55,13 +58,12 @@ class LineProcessor(FileProcessor, ABC):
 
     def process_line(
         self,
-        file: Path,
         lnr: int,
         line: str,
         *,
-        logger_type: Callable[[Path, int], Logger],
+        logger: Logger,
     ) -> tuple[str, int] | int:
-        logger = logger_type(file, lnr)
+        logger = logger.with_lnr(lnr)
 
         orig_line = line
         line = line.strip()
