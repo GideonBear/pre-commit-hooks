@@ -12,7 +12,9 @@ if TYPE_CHECKING:
 class Processor(LineProcessor):
     start_part: bool
 
-    def process_file_internal(self, content: str, *, logger: Logger) -> tuple[str, int]:
+    def process_file_internal(
+        self, content: str, *, logger: Logger
+    ) -> tuple[str, int] | int:
         self.reset()
         return super().process_file_internal(content, logger=logger)
 

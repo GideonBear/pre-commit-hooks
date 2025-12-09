@@ -54,13 +54,16 @@ def main(
     for file in args.files:
         content = file.read_text()
 
-        new_content, file_retval = processor.process_file(
-            file, content, logger_type=logger_type
-        )
+        ret = processor.process_file(file, content, logger_type=logger_type)
+        if isinstance(ret, int):
+            new_content = None
+            file_retval = ret
+        else:
+            new_content, file_retval = ret
 
         if file_retval == 1:
             retval = 1
-        if new_content != content:
+        if new_content is not None and new_content != content:
             file.write_text(new_content)
             retval = 1
 

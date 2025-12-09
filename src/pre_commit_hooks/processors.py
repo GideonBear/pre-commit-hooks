@@ -18,14 +18,14 @@ class FileProcessor(ABC):
 
     def process_file(
         self, file: Path, content: str, *, logger_type: type[Logger]
-    ) -> tuple[str, int]:
+    ) -> tuple[str, int] | int:
         logger = logger_type.from_file(file)
         return self.process_file_internal(content, logger=logger)
 
     @abstractmethod
     def process_file_internal(
         self, content: str, *, logger: Logger
-    ) -> tuple[str, int]: ...
+    ) -> tuple[str, int] | int: ...
 
     @classmethod
     def add_arguments(cls, parser: ArgumentParser) -> None:
@@ -39,7 +39,9 @@ class FileProcessor(ABC):
 class LineProcessor(FileProcessor, ABC):
     remove_comments = True
 
-    def process_file_internal(self, content: str, *, logger: Logger) -> tuple[str, int]:
+    def process_file_internal(
+        self, content: str, *, logger: Logger
+    ) -> tuple[str, int] | int:
         new_content = ""
         retval = 0
         for lnr, line in enumerate(content.splitlines(keepends=True)):

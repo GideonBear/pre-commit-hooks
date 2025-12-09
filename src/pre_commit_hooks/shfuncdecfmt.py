@@ -16,7 +16,7 @@ class Processor(FileProcessor):
         content: str,
         *,
         logger: Logger,  # noqa: ARG002
-    ) -> tuple[str, int]:
+    ) -> tuple[str, int] | int:
         return re.sub(
             r"^(\s*)(function\s*)?([a-zA-Z_][a-zA-Z0-9_]*)\s*(?:\(\s*\))?\s*\{",
             r"\1\3() {",
