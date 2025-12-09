@@ -48,7 +48,8 @@ class ATestLogger(Logger):
     ("hook", "inp", "out", "args", "offline"),
     [
         ("shfuncdecfmt", "readme.sh", "readme-out.sh", ["readme.sh"], False),
-        ("set-euo-pipefail", "basic.sh", None, ["basic.sh"], False),
+        ("set-euo-pipefail", "bad.sh", None, ["bad.sh"], False),
+        ("set-euo-pipefail", "good.sh", None, ["good.sh"], False),
         (
             "pcad",
             "basic.yaml",
