@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import tomllib
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 from pre_commit_hooks.classes import Invalid
@@ -9,11 +10,28 @@ from pre_commit_hooks.processors import LineProcessor
 
 
 if TYPE_CHECKING:
+    from argparse import ArgumentParser
+
     from pre_commit_hooks import Args
     from pre_commit_hooks.classes import Logger
 
 
 class Processor(LineProcessor):
+    @classmethod
+    def add_arguments(cls, parser: ArgumentParser) -> None:
+        parser.add_argument(
+            "--configs",
+            dest="files",
+            nargs="*",
+            default=[Path(".pre-commit-config.yaml")],
+            type=Path,
+        )
+        parser.add_argument(
+            "--lockfile",
+            type=Path,
+            default=Path("uv.lock"),
+        )
+
     def __init__(self, args: Args) -> None:
         super().__init__(args)
 

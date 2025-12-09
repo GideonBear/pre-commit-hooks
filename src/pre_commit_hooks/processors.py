@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
+    from argparse import ArgumentParser
     from collections.abc import Callable
-    from pathlib import Path
 
     from pre_commit_hooks import Args
     from pre_commit_hooks.classes import Logger
@@ -20,6 +21,14 @@ class FileProcessor(ABC):
     def process_file(
         self, file: Path, content: str, *, logger_type: Callable[[Path, int], Logger]
     ) -> tuple[str, int]: ...
+
+    @classmethod
+    def add_arguments(cls, parser: ArgumentParser) -> None:
+        parser.add_argument(
+            "files",
+            nargs="+",
+            type=Path,
+        )
 
 
 class LineProcessor(FileProcessor, ABC):

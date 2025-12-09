@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 from argparse import ArgumentParser
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 from pre_commit_hooks import docker, gha, pcad, set_euo_pipefail, shfuncdecfmt
@@ -11,6 +10,7 @@ from pre_commit_hooks.classes import Logger
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
+    from pathlib import Path
 
     from pre_commit_hooks.processors import FileProcessor
 
@@ -34,29 +34,9 @@ def parse_args(argv: Sequence[str] | None) -> Args:
 
     sub = parser.add_subparsers(dest="hook", required=True)
 
-    pcad = sub.add_parser("pcad")
-    pcad.add_argument(
-        "--configs",
-        dest="files",
-        nargs="*",
-        default=[Path(".pre-commit-config.yaml")],
-        type=Path,
-    )
-    pcad.add_argument(
-        "--lockfile",
-        type=Path,
-        default=Path("uv.lock"),
-    )
-
-    for hook in hooks:
-        if hook == "pcad":
-            continue
+    for hook, processor in hooks.items():
         p = sub.add_parser(hook)
-        p.add_argument(
-            "files",
-            nargs="+",
-            type=Path,
-        )
+        processor.add_arguments(p)
 
     return parser.parse_args(argv, namespace=Args())
 
