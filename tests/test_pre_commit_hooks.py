@@ -46,26 +46,32 @@ class ATestLogger(Logger):
 
 
 @pytest.mark.parametrize(
-    ("hook", "inp", "out", "args", "offline"),
+    ("hook", "inp", "out", "args", "offline", "retval"),
     [
-        ("shfuncdecfmt", "readme.sh", "readme-out.sh", ["readme.sh"], False),
-        ("set-euo-pipefail", "bad.sh", None, ["bad.sh"], False),
-        ("set-euo-pipefail", "good.sh", None, ["good.sh"], False),
+        ("shfuncdecfmt", "readme.sh", "readme-out.sh", ["readme.sh"], False, 1),
+        ("set-euo-pipefail", "bad.sh", None, ["bad.sh"], False, 1),
+        ("set-euo-pipefail", "good.sh", None, ["good.sh"], False, 0),
         (
             "pcad",
             "basic.yaml",
             "basic-out.yaml",
             ["--configs", "basic.yaml", "--lockfile", "basic-uv.lock"],
             False,
+            1,
         ),
-        ("docker", "docker-compose.yml", None, ["docker-compose.yml"], False),
-        ("docker", "Dockerfile", None, ["Dockerfile"], False),
-        ("gha", "workflow.yml", "workflow-out.yml", ["workflow.yml"], False),
-        ("gha", "workflow-offline.yml", None, ["workflow-offline.yml"], True),
+        ("docker", "docker-compose.yml", None, ["docker-compose.yml"], False, 1),
+        ("docker", "Dockerfile", None, ["Dockerfile"], False, 1),
+        ("gha", "workflow.yml", "workflow-out.yml", ["workflow.yml"], False, 1),
+        ("gha", "workflow-offline.yml", None, ["workflow-offline.yml"], True, 1),
     ],
 )
-def test_pre_commit_hooks(
-    hook: str, inp: str, out: str | None, args: Sequence[str], offline: bool
+def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
+    hook: str,
+    inp: str,
+    out: str | None,
+    args: Sequence[str],
+    offline: bool,
+    retval: int,
 ) -> None:
     hookdir = Path(__file__).parent / hook
     inp = hookdir / inp
@@ -105,7 +111,7 @@ def test_pre_commit_hooks(
                 url = fs_url_decode(mock.name)
                 m.get(url, text=mock.read_text())
 
-            main((hook, *args), logger_type=ATestLogger)
+            assert main((hook, *args), logger_type=ATestLogger) == retval
 
         if out:
             assert Path(tmp).read_text(encoding="utf-8") == out.read_text()
