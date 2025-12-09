@@ -26,6 +26,10 @@ This has an added benefit when using Dependabot or Renovate, as PRs will bump th
 instead of just the digest, prompting the bot to link/embed the correct release notes
 instead of only a compare link.
 
+Certain actions and Docker images are exempted from certain rules by default (for example `debian` which uses `x.y` versioning).
+Feel free to contribute to [default_allows.py](https://github.com/GideonBear/pre-commit-hooks/blob/main/src/pre_commit_hooks/default_allows.py)
+with any other known exceptions!
+
 `gha-pin` provides an autofix.
 
 ## `shfuncdecfmt`
