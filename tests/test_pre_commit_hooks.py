@@ -4,6 +4,7 @@ import re
 import shutil
 import tempfile
 import urllib.parse
+from abc import ABC, abstractmethod
 from contextlib import nullcontext
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -17,7 +18,7 @@ from pre_commit_hooks.classes import Logger
 
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import MutableSequence, Sequence
 
 
 def remove_color(s: str) -> str:
@@ -28,21 +29,21 @@ def fs_url_decode(s: str) -> str:
     return urllib.parse.unquote(s)
 
 
-logs: list[tuple[Path, int, str]] | None = None
-
-
-class ATestLogger(Logger):
-    def __init__(
-        self,
-        *args,  # noqa: ANN002
-        **kwargs,  # noqa: ANN003
-    ) -> None:
-        super().__init__(*args, **kwargs)
+class ATestLogger(Logger, ABC):
+    @property
+    @abstractmethod
+    def _logs(self) -> MutableSequence[tuple[Path, int, str]]: ...
 
     def log(self, msg: str) -> None:
         super().log(msg)
-        assert logs is not None
-        logs.append((self.file, self.lnr, remove_color(msg)))
+        self._logs.append((self.file, self.lnr, remove_color(msg)))
+
+
+def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATestLogger]:
+    class Sub(ATestLogger):
+        _logs = logs
+
+    return Sub
 
 
 @pytest.mark.parametrize(
@@ -98,8 +99,6 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
                     (tmp, lineno, msg) for msg in comment.split(" |AND| ")
                 )
 
-        global logs  # noqa: PLW0603
-        assert logs is None
         logs = []
         with (
             requests_mock.Mocker() as m,
@@ -111,12 +110,10 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
                 url = fs_url_decode(mock.name)
                 m.get(url, text=mock.read_text())
 
-            assert main((hook, *args), logger_type=ATestLogger) == retval
+            assert main((hook, *args), logger_type=make_test_logger(logs)) == retval
 
         if out:
             assert Path(tmp).read_text(encoding="utf-8") == out.read_text()
         else:
             assert Path(tmp).read_text(encoding="utf-8") == inp.read_text()
         assert logs == expected_logs
-
-        logs = None
