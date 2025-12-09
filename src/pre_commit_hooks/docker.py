@@ -9,7 +9,7 @@ from pre_commit_hooks.processors import LineProcessor
 class Processor(LineProcessor):
     # TODO(GideonBear): query and replace the version with latest, if online
     #  also add sha hashes to docker, etc.
-    def process_line(  # noqa: C901, PLR0911, PLR6301
+    def process_line_internal(  # noqa: C901, PLR0911, PLR6301
         self, _orig_line: str, line: str, allow: str | None, logger: Logger
     ) -> int:
         if not line.strip().startswith(("image:", "FROM")):

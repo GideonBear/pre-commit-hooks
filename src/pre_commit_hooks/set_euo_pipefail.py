@@ -24,7 +24,7 @@ class Processor(LineProcessor):
     def reset(self) -> None:
         self.start_part = True
 
-    def process_line(
+    def process_line_internal(
         self, _orig_line: str, line: str, _allow: str | None, logger: Logger
     ) -> tuple[str, int] | int:
         if not self.start_part:

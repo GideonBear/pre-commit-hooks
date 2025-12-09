@@ -41,7 +41,7 @@ class Processor(LineProcessor):
 
         self.in_block = False
 
-    def process_line(  # noqa: PLR0911
+    def process_line_internal(  # noqa: PLR0911
         self, orig_line: str, line: str, allow: str | None, logger: Logger
     ) -> tuple[str, int] | int:
         if line == "additional_dependencies:":

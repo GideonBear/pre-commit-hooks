@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 class Processor(LineProcessor):
     remove_comments = False  # GHA expects a comment.
 
-    def process_line(  # noqa: PLR6301
+    def process_line_internal(  # noqa: PLR6301
         self, orig_line: str, line: str, allow: str | None, logger: Logger
     ) -> tuple[str, int] | int:
         line = line.strip().removeprefix("- ")
