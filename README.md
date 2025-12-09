@@ -26,6 +26,8 @@ This has an added benefit when using Dependabot or Renovate, as PRs will bump th
 instead of just the digest, prompting the bot to link/embed the correct release notes
 instead of only a compare link.
 
+`gha-pin` provides an autofix.
+
 ## `shfuncdecfmt`
 ```bash
 # Bad:
