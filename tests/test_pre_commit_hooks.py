@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
-import requests_mock
+import responses
 
 from pre_commit_hooks import main
 from pre_commit_hooks.classes import Logger
@@ -66,6 +66,7 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
         ("gha", "workflow-offline.yml", None, ["workflow-offline.yml"], True, 1),
     ],
 )
+@responses.activate
 def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
     hook: str,
     inp: str,
@@ -100,16 +101,17 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
                 )
 
         logs = []
+
+        for mock in (Path(__file__).parent / "mocks").iterdir():
+            responses.get(
+                url=fs_url_decode(mock.name),
+                body=mock.read_text(),
+            )
         with (
-            requests_mock.Mocker() as m,
             patch(f"pre_commit_hooks.{hook}.is_connected", return_value=False)
             if offline
             else nullcontext(),
         ):
-            for mock in (Path(__file__).parent / "mocks").iterdir():
-                url = fs_url_decode(mock.name)
-                m.get(url, text=mock.read_text())
-
             assert main((hook, *args), logger_type=make_test_logger(logs)) == retval
 
         if out:
