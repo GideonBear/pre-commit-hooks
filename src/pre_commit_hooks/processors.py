@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from argparse import ArgumentParser
 
     from pre_commit_hooks import Args
-    from pre_commit_hooks.classes import Logger
+    from pre_commit_hooks.logger import Logger
 
 
 class FileProcessor(ABC):

@@ -7,7 +7,7 @@ from pre_commit_hooks.processors import FileProcessor
 
 
 if TYPE_CHECKING:
-    from pre_commit_hooks.classes import Logger
+    from pre_commit_hooks.logger import Logger
 
 
 class Processor(FileProcessor):

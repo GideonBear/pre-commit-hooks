@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from argparse import ArgumentParser
 
     import pre_commit_hooks
-    from pre_commit_hooks.classes import Logger
+    from pre_commit_hooks.logger import Logger
 
     class Args(pre_commit_hooks.Args):
         language: str

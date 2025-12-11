@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 from typing import TYPE_CHECKING
 
 from pre_commit_hooks import docker, gha, pcad, sections, set_euo_pipefail, shfuncdecfmt
-from pre_commit_hooks.classes import Logger
+from pre_commit_hooks.logger import Logger
 
 
 if TYPE_CHECKING:

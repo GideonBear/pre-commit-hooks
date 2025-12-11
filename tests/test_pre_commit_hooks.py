@@ -14,7 +14,7 @@ import pytest
 import responses
 
 from pre_commit_hooks import main
-from pre_commit_hooks.classes import Logger
+from pre_commit_hooks.logger import Logger
 
 
 if TYPE_CHECKING:

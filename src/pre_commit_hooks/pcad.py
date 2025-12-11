@@ -4,8 +4,8 @@ import tomllib
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks.classes import Invalid
 from pre_commit_hooks.common import line_replace
+from pre_commit_hooks.logger import Invalid
 from pre_commit_hooks.processors import LineProcessor
 
 
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from argparse import ArgumentParser
 
     import pre_commit_hooks
-    from pre_commit_hooks.classes import Logger
+    from pre_commit_hooks.logger import Logger
 
     class Args(pre_commit_hooks.Args):
         lockfile: Path

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import string
 
-from pre_commit_hooks.classes import Invalid, Logger
+from pre_commit_hooks.logger import Invalid, Logger
 
 
 def process_version(version: str) -> Invalid | None:

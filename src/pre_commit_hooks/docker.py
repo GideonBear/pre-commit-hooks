@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from pre_commit_hooks.classes import Invalid, Logger
 from pre_commit_hooks.common import is_valid_sha256, process_version
 from pre_commit_hooks.default_allows import with_default
+from pre_commit_hooks.logger import Invalid, Logger
 from pre_commit_hooks.processors import LineProcessor
 
 

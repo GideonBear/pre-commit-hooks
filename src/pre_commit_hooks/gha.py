@@ -2,19 +2,19 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks.classes import Invalid
 from pre_commit_hooks.common import (
     is_valid_sha1,
     line_replace,
     process_version,
 )
 from pre_commit_hooks.default_allows import with_default
+from pre_commit_hooks.logger import Invalid
 from pre_commit_hooks.network import is_connected, request
 from pre_commit_hooks.processors import LineProcessor
 
 
 if TYPE_CHECKING:
-    from pre_commit_hooks.classes import Logger
+    from pre_commit_hooks.logger import Logger
 
 
 class Processor(LineProcessor):

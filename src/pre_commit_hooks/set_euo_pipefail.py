@@ -6,7 +6,7 @@ from pre_commit_hooks.processors import LineProcessor
 
 
 if TYPE_CHECKING:
-    from pre_commit_hooks.classes import Logger
+    from pre_commit_hooks.logger import Logger
 
 
 class Processor(LineProcessor):
