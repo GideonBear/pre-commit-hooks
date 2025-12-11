@@ -12,8 +12,11 @@ from pre_commit_hooks.processors import LineProcessor
 if TYPE_CHECKING:
     from argparse import ArgumentParser
 
-    from pre_commit_hooks import Args
+    import pre_commit_hooks
     from pre_commit_hooks.classes import Logger
+
+    class Args(pre_commit_hooks.Args):
+        lockfile: Path
 
 
 class Processor(LineProcessor):

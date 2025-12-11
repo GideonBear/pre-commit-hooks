@@ -4,7 +4,7 @@ import argparse
 from argparse import ArgumentParser
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks import docker, gha, pcad, set_euo_pipefail, shfuncdecfmt
+from pre_commit_hooks import docker, gha, pcad, sections, set_euo_pipefail, shfuncdecfmt
 from pre_commit_hooks.classes import Logger
 
 
@@ -21,6 +21,7 @@ hooks: dict[str, type[FileProcessor]] = {
     "shfuncdecfmt": shfuncdecfmt.Processor,
     "set-euo-pipefail": set_euo_pipefail.Processor,
     "pcad": pcad.Processor,
+    "sections": sections.Processor,
 }
 
 

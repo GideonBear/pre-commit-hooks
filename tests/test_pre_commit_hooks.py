@@ -64,6 +64,8 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
         ("docker", "Dockerfile", None, ["Dockerfile"], False, 1),
         ("gha", "workflow.yml", "workflow-out.yml", ["workflow.yml"], False, 1),
         ("gha", "workflow-offline.yml", None, ["workflow-offline.yml"], True, 1),
+        ("sections", "bad.yaml", None, ["python", "--configs", "bad.yaml"], False, 1),
+        ("sections", "good.yaml", None, ["python", "--configs", "good.yaml"], False, 0),
     ],
 )
 @responses.activate
@@ -90,7 +92,14 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
         args = [str(tmp) if arg == str(inp) else arg for arg in args]
 
         expected_logs = []
+        first_block = True
         for lineno, line in enumerate(inp.read_text(encoding="utf-8").splitlines()):
+            if first_block:
+                if line.startswith(("# Error:", "# Warning:")):
+                    msg = line.removeprefix("# ")
+                    expected_logs.append((tmp, None, msg))
+                    continue
+                first_block = False
             try:
                 _, comment = line.split("  # ")
             except ValueError:
