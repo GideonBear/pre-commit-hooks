@@ -58,3 +58,10 @@
     language: python
     pass_filenames: false
     files: docker-compose\.ya?ml$|Dockerfile$
+
+-   id: requires-python
+    name: requires-python
+    description: Unpins requires-python patch versions
+    entry: pre-commit-hooks requires-python
+    language: python
+    files: ^pyproject.toml$

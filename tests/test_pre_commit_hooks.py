@@ -66,6 +66,17 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
         ("gha", "workflow-offline.yml", None, ["workflow-offline.yml"], True, 1),
         ("sections", "bad.yaml", None, ["python", "--configs", "bad.yaml"], False, 1),
         ("sections", "good.yaml", None, ["python", "--configs", "good.yaml"], False, 0),
+        ("requires-python", "bad.toml", "bad-out.toml", ["bad.toml"], False, 1),
+        ("requires-python", "good.toml", None, ["good.toml"], False, 0),
+        (
+            "requires-python",
+            "invalid-major.toml",
+            None,
+            ["invalid-major.toml"],
+            False,
+            0,
+        ),
+        ("requires-python", "none.toml", None, ["none.toml"], False, 1),
     ],
 )
 @responses.activate

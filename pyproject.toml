@@ -19,7 +19,9 @@ classifiers = [
 ]
 dependencies = [
     "colorama>=0.4.6",
+    "packaging>=25",
     "requests>=2.32.5",
+    "tomlkit>=0.13.3",
 ]
 
 urls.bugs = "https://github.com/GideonBear/pre-commit-hooks/issues"

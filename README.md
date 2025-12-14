@@ -53,3 +53,20 @@ Fails if you don't have `set -euo pipefail` at the top of your shell script.
 ## `pre-commit-additional-dependencies`
 
 Syncs any `additional_dependencies` in your `.pre-commit-config.yaml` with `uv.lock`. Meant for use with `mirrors-mypy`.
+
+## `requires-python`
+
+Unpins your requires-python from `major.minor.patch` (`>=3.14.2`) to `major.minor` (`>=3.14`)
+
+Designed for use with Renovate:
+```json
+{
+    "packageRules": [
+        {
+            "matchDepTypes": ["requires-python"],
+            "rangeStrategy": "bump"
+        }
+    ]
+}
+```
+Since Renovate always wants to pin it to `major.minor.patch`, and doesn't support anything else.
