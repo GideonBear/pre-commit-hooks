@@ -71,14 +71,23 @@ This is meant to remind you to add pre-commit hooks when adding a new language t
 Unpins your requires-python from `major.minor.patch` (`>=3.14.2`) to `major.minor` (`>=3.14`)
 
 Designed for use with Renovate:
-```json
+```json5
 {
-    "packageRules": [
+    packageRules: [
         {
-            "matchDepTypes": ["requires-python"],
-            "rangeStrategy": "bump"
-        }
-    ]
+            matchDepTypes: [
+                "requires-python",
+            ],
+            rangeStrategy: "bump",
+        },
+        {
+            matchDepTypes: [
+                "requires-python",
+            ],
+            matchUpdateTypes: "patch",
+            enabled: false,
+        },
+    ],
 }
 ```
 Since Renovate always wants to pin it to `major.minor.patch`, and doesn't support anything else.
