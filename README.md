@@ -54,6 +54,16 @@ Fails if you don't have `set -euo pipefail` at the top of your shell script.
 
 Syncs any `additional_dependencies` in your `.pre-commit-config.yaml` with `uv.lock`. Meant for use with `mirrors-mypy`.
 
+## `pre-commit-config-sections-*`
+
+Currently supported:
+* `shell` (`types: [shell]`)
+* `python` (`types: [python]`)
+* `docker` (`files: docker-compose\.ya?ml$|Dockerfile$`)
+
+If a certain type of file is present, expects a section (e.g. `# Shell`) to be present in `.pre-commit-config.yaml`.
+This is meant to remind you to add pre-commit hooks when adding a new language to your repository.
+
 ## `requires-python`
 
 Unpins your requires-python from `major.minor.patch` (`>=3.14.2`) to `major.minor` (`>=3.14`)
