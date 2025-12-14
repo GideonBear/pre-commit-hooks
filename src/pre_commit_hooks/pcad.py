@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import tomllib
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -17,6 +18,10 @@ if TYPE_CHECKING:
 
     class Args(pre_commit_hooks.Args):
         lockfile: Path
+
+
+def normalize_package(name: str) -> str:
+    return re.sub(r"[-_.]+", "-", name).lower()
 
 
 class Processor(LineProcessor):
@@ -44,7 +49,7 @@ class Processor(LineProcessor):
 
         self.in_block = False
 
-    def process_line_internal(  # noqa: PLR0911
+    def process_line_internal(  # noqa: PLR0911, C901
         self, orig_line: str, line: str, allow: str | None, logger: Logger
     ) -> tuple[str, int] | int:
         if line == "additional_dependencies:":
@@ -67,12 +72,19 @@ class Processor(LineProcessor):
                 package = line
                 version = None
 
+            norm = normalize_package(package)
+            if norm != package:
+                logger.invalid(Invalid("unnormalized", f"{package} is not normalized"))
+                orig_line = line_replace(orig_line, package, norm, logger=logger)
+                line = line_replace(line, package, norm, logger=logger)
+                package = norm
+
             if package not in self.packages:
-                return 0
+                return orig_line, 0
 
             target_version = self.packages[package]["version"]
             if target_version == version:
-                return 0
+                return orig_line, 0
 
             if version:
                 logger.invalid(
@@ -90,8 +102,9 @@ class Processor(LineProcessor):
                         f"but unpinned in pre-commit-config.yaml",
                     )
                 )
-            return line_replace(
+            orig_line = line_replace(
                 orig_line, line, f"{package}=={target_version}", logger=logger
-            ), 0
+            )
+            return orig_line, 0
 
         return 0

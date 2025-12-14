@@ -18,6 +18,8 @@ repos:
           - playwright  # Error: [unsynced] playwright is 1.56.0 in lockfile, but unpinned in pre-commit-config.yaml
           - playwright==1.55.0  # allow-out-of-sync
           - playwright  # allow-unsynced
+          - charset_normalizer  # Error: [unnormalized] charset_normalizer is not normalized |AND| Error: [unsynced] charset-normalizer is 3.4.4 in lockfile, but unpinned in pre-commit-config.yaml
+          - charset-normalizer  # Error: [unsynced] charset-normalizer is 3.4.4 in lockfile, but unpinned in pre-commit-config.yaml
 
   - repo: https://github.com/GideonBear/pre-commit-hooks
     rev: v1.1.1
