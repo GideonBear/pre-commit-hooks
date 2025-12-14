@@ -59,7 +59,9 @@ Syncs any `additional_dependencies` in your `.pre-commit-config.yaml` with `uv.l
 Currently supported:
 * `shell` (`types: [shell]`)
 * `python` (`types: [python]`)
+* `pytest` (`files: ^tests/.*\.py$`)
 * `docker` (`files: docker-compose\.ya?ml$|Dockerfile$`)
+* `gha` (`files: ^.github/workflows/`)
 
 If a certain type of file is present, expects a section (e.g. `# Shell`) to be present in `.pre-commit-config.yaml`.
 This is meant to remind you to add pre-commit hooks when adding a new language to your repository.
