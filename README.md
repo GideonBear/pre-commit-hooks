@@ -1,7 +1,9 @@
 # pre-commit-hooks
 
 ## `docker-image-pin` & `gha-pin`
+
 Based on https://nickcunningh.am/blog/how-to-automate-version-updates-for-your-self-hosted-docker-containers-with-gitea-renovate-and-komodo
+
 ```yml
 # bad - don't do this
 image: gitea/gitea
@@ -20,6 +22,7 @@ image: gitea/gitea:1.23.6
 # best - pins the image to a specific version AND digest, makes the specific version immutable
 image: gitea/gitea:1.23.6@sha256:01bb6f98fb9e256554d59c85b9f1cb39f3da68202910ea0909d61c6b449c207d
 ```
+
 Exactly the same concept applies to GitHub actions.
 
 This has an added benefit when using Dependabot or Renovate, as PRs will bump the version
@@ -33,6 +36,7 @@ with any other known exceptions!
 `gha-pin` provides an autofix.
 
 ## `shfuncdecfmt`
+
 ```bash
 # Bad:
 function myfun {
@@ -44,6 +48,7 @@ myfun(){
 # Good:
 myfun() {
 ```
+
 Formats function declarations accordingly, and fixes whitespace.
 
 ## `set-euo-pipefail`
@@ -57,11 +62,12 @@ Syncs any `additional_dependencies` in your `.pre-commit-config.yaml` with `uv.l
 ## `pre-commit-config-sections-*`
 
 Currently supported:
-* `shell` (`types: [shell]`)
-* `python` (`types: [python]`)
-* `pytest` (`files: ^tests/.*\.py$`)
-* `docker` (`files: docker-compose\.ya?ml$|Dockerfile$`)
-* `gha` (`files: ^.github/workflows/`)
+
+- `shell` (`types: [shell]`)
+- `python` (`types: [python]`)
+- `pytest` (`files: ^tests/.*\.py$`)
+- `docker` (`files: docker-compose\.ya?ml$|Dockerfile$`)
+- `gha` (`files: ^.github/workflows/`)
 
 If a certain type of file is present, expects a section (e.g. `# Shell`) to be present in `.pre-commit-config.yaml`.
 This is meant to remind you to add pre-commit hooks when adding a new language to your repository.
@@ -71,6 +77,7 @@ This is meant to remind you to add pre-commit hooks when adding a new language t
 Unpins your requires-python from `major.minor.patch` (`>=3.14.2`) to `major.minor` (`>=3.14`)
 
 Designed for use with Renovate:
+
 ```json5
 {
     packageRules: [
@@ -90,4 +97,5 @@ Designed for use with Renovate:
     ],
 }
 ```
+
 Since Renovate always wants to pin it to `major.minor.patch`, and doesn't support anything else.
