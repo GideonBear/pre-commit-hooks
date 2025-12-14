@@ -8,6 +8,7 @@ from pre_commit_hooks import (
     docker,
     gha,
     pcad,
+    pccs,
     requires_python,
     sections,
     set_euo_pipefail,
@@ -29,6 +30,7 @@ hooks: dict[str, type[FileProcessor]] = {
     "shfuncdecfmt": shfuncdecfmt.Processor,
     "set-euo-pipefail": set_euo_pipefail.Processor,
     "pcad": pcad.Processor,
+    "pccs": pccs.Processor,
     "sections": sections.Processor,
     "requires-python": requires_python.Processor,
 }

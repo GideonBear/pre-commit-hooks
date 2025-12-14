@@ -35,6 +35,13 @@
     pass_filenames: false
     files: ^uv.lock$|^.pre-commit-config.yaml$
 
+-   id: pre-commit-ci-skip
+    name: pre-commit-ci-skip
+    description: "Add `language: system` hooks to `ci: skip:` automatically"
+    entry: pre-commit-hooks pccs
+    language: python
+    files: ^.pre-commit-config.yaml$
+
 -   id: pre-commit-config-sections-shell
     name: pre-commit-config.yaml sections (shell)
     description: Check that sections are included for the included languages

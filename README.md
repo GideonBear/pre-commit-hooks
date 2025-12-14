@@ -59,6 +59,10 @@ Fails if you don't have `set -euo pipefail` at the top of your shell script.
 
 Syncs any `additional_dependencies` in your `.pre-commit-config.yaml` with `uv.lock`. Meant for use with `mirrors-mypy`.
 
+## `pre-commit-ci-skip`
+
+Adds `language: system` hooks to `ci: skip:` automatically
+
 ## `pre-commit-config-sections-*`
 
 Currently supported:
