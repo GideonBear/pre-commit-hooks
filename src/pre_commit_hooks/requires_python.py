@@ -40,3 +40,6 @@ class Processor(FileProcessor):
             data["project"]["requires-python"] = new  # type: ignore[index]  # we know it is because we got requires-python from it
 
         toml_file.write(data)
+
+
+main = Processor.main

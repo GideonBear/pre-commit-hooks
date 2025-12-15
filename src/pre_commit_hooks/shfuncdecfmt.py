@@ -23,3 +23,6 @@ class Processor(FileContentProcessor):
             content,
             flags=re.MULTILINE,
         )
+
+
+main = Processor.main

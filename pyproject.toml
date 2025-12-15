@@ -30,7 +30,14 @@ dependencies = [
 urls.bugs = "https://github.com/GideonBear/pre-commit-hooks/issues"
 urls.homepage = "https://github.com/GideonBear/pre-commit-hooks"
 
-scripts.pre-commit-hooks = "pre_commit_hooks:main"
+scripts.docker-image-pin = "pre_commit_hooks.docker:main"
+scripts.gha-pin = "pre_commit_hooks.gha:main"
+scripts.pre-commit-additional-dependencies = "pre_commit_hooks.pcad:main"
+scripts.pre-commit-ci-skip = "pre_commit_hooks.pccs:main"
+scripts.pre-commit-config-sections = "pre_commit_hooks.sections:main"
+scripts.requires-python = "pre_commit_hooks.requires_python:main"
+scripts.set-euo-pipefail = "pre_commit_hooks.set_euo_pipefail:main"
+scripts.shfuncdecfmt = "pre_commit_hooks.shfuncdecfmt:main"
 
 [dependency-groups]
 dev = [

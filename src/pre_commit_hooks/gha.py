@@ -187,3 +187,6 @@ def get_digest(action: str, version: str, *, logger: Logger) -> str | None:  # n
 
     data = request(f"https://api.github.com/repos/{action}/git/ref/tags/{version}")
     return data["object"]["sha"]  # type: ignore[no-any-return]
+
+
+main = Processor.main

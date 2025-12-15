@@ -13,12 +13,22 @@ from unittest.mock import patch
 import pytest
 import responses
 
-from pre_commit_hooks import main
+from pre_commit_hooks import (
+    docker,
+    gha,
+    pcad,
+    pccs,
+    requires_python,
+    sections,
+    set_euo_pipefail,
+    shfuncdecfmt,
+)
 from pre_commit_hooks.logger import Logger
 
 
 if TYPE_CHECKING:
     from collections.abc import MutableSequence, Sequence
+    from types import ModuleType
 
 
 def remove_color(s: str) -> str:
@@ -48,58 +58,59 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
 
 # *: changed files, relies on pre-commit to see modifications
 @pytest.mark.parametrize(
-    ("hook", "inp", "out", "args", "offline", "retval"),
+    ("hook_module", "inp", "out", "args", "offline", "retval"),
     [
-        ("shfuncdecfmt", "readme.sh", "readme-out.sh", ["readme.sh"], False, 0),  # *
-        ("set-euo-pipefail", "bad.sh", None, ["bad.sh"], False, 1),
-        ("set-euo-pipefail", "good.sh", None, ["good.sh"], False, 0),
+        (shfuncdecfmt, "readme.sh", "readme-out.sh", ["readme.sh"], False, 0),  # *
+        (set_euo_pipefail, "bad.sh", None, ["bad.sh"], False, 1),
+        (set_euo_pipefail, "good.sh", None, ["good.sh"], False, 0),
         (
-            "pcad",
+            pcad,
             "basic.yaml",
             "basic-out.yaml",
             ["--configs", "basic.yaml", "--lockfile", "basic-uv.lock"],
             False,
             1,
         ),
-        ("pccs", "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 0),  # *
-        ("pccs", "partial.yaml", "partial-out.yaml", ["partial.yaml"], False, 0),  # *
+        (pccs, "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 0),  # *
+        (pccs, "partial.yaml", "partial-out.yaml", ["partial.yaml"], False, 0),  # *
         (
-            "pccs",
+            pccs,
             "basic-existing-ci.yaml",
             "basic-existing-ci-out.yaml",
             ["basic-existing-ci.yaml"],
             False,
             0,  # *
         ),
-        ("pccs", "good.yaml", None, ["good.yaml"], False, 0),
-        ("docker", "docker-compose.yml", None, ["docker-compose.yml"], False, 1),
-        ("docker", "Dockerfile", None, ["Dockerfile"], False, 1),
-        ("gha", "workflow.yml", "workflow-out.yml", ["workflow.yml"], False, 1),
-        ("gha", "workflow-offline.yml", None, ["workflow-offline.yml"], True, 1),
-        ("sections", "bad.yaml", None, ["python", "--configs", "bad.yaml"], False, 1),
-        ("sections", "good.yaml", None, ["python", "--configs", "good.yaml"], False, 0),
-        ("requires-python", "bad.toml", "bad-out.toml", ["bad.toml"], False, 0),  # *
-        ("requires-python", "good.toml", None, ["good.toml"], False, 0),
+        (pccs, "good.yaml", None, ["good.yaml"], False, 0),
+        (docker, "docker-compose.yml", None, ["docker-compose.yml"], False, 1),
+        (docker, "Dockerfile", None, ["Dockerfile"], False, 1),
+        (gha, "workflow.yml", "workflow-out.yml", ["workflow.yml"], False, 1),
+        (gha, "workflow-offline.yml", None, ["workflow-offline.yml"], True, 1),
+        (sections, "bad.yaml", None, ["python", "--configs", "bad.yaml"], False, 1),
+        (sections, "good.yaml", None, ["python", "--configs", "good.yaml"], False, 0),
+        (requires_python, "bad.toml", "bad-out.toml", ["bad.toml"], False, 0),  # *
+        (requires_python, "good.toml", None, ["good.toml"], False, 0),
         (
-            "requires-python",
+            requires_python,
             "invalid-major.toml",
             None,
             ["invalid-major.toml"],
             False,
             0,
         ),
-        ("requires-python", "none.toml", None, ["none.toml"], False, 1),
+        (requires_python, "none.toml", None, ["none.toml"], False, 1),
     ],
 )
 @responses.activate
 def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
-    hook: str,
+    hook_module: ModuleType,
     inp: str,
     out: str | None,
     args: Sequence[str],
     offline: bool,
     retval: int,
 ) -> None:
+    hook = hook_module.__name__.split(".")[1].replace("_", "-")
     hookdir = Path(__file__).parent / hook
     inp = hookdir / inp
     if out:
@@ -140,11 +151,11 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
                 body=mock.read_text(),
             )
         with (
-            patch(f"pre_commit_hooks.{hook}.is_connected", return_value=False)
+            patch(f"{hook_module.__name__}.is_connected", return_value=False)
             if offline
             else nullcontext(),
         ):
-            assert main((hook, *args), logger_type=make_test_logger(logs)) == retval
+            assert hook_module.main(args, logger_type=make_test_logger(logs)) == retval
 
         if out:
             assert Path(tmp).read_text(encoding="utf-8") == out.read_text()

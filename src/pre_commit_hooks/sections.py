@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     import pre_commit_hooks
     from pre_commit_hooks.logger import Logger
 
-    class Args(pre_commit_hooks.Args):
+    class Args(pre_commit_hooks.processors.Args):
         language: str
 
 
@@ -48,3 +48,6 @@ class Processor(FileContentProcessor):
             return None
 
         return None
+
+
+main = Processor.main

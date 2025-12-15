@@ -56,3 +56,6 @@ class Processor(LineProcessor):
         digest = digest.removeprefix("sha256:")
         if not is_valid_sha256(digest):
             logger.invalid(f"invalid sha256 digest ('{digest}')")
+
+
+main = Processor.main

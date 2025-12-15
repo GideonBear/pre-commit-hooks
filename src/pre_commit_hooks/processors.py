@@ -1,16 +1,21 @@
 from __future__ import annotations
 
+import argparse
 from abc import ABC, abstractmethod
+from argparse import ArgumentParser
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from pre_commit_hooks.logger import Logger
+
 
 if TYPE_CHECKING:
-    from argparse import ArgumentParser
-    from collections.abc import Iterable
+    from collections.abc import Iterable, Sequence
 
-    from pre_commit_hooks import Args
-    from pre_commit_hooks.logger import Logger
+
+class Args(argparse.Namespace):
+    hook: str
+    files: Sequence[Path]
 
 
 class FileProcessor(ABC):
@@ -41,6 +46,23 @@ class FileProcessor(ABC):
             nargs="+",
             type=Path,
         )
+
+    @classmethod
+    def parse_args(cls, argv: Sequence[str] | None) -> Args:
+        parser = ArgumentParser()
+        cls.add_arguments(parser)
+        return parser.parse_args(argv, namespace=Args())
+
+    @classmethod
+    def main(
+        cls,
+        argv: Sequence[str] | None = None,
+        *,
+        logger_type: type[Logger] = Logger,
+    ) -> int:
+        args = cls.parse_args(argv)
+        processor = cls(args)
+        return processor.process_files(args.files, logger_type=logger_type)
 
 
 class FileContentProcessor(FileProcessor, ABC):

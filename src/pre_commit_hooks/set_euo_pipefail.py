@@ -33,3 +33,6 @@ class Processor(LineProcessor):
             return None
 
         return None
+
+
+main = Processor.main

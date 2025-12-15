@@ -57,3 +57,6 @@ class Processor(FileProcessor):
 
         with file.open("wb") as f:
             yaml.dump(data, f)
+
+
+main = Processor.main
