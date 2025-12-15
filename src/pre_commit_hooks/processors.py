@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from argparse import ArgumentParser
+    from collections.abc import Iterable
 
     from pre_commit_hooks import Args
     from pre_commit_hooks.logger import Logger
@@ -15,6 +16,12 @@ if TYPE_CHECKING:
 class FileProcessor(ABC):
     def __init__(self, _args: Args) -> None:  # noqa: B027
         pass
+
+    def process_files(self, files: Iterable[Path], *, logger_type: type[Logger]) -> int:
+        retval = 0
+        for file in files:
+            retval |= self.process_file_path(file, logger_type=logger_type)
+        return retval
 
     def process_file_path(self, file: Path, *, logger_type: type[Logger]) -> int:
         logger = logger_type.from_file(file)

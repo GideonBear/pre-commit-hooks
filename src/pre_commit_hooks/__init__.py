@@ -59,11 +59,5 @@ def main(
     logger_type: type[Logger] = Logger,
 ) -> int:
     args = parse_args(argv)
-
     processor = hooks[args.hook](args)
-
-    retval = 0
-    for file in args.files:
-        retval |= processor.process_file_path(file, logger_type=logger_type)
-
-    return retval
+    return processor.process_files(args.files, logger_type=logger_type)
