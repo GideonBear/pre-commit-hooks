@@ -19,3 +19,6 @@ repos:
       - id: foo
         language: system
         entry: foo
+      - id: bar
+        language: unsupported
+        entry: bar

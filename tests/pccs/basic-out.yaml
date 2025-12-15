@@ -3,6 +3,7 @@ minimum_pre_commit_version: '4.2.0'
 ci:
   skip:
     - foo
+    - bar
 
 repos:
   - repo: https://github.com/pre-commit/mirrors-mypy
@@ -23,3 +24,6 @@ repos:
       - id: foo
         language: system
         entry: foo
+      - id: bar
+        language: unsupported
+        entry: bar

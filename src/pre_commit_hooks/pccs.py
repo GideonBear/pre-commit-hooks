@@ -32,7 +32,7 @@ class Processor(FileProcessor):
             hook["id"]
             for repo in data["repos"]
             for hook in repo["hooks"]
-            if "language" in hook and hook["language"] == "system"
+            if "language" in hook and hook["language"] in {"unsupported", "system"}
         ]
         if not to_skip:
             return
