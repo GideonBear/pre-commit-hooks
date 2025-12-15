@@ -1,4 +1,4 @@
-# Error: Couldn't find project.requires-python
+# Error: Couldn't find `requires-python` or `project.requires-python`
 [project]
 name = "project"
 version = "0.1.0"

@@ -24,9 +24,13 @@ class Processor(FileProcessor):
         toml_file = TOMLFile(file)
         data = toml_file.read()
 
-        requires_python = data.get("project", {}).get("requires-python", None)
-        if not requires_python:
-            logger.invalid("Couldn't find project.requires-python")
+        requires_python = data.get("requires-python", None) or data.get(
+            "project", {}
+        ).get("requires-python", None)
+        if requires_python is None:
+            logger.invalid(
+                "Couldn't find `requires-python` or `project.requires-python`"
+            )
             return
         specs = SpecifierSet(requires_python)
         if len(specs) != 1:
@@ -37,7 +41,10 @@ class Processor(FileProcessor):
         if spec.version.count(".") == 2:  # noqa: PLR2004
             new_version = spec.version.rsplit(".", 1)[0]
             new = f"{spec.operator}{new_version}"
-            data["project"]["requires-python"] = new  # type: ignore[index]  # we know it is because we got requires-python from it
+            if data.get("requires-python") is not None:
+                data["requires-python"] = new
+            else:
+                data["project"]["requires-python"] = new  # type: ignore[index]  # we know it is because we got requires-python from it
 
         toml_file.write(data)
 

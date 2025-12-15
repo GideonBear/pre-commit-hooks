@@ -87,4 +87,4 @@
     description: Unpins requires-python patch versions
     entry: requires-python
     language: python
-    files: ^pyproject.toml$
+    files: ^pyproject.toml$|^uv.lock$

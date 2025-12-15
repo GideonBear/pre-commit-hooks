@@ -99,6 +99,14 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
             0,
         ),
         (requires_python, "none.toml", None, ["none.toml"], False, 1),
+        (
+            requires_python,
+            "uv-lock.toml",
+            "uv-lock-out.toml",
+            ["uv-lock.toml"],
+            False,
+            0,  # *
+        ),
     ],
 )
 @responses.activate
