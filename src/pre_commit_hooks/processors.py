@@ -16,11 +16,12 @@ class FileProcessor(ABC):
     def __init__(self, _args: Args) -> None:  # noqa: B027
         pass
 
-    def process_file(self, content: str, *, logger: Logger) -> str | None:
-        return self.process_file_internal(content, logger=logger)
+    def process_file_path(self, file: Path, *, logger_type: type[Logger]) -> int:
+        logger = logger_type.from_file(file)
+        return self.process_file_path_internal(file, logger=logger) | logger.retval
 
     @abstractmethod
-    def process_file_internal(self, content: str, *, logger: Logger) -> str | None: ...
+    def process_file_path_internal(self, file: Path, *, logger: Logger) -> int: ...
 
     @classmethod
     def add_arguments(cls, parser: ArgumentParser) -> None:
@@ -31,7 +32,20 @@ class FileProcessor(ABC):
         )
 
 
-class LineProcessor(FileProcessor, ABC):
+class FileContentProcessor(FileProcessor, ABC):
+    def process_file_path_internal(self, file: Path, *, logger: Logger) -> int:
+        content = file.read_text(encoding="utf-8")
+        new_content = self.process_file_internal(content, logger=logger)
+        if new_content is not None and new_content != content:
+            file.write_text(new_content, encoding="utf-8")
+            return 1
+        return 0
+
+    @abstractmethod
+    def process_file_internal(self, content: str, *, logger: Logger) -> str | None: ...
+
+
+class LineProcessor(FileContentProcessor, ABC):
     remove_comments = True
 
     def process_file_internal(self, content: str, *, logger: Logger) -> str:

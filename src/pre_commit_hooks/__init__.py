@@ -64,14 +64,6 @@ def main(
 
     retval = 0
     for file in args.files:
-        content = file.read_text()
-
-        logger = logger_type.from_file(file)
-        new_content = processor.process_file(content, logger=logger)
-        retval |= logger.retval
-
-        if new_content is not None and new_content != content:
-            file.write_text(new_content)
-            retval |= 1
+        retval |= processor.process_file_path(file, logger_type=logger_type)
 
     return retval

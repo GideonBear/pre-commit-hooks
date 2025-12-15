@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks.processors import FileProcessor
+from pre_commit_hooks.processors import FileContentProcessor
 
 
 if TYPE_CHECKING:
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
         language: str
 
 
-class Processor(FileProcessor):
+class Processor(FileContentProcessor):
     @classmethod
     def add_arguments(cls, parser: ArgumentParser) -> None:
         parser.add_argument(
