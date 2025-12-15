@@ -46,10 +46,11 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
     return Sub
 
 
+# *: changed files, relies on pre-commit to see modifications
 @pytest.mark.parametrize(
     ("hook", "inp", "out", "args", "offline", "retval"),
     [
-        ("shfuncdecfmt", "readme.sh", "readme-out.sh", ["readme.sh"], False, 1),
+        ("shfuncdecfmt", "readme.sh", "readme-out.sh", ["readme.sh"], False, 0),  # *
         ("set-euo-pipefail", "bad.sh", None, ["bad.sh"], False, 1),
         ("set-euo-pipefail", "good.sh", None, ["good.sh"], False, 0),
         (
@@ -60,15 +61,15 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
             False,
             1,
         ),
-        ("pccs", "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 1),
-        ("pccs", "partial.yaml", "partial-out.yaml", ["partial.yaml"], False, 1),
+        ("pccs", "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 0),  # *
+        ("pccs", "partial.yaml", "partial-out.yaml", ["partial.yaml"], False, 0),  # *
         (
             "pccs",
             "basic-existing-ci.yaml",
             "basic-existing-ci-out.yaml",
             ["basic-existing-ci.yaml"],
             False,
-            1,
+            0,  # *
         ),
         ("pccs", "good.yaml", None, ["good.yaml"], False, 0),
         ("docker", "docker-compose.yml", None, ["docker-compose.yml"], False, 1),
@@ -77,7 +78,7 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
         ("gha", "workflow-offline.yml", None, ["workflow-offline.yml"], True, 1),
         ("sections", "bad.yaml", None, ["python", "--configs", "bad.yaml"], False, 1),
         ("sections", "good.yaml", None, ["python", "--configs", "good.yaml"], False, 0),
-        ("requires-python", "bad.toml", "bad-out.toml", ["bad.toml"], False, 1),
+        ("requires-python", "bad.toml", "bad-out.toml", ["bad.toml"], False, 0),  # *
         ("requires-python", "good.toml", None, ["good.toml"], False, 0),
         (
             "requires-python",

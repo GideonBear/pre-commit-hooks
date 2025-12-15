@@ -2,32 +2,36 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import tomlkit
 from packaging.specifiers import SpecifierSet
+from tomlkit.toml_file import TOMLFile
 
-from pre_commit_hooks.processors import FileContentProcessor
+from pre_commit_hooks.processors import FileProcessor
 
 
 if TYPE_CHECKING:
+    from pathlib import Path
+
     from pre_commit_hooks.logger import Logger
 
 
-class Processor(FileContentProcessor):
-    def process_file_internal(  # noqa: PLR6301
+class Processor(FileProcessor):
+    def process_file_path_internal(  # noqa: PLR6301
         self,
-        content: str,
+        file: Path,
         *,
         logger: Logger,
-    ) -> str | None:
-        data = tomlkit.loads(content)
+    ) -> None:
+        toml_file = TOMLFile(file)
+        data = toml_file.read()
+
         requires_python = data.get("project", {}).get("requires-python", None)
         if not requires_python:
             logger.invalid("Couldn't find project.requires-python")
-            return None
+            return
         specs = SpecifierSet(requires_python)
         if len(specs) != 1:
             logger.invalid("Multiple specifiers")
-            return None
+            return
         spec = next(iter(specs))
 
         if spec.version.count(".") == 2:  # noqa: PLR2004
@@ -35,4 +39,4 @@ class Processor(FileContentProcessor):
             new = f"{spec.operator}{new_version}"
             data["project"]["requires-python"] = new  # type: ignore[index]  # we know it is because we got requires-python from it
 
-        return tomlkit.dumps(data)
+        toml_file.write(data)

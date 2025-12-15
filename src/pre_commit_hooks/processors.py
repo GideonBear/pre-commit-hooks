@@ -18,10 +18,14 @@ class FileProcessor(ABC):
 
     def process_file_path(self, file: Path, *, logger_type: type[Logger]) -> int:
         logger = logger_type.from_file(file)
-        return self.process_file_path_internal(file, logger=logger) | logger.retval
+        self.process_file_path_internal(file, logger=logger)
+        return logger.retval
 
+    # If files are changed, pre-commit doesn't need a non-zero exit code to
+    #  mark the hook as failed, so we don't need an exit code here. Any
+    #  non-modifying failures will be marked with `logger.invalid`.
     @abstractmethod
-    def process_file_path_internal(self, file: Path, *, logger: Logger) -> int: ...
+    def process_file_path_internal(self, file: Path, *, logger: Logger) -> None: ...
 
     @classmethod
     def add_arguments(cls, parser: ArgumentParser) -> None:
@@ -33,13 +37,12 @@ class FileProcessor(ABC):
 
 
 class FileContentProcessor(FileProcessor, ABC):
-    def process_file_path_internal(self, file: Path, *, logger: Logger) -> int:
+    def process_file_path_internal(self, file: Path, *, logger: Logger) -> None:
         content = file.read_text(encoding="utf-8")
         new_content = self.process_file_internal(content, logger=logger)
         if new_content is not None and new_content != content:
             file.write_text(new_content, encoding="utf-8")
-            return 1
-        return 0
+            # See comment on abstract definition
 
     @abstractmethod
     def process_file_internal(self, content: str, *, logger: Logger) -> str | None: ...
