@@ -9,33 +9,36 @@ from pre_commit_hooks.processors import LineProcessor
 class Processor(LineProcessor):
     # TODO(GideonBear): query and replace the version with latest, if online
     #  also add sha hashes to docker, etc.
-    def process_line_internal(  # noqa: C901, PLR0911, PLR6301
+    def process_line_internal(  # noqa: C901, PLR6301
         self, _orig_line: str, line: str, allow: str | None, logger: Logger
-    ) -> int:
+    ) -> None:
         if not line.strip().startswith(("image:", "FROM")):
-            return 0
+            return
 
         line = line.removeprefix("image:").strip()
         line = line.removeprefix("FROM").strip()
         try:
             rest, digest = line.split("@")
         except ValueError:
-            return logger.invalid("no '@'")
+            logger.invalid("no '@'")
+            return
         try:
             image, version = rest.split(":")
         except ValueError:
-            return logger.invalid("no ':' in leading part")
+            logger.invalid("no ':' in leading part")
+            return
 
         allow = with_default(allow, image, logger, "docker")
 
         if version in {"latest", "stable"}:
             if allow != version:
-                return logger.invalid(
+                logger.invalid(
                     Invalid(
                         version,
                         f"uses dynamic tag '{version}' instead of pinned version",
                     )
                 )
+                return
         else:
             if "-" in version:
                 version, _extra = version.split("-")
@@ -44,12 +47,12 @@ class Processor(LineProcessor):
                 if error.id == allow:
                     pass
                 else:
-                    return logger.invalid(error)
+                    logger.invalid(error)
+                    return
 
         if not digest.startswith("sha256:"):
-            return logger.invalid("invalid digest (doesn't start with 'sha256:')")
+            logger.invalid("invalid digest (doesn't start with 'sha256:')")
+            return
         digest = digest.removeprefix("sha256:")
         if not is_valid_sha256(digest):
-            return logger.invalid(f"invalid sha256 digest ('{digest}')")
-
-        return 0
+            logger.invalid(f"invalid sha256 digest ('{digest}')")

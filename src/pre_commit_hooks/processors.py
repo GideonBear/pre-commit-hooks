@@ -16,16 +16,11 @@ class FileProcessor(ABC):
     def __init__(self, _args: Args) -> None:  # noqa: B027
         pass
 
-    def process_file(
-        self, file: Path, content: str, *, logger_type: type[Logger]
-    ) -> tuple[str, int] | int:
-        logger = logger_type.from_file(file)
+    def process_file(self, content: str, *, logger: Logger) -> str | None:
         return self.process_file_internal(content, logger=logger)
 
     @abstractmethod
-    def process_file_internal(
-        self, content: str, *, logger: Logger
-    ) -> tuple[str, int] | int: ...
+    def process_file_internal(self, content: str, *, logger: Logger) -> str | None: ...
 
     @classmethod
     def add_arguments(cls, parser: ArgumentParser) -> None:
@@ -39,33 +34,25 @@ class FileProcessor(ABC):
 class LineProcessor(FileProcessor, ABC):
     remove_comments = True
 
-    def process_file_internal(
-        self, content: str, *, logger: Logger
-    ) -> tuple[str, int] | int:
+    def process_file_internal(self, content: str, *, logger: Logger) -> str:
         new_content = ""
-        retval = 0
         for lnr, line in enumerate(content.splitlines(keepends=True)):
-            line_ret = self.process_line(lnr, line, logger=logger)
-            if isinstance(line_ret, tuple):
-                new_line, line_retval = line_ret
+            new_line = self.process_line(lnr, line, file_logger=logger)
+            if new_line is not None:
                 new_content += new_line
             else:
-                line_retval = line_ret
                 new_content += line
 
-            if line_retval == 1:
-                retval = 1
-
-        return new_content, retval
+        return new_content
 
     def process_line(
         self,
         lnr: int,
         line: str,
         *,
-        logger: Logger,
-    ) -> tuple[str, int] | int:
-        logger = logger.with_lnr(lnr)
+        file_logger: Logger,
+    ) -> str | None:
+        logger = file_logger.with_lnr(lnr)
 
         orig_line = line
         line = line.strip()
@@ -84,11 +71,13 @@ class LineProcessor(FileProcessor, ABC):
             line = line.strip()
 
         if allow == "all":
-            return 0
+            return None
 
-        return self.process_line_internal(orig_line, line, allow, logger)
+        ret = self.process_line_internal(orig_line, line, allow, logger)
+        file_logger.consume(logger)
+        return ret
 
     @abstractmethod
     def process_line_internal(
         self, orig_line: str, line: str, allow: str | None, logger: Logger
-    ) -> tuple[str, int] | int: ...
+    ) -> str | None: ...

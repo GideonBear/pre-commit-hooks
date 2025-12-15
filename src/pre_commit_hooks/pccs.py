@@ -18,7 +18,7 @@ class Processor(FileProcessor):
         content: str,
         *,
         logger: Logger,  # noqa: ARG002
-    ) -> tuple[str, int] | int:
+    ) -> str | None:
         yaml = YAML()
         yaml.preserve_quotes = True
         yaml.indent(mapping=2, sequence=4, offset=2)
@@ -35,7 +35,7 @@ class Processor(FileProcessor):
             if "language" in hook and hook["language"] == "system"
         ]
         if not to_skip:
-            return 0
+            return None
 
         keys = list(data.keys())
         if "ci" not in data:
@@ -57,4 +57,4 @@ class Processor(FileProcessor):
 
         buf = StringIO()
         yaml.dump(data, buf)
-        return buf.getvalue(), 0
+        return buf.getvalue()

@@ -22,10 +22,10 @@ class Processor(LineProcessor):
 
     def process_line_internal(  # noqa: PLR6301
         self, orig_line: str, line: str, allow: str | None, logger: Logger
-    ) -> tuple[str, int] | int:
+    ) -> str | None:
         line = line.strip().removeprefix("- ")
         if not line.startswith("uses: "):
-            return 0
+            return None
         line = line.removeprefix("uses: ")
 
         try:
@@ -38,37 +38,36 @@ class Processor(LineProcessor):
         try:
             action, digest = action_digest.split("@")
         except ValueError:
-            return logger.invalid("no '@'")
+            logger.invalid("no '@'")
+            return None
 
         if not is_valid_sha1(digest):
-            return logger.invalid(f"invalid sha1 digest ('{digest}')")
+            logger.invalid(f"invalid sha1 digest ('{digest}')")
+            return None
 
         allow = with_default(allow, action, logger, "gha")
 
-        ret = process_version_gha(
+        return process_version_gha(
             orig_line, action, digest, version, allow, logger=logger
         )
-        if ret:
-            return ret
-
-        return 0
 
 
 def process_line_no_comment(  # noqa: PLR0911
     orig_line: str, line: str, allow: str | None, logger: Logger
-) -> tuple[str, int] | int:
+) -> str | None:
     try:
         action, digest_or_version = line.split("@")
     except ValueError:
-        return logger.invalid("no '@'")
+        logger.invalid("no '@'")
+        return None
 
     allow = with_default(allow, action, logger, "gha")
 
     if is_valid_sha1(digest_or_version):
         if allow == "no-version":
-            return 0
+            return None
         digest = digest_or_version
-        retval = logger.invalid(
+        logger.invalid(
             Invalid(
                 "no-version",
                 "no '#' but using digest; add a comment with a tag",
@@ -76,16 +75,14 @@ def process_line_no_comment(  # noqa: PLR0911
         )
         full_version = get_full_version(action, digest, logger=logger)
         if full_version is None:
-            return retval
-        return line_replace(
-            orig_line, line, f"{line} # {full_version}", logger=logger
-        ), retval
+            return None
+        return line_replace(orig_line, line, f"{line} # {full_version}", logger=logger)
 
     if "v" in digest_or_version:
         if allow == "no-digest":
-            return 0
+            return None
         version = digest_or_version
-        retval = logger.invalid(
+        logger.invalid(
             Invalid(
                 "no-digest",
                 f"no '#', using version ({version}) instead of digest.",
@@ -94,7 +91,7 @@ def process_line_no_comment(  # noqa: PLR0911
         digest_ret = get_digest(action, version, logger=logger)
         if digest_ret is None:
             process_version_gha(orig_line, action, None, version, allow, logger=logger)
-            return retval
+            return None
         digest = digest_ret
         orig_line = line_replace(
             orig_line, version, f"{digest} # {version}", logger=logger
@@ -102,13 +99,13 @@ def process_line_no_comment(  # noqa: PLR0911
         ret = process_version_gha(
             orig_line, action, digest, version, allow, logger=logger
         )
-        if isinstance(ret, tuple):
+        if ret is not None:
             return ret
-        return orig_line, retval
+        return orig_line
 
     if allow == "no-digest-mutable-rev":
-        return 0
-    return logger.invalid(
+        return None
+    logger.invalid(
         Invalid(
             "no-digest-mutable-rev",
             f"no '#', using mutable rev ({digest_or_version}) "
@@ -116,6 +113,7 @@ def process_line_no_comment(  # noqa: PLR0911
             "use a tag if possible, otherwise pin to digest only",
         )
     )
+    return None
 
 
 def process_version_gha(  # noqa: PLR0913
@@ -126,35 +124,33 @@ def process_version_gha(  # noqa: PLR0913
     allow: str | None,
     *,
     logger: Logger,
-) -> tuple[str, int] | int:
+) -> str | None:
     error = process_version(version)
     if not error or error.id == allow:
-        return 0
+        return None
 
     if error.id in {"major-minor", "major", "mutable-rev"}:
-        retval = logger.invalid(error)
+        logger.invalid(error)
         if digest is None:
-            return retval
+            return None
         full_version = get_full_version(action, digest, logger=logger)
         if full_version is None:
-            return retval
+            return None
         if full_version == version:
             logger.warn(
                 f"Autofix found no further expanded versions. "
                 f"Consider adding '# allow-{error.id}'."
             )
-            return retval
-        return (
-            line_replace(
-                orig_line,
-                version,
-                full_version,
-                logger=logger,
-            ),
-            retval,
+            return None
+        return line_replace(
+            orig_line,
+            version,
+            full_version,
+            logger=logger,
         )
 
-    return logger.invalid(error)
+    logger.invalid(error)
+    return None
 
 
 def get_full_version(action: str, digest: str, *, logger: Logger) -> str | None:

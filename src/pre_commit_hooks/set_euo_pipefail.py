@@ -12,9 +12,7 @@ if TYPE_CHECKING:
 class Processor(LineProcessor):
     start_part: bool
 
-    def process_file_internal(
-        self, content: str, *, logger: Logger
-    ) -> tuple[str, int] | int:
+    def process_file_internal(self, content: str, *, logger: Logger) -> str:
         self.reset()
         return super().process_file_internal(content, logger=logger)
 
@@ -23,14 +21,15 @@ class Processor(LineProcessor):
 
     def process_line_internal(
         self, _orig_line: str, line: str, _allow: str | None, logger: Logger
-    ) -> tuple[str, int] | int:
+    ) -> str | None:
         if not self.start_part:
-            return 0
+            return None
         if line.startswith("#") or not line:
-            return 0
+            return None
 
         self.start_part = False
         if line != "set -euo pipefail":
-            return logger.invalid("No `set -euo pipefail` found at start of script")
+            logger.invalid("No `set -euo pipefail` found at start of script")
+            return None
 
-        return 0
+        return None

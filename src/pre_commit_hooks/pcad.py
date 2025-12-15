@@ -51,24 +51,24 @@ class Processor(LineProcessor):
 
     def process_line_internal(  # noqa: PLR0911, C901
         self, orig_line: str, line: str, allow: str | None, logger: Logger
-    ) -> tuple[str, int] | int:
+    ) -> str | None:
         if line == "additional_dependencies:":
             self.in_block = True
-            return 0
+            return None
 
         if self.in_block:
             if not line.startswith("- "):
                 self.in_block = False
-                return 0
+                return None
 
             line = line.removeprefix("- ")
             if "==" in line:
                 if allow == "out-of-sync":
-                    return 0
+                    return None
                 package, version = line.split("==")
             else:
                 if allow == "unsynced":
-                    return 0
+                    return None
                 package = line
                 version = None
 
@@ -80,11 +80,11 @@ class Processor(LineProcessor):
                 package = norm
 
             if package not in self.packages:
-                return orig_line, 0
+                return orig_line
 
             target_version = self.packages[package]["version"]
             if target_version == version:
-                return orig_line, 0
+                return orig_line
 
             if version:
                 logger.invalid(
@@ -102,9 +102,8 @@ class Processor(LineProcessor):
                         f"but unpinned in pre-commit-config.yaml",
                     )
                 )
-            orig_line = line_replace(
+            return line_replace(
                 orig_line, line, f"{package}=={target_version}", logger=logger
             )
-            return orig_line, 0
 
-        return 0
+        return None

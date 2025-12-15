@@ -41,9 +41,10 @@ class Processor(FileProcessor):
         content: str,
         *,
         logger: Logger,
-    ) -> tuple[str, int] | int:
+    ) -> str | None:
         expected = f"# {self.language.capitalize()}"
         if not any(line.strip() == expected for line in content.splitlines()):
-            return logger.invalid(f"doesn't contain `{expected}` section of hooks")
+            logger.invalid(f"doesn't contain `{expected}` section of hooks")
+            return None
 
-        return 0
+        return None
