@@ -13,6 +13,11 @@ if TYPE_CHECKING:
     from pre_commit_hooks.logger import Logger
 
 
+yaml = YAML()
+yaml.preserve_quotes = True
+yaml.indent(mapping=2, sequence=4, offset=2)
+
+
 class Processor(FileProcessor):
     def process_file_path_internal(  # noqa: PLR6301
         self,
@@ -20,10 +25,6 @@ class Processor(FileProcessor):
         *,
         logger: Logger,  # noqa: ARG002
     ) -> None:
-        yaml = YAML()
-        yaml.preserve_quotes = True
-        yaml.indent(mapping=2, sequence=4, offset=2)
-
         with file.open("rb") as f:
             data = yaml.load(f)
 
