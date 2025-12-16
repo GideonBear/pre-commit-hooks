@@ -78,7 +78,7 @@ def process_line_no_comment(  # noqa: PLR0911
             return None
         return line_replace(orig_line, line, f"{line} # {full_version}", logger=logger)
 
-    if "v" in digest_or_version:
+    if digest_or_version.startswith("v"):
         if allow == "no-digest":
             return None
         version = digest_or_version
@@ -130,6 +130,11 @@ def process_version_gha(  # noqa: PLR0913
         return None
 
     if error.id in {"major-minor", "major", "mutable-rev"}:
+        if version in {"main", "master"}:
+            error = Invalid(
+                version, f"using '{version}' branch. Can you use a tag instead?"
+            )
+
         logger.invalid(error)
         if digest is None:
             return None
