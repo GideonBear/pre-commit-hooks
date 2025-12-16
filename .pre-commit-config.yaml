@@ -159,3 +159,8 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.17
+    hooks:
+      - id: uv-lock
