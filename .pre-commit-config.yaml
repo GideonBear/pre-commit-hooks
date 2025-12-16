@@ -147,8 +147,7 @@ repos:
     rev: v0.24.0.1
     hooks:
       - id: deptry
-        entry: deptry src
-        args: ["--package-module-name-map", "ruamel-yaml=ruamel"]
+        args: ["src", "--package-module-name-map", "ruamel-yaml=ruamel"]
 
   # Pytest
 
