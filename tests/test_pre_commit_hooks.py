@@ -142,13 +142,15 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
                     expected_logs.append((tmp, None, msg))
                     continue
                 first_block = False
-            try:
-                _, comment = line.split("  # ")
-            except ValueError:
-                continue
-            if comment.startswith(("Error:", "Warning:")):
+            diag_part = None
+            for type_ in ("Error:", "Warning:"):
+                if type_ in line:
+                    _, diag_part = line.split(f"# {type_}", maxsplit=1)
+                    diag_part = type_ + diag_part
+                    break
+            if diag_part:
                 expected_logs.extend(
-                    (tmp, lineno, msg) for msg in comment.split(" |AND| ")
+                    (tmp, lineno, msg) for msg in diag_part.split(" |AND| ")
                 )
 
         logs = []

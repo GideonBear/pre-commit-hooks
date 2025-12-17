@@ -105,7 +105,7 @@ class LineProcessor(FileContentProcessor, ABC):
 
         allow = None
         if "# allow-" in line:
-            line, allow = line.split("# allow-")
+            line, allow = line.split("# allow-", maxsplit=1)
             line = line.strip()
 
         if self.remove_comments:
