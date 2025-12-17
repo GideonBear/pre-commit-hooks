@@ -98,15 +98,25 @@ class LineProcessor(FileContentProcessor, ABC):
         *,
         file_logger: Logger,
     ) -> str | None:
-        logger = file_logger.with_lnr(lnr)
-
         orig_line = line
         line = line.strip()
 
         allow = None
         if "# allow-" in line:
-            line, allow = line.split("# allow-", maxsplit=1)
+            line, rest = line.split("# allow-", maxsplit=1)
+            if " " in rest:
+                allow, after = rest.split(" ", maxsplit=1)
+                line += after
+            else:
+                allow = rest
             line = line.strip()
+
+        # Normally the logger handles allows, but with `allow-all`
+        #  we can skip processing the entire line.
+        if allow == "all":
+            return None
+
+        logger = file_logger.with_line(lnr, allow)
 
         if self.remove_comments:
             if "#" in line:
@@ -116,14 +126,11 @@ class LineProcessor(FileContentProcessor, ABC):
             line, _comment = line.split("  #", maxsplit=1)
             line = line.strip()
 
-        if allow == "all":
-            return None
-
-        ret = self.process_line_internal(orig_line, line, allow, logger)
+        ret = self.process_line_internal(orig_line, line, logger)
         file_logger.consume(logger)
         return ret
 
     @abstractmethod
     def process_line_internal(
-        self, orig_line: str, line: str, allow: str | None, logger: Logger
+        self, orig_line: str, line: str, logger: Logger
     ) -> str | None: ...

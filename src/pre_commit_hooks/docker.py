@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from pre_commit_hooks.common import is_valid_sha256, process_version
-from pre_commit_hooks.default_allows import with_default
 from pre_commit_hooks.logger import Invalid, Logger
 from pre_commit_hooks.processors import LineProcessor
 
@@ -9,8 +8,8 @@ from pre_commit_hooks.processors import LineProcessor
 class Processor(LineProcessor):
     # TODO(GideonBear): query and replace the version with latest, if online
     #  also add sha hashes to docker, etc.
-    def process_line_internal(  # noqa: C901, PLR6301
-        self, _orig_line: str, line: str, allow: str | None, logger: Logger
+    def process_line_internal(  # noqa: PLR6301
+        self, _orig_line: str, line: str, logger: Logger
     ) -> None:
         if not line.strip().startswith(("image:", "FROM")):
             return
@@ -28,27 +27,21 @@ class Processor(LineProcessor):
             logger.invalid("no ':' in leading part")
             return
 
-        allow = with_default(allow, image, logger, "docker")
+        logger.use_defaults("docker", image)
 
         if version in {"latest", "stable"}:
-            if allow != version:
-                logger.invalid(
-                    Invalid(
-                        version,
-                        f"uses dynamic tag '{version}' instead of pinned version",
-                    )
+            logger.invalid(
+                Invalid(
+                    version,
+                    f"uses dynamic tag '{version}' instead of pinned version",
                 )
-                return
+            )
         else:
             if "-" in version:
                 version, _extra = version.split("-")
             error = process_version(version)
             if error:
-                if error.id == allow:
-                    pass
-                else:
-                    logger.invalid(error)
-                    return
+                logger.invalid(error)
 
         if not digest.startswith("sha256:"):
             logger.invalid("invalid digest (doesn't start with 'sha256:')")

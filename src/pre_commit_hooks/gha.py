@@ -7,7 +7,6 @@ from pre_commit_hooks.common import (
     line_replace,
     process_version,
 )
-from pre_commit_hooks.default_allows import with_default
 from pre_commit_hooks.logger import Invalid
 from pre_commit_hooks.network import is_connected, request
 from pre_commit_hooks.processors import LineProcessor
@@ -21,7 +20,7 @@ class Processor(LineProcessor):
     remove_comments = False  # GHA expects a comment.
 
     def process_line_internal(  # noqa: PLR6301
-        self, orig_line: str, line: str, allow: str | None, logger: Logger
+        self, orig_line: str, line: str, logger: Logger
     ) -> str | None:
         line = line.strip().removeprefix("- ")
         if not line.startswith("uses: "):
@@ -31,7 +30,7 @@ class Processor(LineProcessor):
         try:
             action_digest, version = line.split("#")
         except ValueError:
-            return process_line_no_comment(orig_line, line, allow, logger)
+            return process_line_no_comment(orig_line, line, logger)
 
         version = version.strip()
         action_digest = action_digest.strip()
@@ -45,15 +44,13 @@ class Processor(LineProcessor):
             logger.invalid(f"invalid sha1 digest ('{digest}')")
             return None
 
-        allow = with_default(allow, action, logger, "gha")
+        logger.use_defaults("gha", action)
 
-        return process_version_gha(
-            orig_line, action, digest, version, allow, logger=logger
-        )
+        return process_version_gha(orig_line, action, digest, version, logger=logger)
 
 
 def process_line_no_comment(  # noqa: PLR0911
-    orig_line: str, line: str, allow: str | None, logger: Logger
+    orig_line: str, line: str, logger: Logger
 ) -> str | None:
     try:
         action, digest_or_version = line.split("@")
@@ -61,50 +58,45 @@ def process_line_no_comment(  # noqa: PLR0911
         logger.invalid("no '@'")
         return None
 
-    allow = with_default(allow, action, logger, "gha")
+    logger.use_defaults("gha", action)
 
     if is_valid_sha1(digest_or_version):
-        if allow == "no-version":
-            return None
         digest = digest_or_version
-        logger.invalid(
+        if logger.invalid(
             Invalid(
                 "no-version",
                 "no '#' but using digest; add a comment with a tag",
             )
-        )
-        full_version = get_full_version(action, digest, logger=logger)
-        if full_version is None:
-            return None
-        return line_replace(orig_line, line, f"{line} # {full_version}", logger=logger)
+        ):
+            full_version = get_full_version(action, digest, logger=logger)
+            if full_version is not None:
+                return line_replace(
+                    orig_line, line, f"{line} # {full_version}", logger=logger
+                )
+        return None
 
     if digest_or_version.startswith("v"):
-        if allow == "no-digest":
-            return None
         version = digest_or_version
-        logger.invalid(
+        if logger.invalid(
             Invalid(
                 "no-digest",
                 f"no '#', using version ({version}) instead of digest.",
             )
-        )
-        digest_ret = get_digest(action, version, logger=logger)
-        if digest_ret is None:
-            process_version_gha(orig_line, action, None, version, allow, logger=logger)
-            return None
-        digest = digest_ret
-        orig_line = line_replace(
-            orig_line, version, f"{digest} # {version}", logger=logger
-        )
-        ret = process_version_gha(
-            orig_line, action, digest, version, allow, logger=logger
-        )
-        if ret is not None:
-            return ret
-        return orig_line
-
-    if allow == "no-digest-mutable-rev":
+        ):
+            digest_ret = get_digest(action, version, logger=logger)
+            if digest_ret is None:
+                process_version_gha(orig_line, action, None, version, logger=logger)
+                return None
+            digest = digest_ret
+            orig_line = line_replace(
+                orig_line, version, f"{digest} # {version}", logger=logger
+            )
+            ret = process_version_gha(orig_line, action, digest, version, logger=logger)
+            if ret is not None:
+                return ret
+            return orig_line
         return None
+
     logger.invalid(
         Invalid(
             "no-digest-mutable-rev",
@@ -116,17 +108,16 @@ def process_line_no_comment(  # noqa: PLR0911
     return None
 
 
-def process_version_gha(  # noqa: PLR0913
+def process_version_gha(
     orig_line: str,
     action: str,
     digest: str | None,
     version: str,
-    allow: str | None,
     *,
     logger: Logger,
 ) -> str | None:
     error = process_version(version)
-    if not error or error.id == allow:
+    if not error:
         return None
 
     if error.id in {"major-minor", "major", "mutable-rev"}:

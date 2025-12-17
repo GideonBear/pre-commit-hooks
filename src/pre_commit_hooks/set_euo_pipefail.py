@@ -20,7 +20,7 @@ class Processor(LineProcessor):
         self.start_part = True
 
     def process_line_internal(
-        self, _orig_line: str, line: str, _allow: str | None, logger: Logger
+        self, _orig_line: str, line: str, logger: Logger
     ) -> str | None:
         if not self.start_part:
             return None

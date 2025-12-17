@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING, Self
 import colorama
 from colorama import Fore
 
+from pre_commit_hooks.default_allows import default_allows
+
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -18,19 +20,35 @@ colorama.init()
 class Logger:
     file: Path
     lnr: int | None
+    allow: str | None
 
     def __post_init__(self) -> None:
         self.retval = 0
 
     @classmethod
     def from_file(cls, file: Path) -> Self:
-        return cls(file, None)
+        return cls(file, lnr=None, allow=None)
 
-    def with_lnr(self, lnr: int) -> Self:
+    def with_line(self, lnr: int, allow: str | None) -> Self:
         if self.lnr is not None:
             msg = "lnr already set"
             raise ValueError(msg)
-        return self.__class__(self.file, lnr)
+        if self.allow is not None:
+            msg = "allow already set"
+            raise ValueError(msg)
+        return self.__class__(self.file, lnr, allow)
+
+    def use_defaults(self, hook: str, key: str) -> None:
+        default_allow = default_allows[hook].get(key)
+        if default_allow:
+            if self.allow:
+                self.warn(
+                    "allow comment specified while "
+                    "there is a default allow for this image. "
+                    "The allow comment will be ignored. "
+                    f"(specified '{self.allow}', default '{default_allow}')"
+                )
+            self.allow = default_allow
 
     def consume(self, other: Self) -> None:
         self.retval |= other.retval
@@ -41,9 +59,23 @@ class Logger:
         else:
             print(f"({self.file}) {msg}")
 
-    def invalid(self, error: Invalid | str) -> None:
+    # It's allowed to pass a string in here, which means some errors
+    #  will not have ids. But `allow-all` will still block these, as
+    #  the whole line is skipped then.
+    def invalid(self, error: Invalid | str) -> bool:
+        """
+        Log an error.
+
+        Returns:
+            `True` if an autofix should be done if possible
+
+        """
+        if isinstance(error, Invalid) and error.id == self.allow:
+            return False
+
         self.log(f"{Fore.LIGHTRED_EX}Error{Fore.RESET}: {error}")
         self.retval |= 1
+        return True
 
     def warn(self, msg: str) -> None:
         self.log(f"{Fore.YELLOW}Warning{Fore.RESET}: {msg}")
