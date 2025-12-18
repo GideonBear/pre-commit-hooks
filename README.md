@@ -33,8 +33,9 @@ Certain actions and Docker images are exempted from certain rules by default (fo
 Feel free to contribute to [default_allows.py](https://github.com/GideonBear/pre-commit-hooks/blob/main/src/pre_commit_hooks/default_allows.py)
 with any other known exceptions!
 
-`gha-pin` provides autofixes for most errors. This autofix uses the GitHub API, but works offline (and thus in
-pre-commit.ci) as well. All errors will still be shown, only the autofixes depend on the network.
+`gha-pin` provides autofixes for most errors. These autofixes use the GitHub API, which means they will not be
+available when you are offline, or when running in pre-commit.ci. All error detections still work offline and in
+pre-commit.ci.
 
 ## `shfuncdecfmt`
 
