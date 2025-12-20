@@ -44,8 +44,8 @@ class ATestLogger(Logger, ABC):
     @abstractmethod
     def _logs(self) -> MutableSequence[tuple[Path, int, str]]: ...
 
-    def log(self, msg: str) -> None:
-        super().log(msg)
+    def log_no_info(self, msg: str) -> None:
+        super().log_no_info(msg)
         self._logs.append((self.file, self.lnr, remove_color(msg)))
 
 
@@ -137,13 +137,13 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
         first_block = True
         for lineno, line in enumerate(inp.read_text(encoding="utf-8").splitlines()):
             if first_block:
-                if line.startswith(("# Error:", "# Warning:")):
+                if line.startswith(("# Error:", "# Warning:", "# Info:")):
                     msg = line.removeprefix("# ")
                     expected_logs.append((tmp, None, msg))
                     continue
                 first_block = False
             diag_part = None
-            for type_ in ("Error:", "Warning:"):
+            for type_ in ("Error:", "Warning:", "Info:"):
                 if type_ in line:
                     _, diag_part = line.split(f"# {type_}", maxsplit=1)
                     diag_part = type_ + diag_part

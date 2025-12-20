@@ -44,7 +44,7 @@ class Processor(LineProcessor):
             logger.invalid(f"invalid sha1 digest ('{digest}')")
             return None
 
-        logger.use_defaults("gha", action)
+        logger.use_defaults("gha", "action", action)
 
         return process_version_gha(orig_line, action, digest, version, logger=logger)
 
@@ -58,7 +58,7 @@ def process_line_no_comment(  # noqa: PLR0911
         logger.invalid("no '@'")
         return None
 
-    logger.use_defaults("gha", action)
+    logger.use_defaults("gha", "action", action)
 
     if is_valid_sha1(digest_or_version):
         digest = digest_or_version
@@ -97,7 +97,7 @@ def process_line_no_comment(  # noqa: PLR0911
     return process_version_gha(orig_line, action, None, version, logger=logger)
 
 
-def process_version_gha(
+def process_version_gha(  # noqa: PLR0911
     orig_line: str,
     action: str,
     digest: str | None,
@@ -105,6 +105,20 @@ def process_version_gha(
     *,
     logger: Logger,
 ) -> str | None:
+    # When allowing `main` or `master`, there's no use in trying to find a tag,
+    #  as we want should be using `main` or `master` anyway. Most likely this
+    #  is a `mutable-rev` error with a default allow of `main` or `master`.
+    if logger.allow in {"main", "master"}:
+        if version != logger.allow:
+            logger.invalid(
+                Invalid(
+                    f"not-{logger.allow}",
+                    f"expected {logger.allow}, as it was specified with "
+                    f"an `allow-` comment, or a default allow.",
+                )
+            )
+        return None
+
     error = process_version(version)
     if not error:
         return None

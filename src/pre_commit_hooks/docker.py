@@ -27,7 +27,7 @@ class Processor(LineProcessor):
             logger.invalid("no ':' in leading part")
             return
 
-        logger.use_defaults("docker", image)
+        logger.use_defaults("docker", "image", image)
 
         if version in {"latest", "stable"}:
             logger.invalid(
