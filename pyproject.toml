@@ -63,6 +63,7 @@ lint.ignore = [
     "S404",    # Uses of subprocess are rejected, no need to reject the imports as well
     "T201",    # (project) Print is allowed
     "TD003",   # (project)
+    "TRY400",  # (project) We don't use `logging`
 ]
 
 lint.per-file-ignores."tests/**/*.py" = [

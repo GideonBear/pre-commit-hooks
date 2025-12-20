@@ -44,7 +44,7 @@ class Processor(FileContentProcessor):
     ) -> str | None:
         expected = f"# {self.language.capitalize()}"
         if not any(line.strip() == expected for line in content.splitlines()):
-            logger.invalid(f"doesn't contain `{expected}` section of hooks")
+            logger.error(f"doesn't contain `{expected}` section of hooks")
             return None
 
         return None

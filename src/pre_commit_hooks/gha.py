@@ -7,7 +7,7 @@ from pre_commit_hooks.common import (
     line_replace,
     process_version,
 )
-from pre_commit_hooks.logger import Invalid
+from pre_commit_hooks.logger import Error
 from pre_commit_hooks.network import is_connected, request
 from pre_commit_hooks.processors import LineProcessor
 
@@ -37,11 +37,11 @@ class Processor(LineProcessor):
         try:
             action, digest = action_digest.split("@")
         except ValueError:
-            logger.invalid("no '@'")
+            logger.error("no '@'")
             return None
 
         if not is_valid_sha1(digest):
-            logger.invalid(f"invalid sha1 digest ('{digest}')")
+            logger.error(f"invalid sha1 digest ('{digest}')")
             return None
 
         logger.use_defaults("gha", "action", action)
@@ -55,15 +55,15 @@ def process_line_no_comment(  # noqa: PLR0911
     try:
         action, digest_or_version = line.split("@")
     except ValueError:
-        logger.invalid("no '@'")
+        logger.error("no '@'")
         return None
 
     logger.use_defaults("gha", "action", action)
 
     if is_valid_sha1(digest_or_version):
         digest = digest_or_version
-        if logger.invalid(
-            Invalid(
+        if logger.error(
+            Error(
                 "no-version",
                 "no '#' but using digest; add a comment with a tag",
             )
@@ -76,8 +76,8 @@ def process_line_no_comment(  # noqa: PLR0911
         return None
 
     version = digest_or_version
-    if logger.invalid(
-        Invalid(
+    if logger.error(
+        Error(
             "no-digest",
             f"no '#', using tag or branch ({version}) instead of digest.",
         )
@@ -110,8 +110,8 @@ def process_version_gha(  # noqa: PLR0911
     #  is a `mutable-rev` error with a default allow of `main` or `master`.
     if logger.allow in {"main", "master"}:
         if version != logger.allow:
-            logger.invalid(
-                Invalid(
+            logger.error(
+                Error(
                     f"not-{logger.allow}",
                     f"expected {logger.allow}, as it was specified with "
                     f"an `allow-` comment, or a default allow.",
@@ -125,11 +125,11 @@ def process_version_gha(  # noqa: PLR0911
 
     if error.id in {"major-minor", "major", "mutable-rev"}:
         if version in {"main", "master"}:
-            error = Invalid(
+            error = Error(
                 version, f"using '{version}' branch. Can you use a tag instead?"
             )
 
-        if logger.invalid(error) and digest is not None:
+        if logger.error(error) and digest is not None:
             full_version = get_full_version(action, digest, logger=logger)
             if full_version is None:
                 return None
@@ -147,7 +147,7 @@ def process_version_gha(  # noqa: PLR0911
             )
         return None
 
-    logger.invalid(error)
+    logger.error(error)
     return None
 
 

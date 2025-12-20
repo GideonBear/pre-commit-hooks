@@ -73,7 +73,7 @@ class Logger:
     # It's allowed to pass a string in here, which means some errors
     #  will not have ids. But `allow-all` will still block these, as
     #  the whole line is skipped then.
-    def invalid(self, error: Invalid | str) -> bool:
+    def error(self, error: Error | str) -> bool:
         """
         Log an error.
 
@@ -81,7 +81,7 @@ class Logger:
             `True` if an autofix should be done if possible
 
         """
-        if isinstance(error, Invalid) and error.id == self.allow:
+        if isinstance(error, Error) and error.id == self.allow:
             return False
 
         self.log(f"{Fore.LIGHTRED_EX}Error{Fore.RESET}: {error}")
@@ -93,7 +93,7 @@ class Logger:
 
 
 @dataclass
-class Invalid:
+class Error:
     id: str
     msg: str
 

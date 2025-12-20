@@ -28,13 +28,11 @@ class Processor(FileProcessor):
             "project", {}
         ).get("requires-python", None)
         if requires_python is None:
-            logger.invalid(
-                "Couldn't find `requires-python` or `project.requires-python`"
-            )
+            logger.error("Couldn't find `requires-python` or `project.requires-python`")
             return
         specs = SpecifierSet(requires_python)
         if len(specs) != 1:
-            logger.invalid("Multiple specifiers")
+            logger.error("Multiple specifiers")
             return
         spec = next(iter(specs))
 

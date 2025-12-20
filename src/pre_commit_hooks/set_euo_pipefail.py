@@ -29,7 +29,7 @@ class Processor(LineProcessor):
 
         self.start_part = False
         if line != "set -euo pipefail":
-            logger.invalid("No `set -euo pipefail` found at start of script")
+            logger.error("No `set -euo pipefail` found at start of script")
             return None
 
         return None

@@ -35,7 +35,7 @@ class FileProcessor(ABC):
 
     # If files are changed, pre-commit doesn't need a non-zero exit code to
     #  mark the hook as failed, so we don't need an exit code here. Any
-    #  non-modifying failures will be marked with `logger.invalid`.
+    #  non-modifying failures will be marked with `logger.error`.
     @abstractmethod
     def process_file_path_internal(self, file: Path, *, logger: Logger) -> None: ...
 

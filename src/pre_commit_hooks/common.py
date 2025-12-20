@@ -2,33 +2,33 @@ from __future__ import annotations
 
 import string
 
-from pre_commit_hooks.logger import Invalid, Logger
+from pre_commit_hooks.logger import Error, Logger
 
 
-def process_version(version: str) -> Invalid | None:
+def process_version(version: str) -> Error | None:
     version = version.removeprefix("v")  # Optional prefix
     parts = version.split(".")
     if len(parts) > 3:  # noqa: PLR2004
         # major.minor.patch.???
-        return Invalid(
+        return Error(
             "weird-version",
             "version contains more than three parts (major.minor.patch.???)",
         )
     if len(parts) == 2:  # noqa: PLR2004
         # major.minor
-        return Invalid(
+        return Error(
             "major-minor",
             "version contains only two parts (major.minor). "
             "Can the version be pinned further?",
         )
     if len(parts) == 1:
         if not parts[0].isdecimal():
-            return Invalid(
+            return Error(
                 "mutable-rev",
                 "used revision is not a version. Can you use a tag instead?",
             )
         # major
-        return Invalid(
+        return Error(
             "major",
             "version contains only one part (major). "
             "Can the version be pinned further?",
