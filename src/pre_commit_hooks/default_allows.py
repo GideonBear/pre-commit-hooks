@@ -31,5 +31,11 @@ infos = {
             "https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more "
             "information."
         ),
+        "taiki-e/install-action": (
+            "This action uses special versioning. Specify the"
+            "tool using `with: tool: <tool>` instead, and pin the action to the latest"
+            "version. See https://github.com/taiki-e/install-action#example-workflow"
+            "for more information."
+        ),
     },
 }
