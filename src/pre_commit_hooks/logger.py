@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING, Self, overload
 
 import colorama
 from colorama import Fore
@@ -73,7 +73,18 @@ class Logger:
     # It's allowed to pass a string in here, which means some errors
     #  will not have ids. But `allow-all` will still block these, as
     #  the whole line is skipped then.
-    def error(self, error: Error | str) -> bool:
+    @overload
+    def error(self, error: Error | str) -> bool: ...
+    @overload
+    def error(self, *, id: str, msg: str) -> bool: ...
+
+    def error(
+        self,
+        error: Error | str | None = None,
+        *,
+        id: str | None = None,  # noqa: A002  # This is nice for caller
+        msg: str | None = None,
+    ) -> bool:
         """
         Log an error.
 
@@ -81,6 +92,12 @@ class Logger:
             `True` if an autofix should be done if possible
 
         """
+        if error is None:
+            # Guaranteed because of the overload
+            assert id is not None  # noqa: S101
+            assert msg is not None  # noqa: S101
+            error = Error(id, msg)
+
         if isinstance(error, Error) and error.id == self.allow:
             return False
 

@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from pre_commit_hooks.common import line_replace
-from pre_commit_hooks.logger import Error
 from pre_commit_hooks.processors import LineProcessor
 
 
@@ -70,7 +69,7 @@ class Processor(LineProcessor):
 
             norm = normalize_package(package)
             if norm != package:
-                logger.error(Error("unnormalized", f"{package} is not normalized"))
+                logger.error(id="unnormalized", msg=f"{package} is not normalized")
                 orig_line = line_replace(orig_line, package, norm, logger=logger)
                 line = line_replace(line, package, norm, logger=logger)
                 package = norm
@@ -84,19 +83,15 @@ class Processor(LineProcessor):
 
             if version:
                 fix = logger.error(
-                    Error(
-                        "out-of-sync",
-                        f"{package} is {target_version} in lockfile, "
-                        f"but {version} in pre-commit-config.yaml",
-                    )
+                    id="out-of-sync",
+                    msg=f"{package} is {target_version} in lockfile, "
+                    f"but {version} in pre-commit-config.yaml",
                 )
             else:
                 fix = logger.error(
-                    Error(
-                        "unsynced",
-                        f"{package} is {target_version} in lockfile, "
-                        f"but unpinned in pre-commit-config.yaml",
-                    )
+                    id="unsynced",
+                    msg=f"{package} is {target_version} in lockfile, "
+                    f"but unpinned in pre-commit-config.yaml",
                 )
             if fix:
                 return line_replace(

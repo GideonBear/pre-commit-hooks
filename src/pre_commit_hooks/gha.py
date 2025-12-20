@@ -63,10 +63,8 @@ def process_line_no_comment(  # noqa: PLR0911
     if is_valid_sha1(digest_or_version):
         digest = digest_or_version
         if logger.error(
-            Error(
-                "no-version",
-                "no '#' but using digest; add a comment with a tag",
-            )
+            id="no-version",
+            msg="no '#' but using digest; add a comment with a tag",
         ):
             full_version = get_full_version(action, digest, logger=logger)
             if full_version is not None:
@@ -77,10 +75,8 @@ def process_line_no_comment(  # noqa: PLR0911
 
     version = digest_or_version
     if logger.error(
-        Error(
-            "no-digest",
-            f"no '#', using tag or branch ({version}) instead of digest.",
-        )
+        id="no-digest",
+        msg=f"no '#', using tag or branch ({version}) instead of digest.",
     ):
         digest_ret = get_digest(action, version, logger=logger)
         if digest_ret is None:
@@ -111,11 +107,9 @@ def process_version_gha(  # noqa: PLR0911
     if logger.allow in {"main", "master"}:
         if version != logger.allow:
             logger.error(
-                Error(
-                    f"not-{logger.allow}",
-                    f"expected {logger.allow}, as it was specified with "
-                    f"an `allow-` comment, or a default allow.",
-                )
+                id=f"not-{logger.allow}",
+                msg=f"expected {logger.allow}, as it was specified with "
+                f"an `allow-` comment, or a default allow.",
             )
         return None
 
@@ -126,7 +120,7 @@ def process_version_gha(  # noqa: PLR0911
     if error.id in {"major-minor", "major", "mutable-rev"}:
         if version in {"main", "master"}:
             error = Error(
-                version, f"using '{version}' branch. Can you use a tag instead?"
+                id=version, msg=f"using '{version}' branch. Can you use a tag instead?"
             )
 
         if logger.error(error) and digest is not None:

@@ -1,8 +1,13 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from pre_commit_hooks.common import is_valid_sha256, process_version
-from pre_commit_hooks.logger import Error, Logger
 from pre_commit_hooks.processors import LineProcessor
+
+
+if TYPE_CHECKING:
+    from pre_commit_hooks.logger import Logger
 
 
 class Processor(LineProcessor):
@@ -31,10 +36,8 @@ class Processor(LineProcessor):
 
         if version in {"latest", "stable"}:
             logger.error(
-                Error(
-                    version,
-                    f"uses dynamic tag '{version}' instead of pinned version",
-                )
+                id=version,
+                msg=f"uses dynamic tag '{version}' instead of pinned version",
             )
         else:
             if "-" in version:
