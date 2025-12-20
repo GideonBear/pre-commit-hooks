@@ -167,8 +167,8 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
         ):
             assert hook_module.main(args, logger_type=make_test_logger(logs)) == retval
 
+        assert logs == expected_logs
         if out:
             assert Path(tmp).read_text(encoding="utf-8") == out.read_text()
         else:
             assert Path(tmp).read_text(encoding="utf-8") == inp.read_text()
-        assert logs == expected_logs

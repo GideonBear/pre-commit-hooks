@@ -75,37 +75,26 @@ def process_line_no_comment(  # noqa: PLR0911
                 )
         return None
 
-    if digest_or_version.startswith("v"):
-        version = digest_or_version
-        if logger.invalid(
-            Invalid(
-                "no-digest",
-                f"no '#', using version ({version}) instead of digest.",
-            )
-        ):
-            digest_ret = get_digest(action, version, logger=logger)
-            if digest_ret is None:
-                process_version_gha(orig_line, action, None, version, logger=logger)
-                return None
-            digest = digest_ret
-            orig_line = line_replace(
-                orig_line, version, f"{digest} # {version}", logger=logger
-            )
-            ret = process_version_gha(orig_line, action, digest, version, logger=logger)
-            if ret is not None:
-                return ret
-            return orig_line
-        return None
-
-    logger.invalid(
+    version = digest_or_version
+    if logger.invalid(
         Invalid(
-            "no-digest-mutable-rev",
-            f"no '#', using mutable rev ({digest_or_version}) "
-            "instead of digest; "
-            "use a tag if possible, otherwise pin to digest only",
+            "no-digest",
+            f"no '#', using tag or branch ({version}) instead of digest.",
         )
-    )
-    return None
+    ):
+        digest_ret = get_digest(action, version, logger=logger)
+        if digest_ret is None:
+            process_version_gha(orig_line, action, None, version, logger=logger)
+            return None
+        digest = digest_ret
+        orig_line = line_replace(
+            orig_line, version, f"{digest} # {version}", logger=logger
+        )
+        ret = process_version_gha(orig_line, action, digest, version, logger=logger)
+        if ret is not None:
+            return ret
+        return orig_line
+    return process_version_gha(orig_line, action, None, version, logger=logger)
 
 
 def process_version_gha(
@@ -126,24 +115,23 @@ def process_version_gha(
                 version, f"using '{version}' branch. Can you use a tag instead?"
             )
 
-        logger.invalid(error)
-        if digest is None:
-            return None
-        full_version = get_full_version(action, digest, logger=logger)
-        if full_version is None:
-            return None
-        if full_version == version:
-            logger.warn(
-                f"Autofix found no further expanded versions. "
-                f"Consider adding '# allow-{error.id}'."
+        if logger.invalid(error) and digest is not None:
+            full_version = get_full_version(action, digest, logger=logger)
+            if full_version is None:
+                return None
+            if full_version == version:
+                logger.warn(
+                    f"Autofix found no further expanded versions. "
+                    f"Consider adding '# allow-{error.id}'."
+                )
+                return None
+            return line_replace(
+                orig_line,
+                version,
+                full_version,
+                logger=logger,
             )
-            return None
-        return line_replace(
-            orig_line,
-            version,
-            full_version,
-            logger=logger,
-        )
+        return None
 
     logger.invalid(error)
     return None
@@ -177,12 +165,12 @@ def get_full_version(action: str, digest: str, *, logger: Logger) -> str | None:
     return None
 
 
-def get_digest(action: str, version: str, *, logger: Logger) -> str | None:  # noqa: ARG001
+def get_digest(action: str, ref: str, *, logger: Logger) -> str | None:  # noqa: ARG001
     if not is_connected():
         return None
 
-    data = request(f"https://api.github.com/repos/{action}/git/ref/tags/{version}")
-    return data["object"]["sha"]  # type: ignore[no-any-return]
+    data = request(f"https://api.github.com/repos/{action}/commits/{ref}")
+    return data["sha"]  # type: ignore[no-any-return]
 
 
 main = Processor.main

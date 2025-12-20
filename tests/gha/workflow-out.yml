@@ -10,12 +10,14 @@ uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Erro
 
 uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-version] no '#' but using digest; add a comment with a tag
 uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # allow-no-version
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-digest] no '#', using version (v6.0.1) instead of digest.
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-digest] no '#', using tag or branch (v6.0.1) instead of digest.
 uses: actions/checkout@v6.0.1  # allow-no-digest
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-digest] no '#', using version (v6) instead of digest. |AND| Error: [major] version contains only one part (major). Can the version be pinned further?
-uses: actions/checkout@v6  # allow-no-digest
-uses: actions/checkout@main  # Error: [no-digest-mutable-rev] no '#', using mutable rev (main) instead of digest; use a tag if possible, otherwise pin to digest only
-uses: actions/checkout@main  # allow-no-digest-mutable-rev
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-digest] no '#', using tag or branch (v6) instead of digest. |AND| Error: [major] version contains only one part (major). Can the version be pinned further?
+uses: actions/checkout@v6  # allow-no-digest  # Error: [major] version contains only one part (major). Can the version be pinned further?
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-digest] no '#', using tag or branch (main) instead of digest. |AND| Error: [main] using 'main' branch. Can you use a tag instead?
+uses: actions/checkout@main  # allow-no-digest  # Error: [main] using 'main' branch. Can you use a tag instead?
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # main  # allow-main  # Error: [no-digest] no '#', using tag or branch (main) instead of digest.
+uses: actions/checkout@main  # allow-all  # Technically we should do 'allow-no-digest, allow-main' here, but there's no support for multiple allows
 
 uses: actions/checkout  # Error: no '@'
 uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e # v6.0.1  # Error: invalid sha1 digest ('8e8c483db84b4bee98b60c0593521ed34d9990e')
