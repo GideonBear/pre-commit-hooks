@@ -66,7 +66,7 @@ def process_line_no_comment(  # noqa: PLR0911
             id="no-version",
             msg="no '#' but using digest; add a comment with a tag",
         ):
-            full_version = get_full_version(action, digest, logger=logger)
+            full_version = get_full_version(action, digest, "no-version", logger=logger)
             if full_version is not None:
                 return line_replace(
                     orig_line, line, f"{line} # {full_version}", logger=logger
@@ -124,7 +124,7 @@ def process_version_gha(  # noqa: PLR0911
             )
 
         if logger.error(error) and digest is not None:
-            full_version = get_full_version(action, digest, logger=logger)
+            full_version = get_full_version(action, digest, error.id, logger=logger)
             if full_version is None:
                 return None
             if full_version == version:
@@ -145,7 +145,13 @@ def process_version_gha(  # noqa: PLR0911
     return None
 
 
-def get_full_version(action: str, digest: str, *, logger: Logger) -> str | None:
+def get_full_version(
+    action: str,
+    digest: str,
+    id: str,  # noqa: A002
+    *,
+    logger: Logger,
+) -> str | None:
     if not is_connected():
         return None
 
@@ -155,7 +161,7 @@ def get_full_version(action: str, digest: str, *, logger: Logger) -> str | None:
     if len(matching_tags) == 0:
         logger.warn(
             f"Could not find a tag matching commit {digest}. "
-            f"Consider adding `# allow-something`."
+            f"Consider adding `# allow-{id}`."
         )
         return None
     if len(matching_tags) == 1:
