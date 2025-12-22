@@ -48,7 +48,8 @@ def request(url: str) -> Any:  # type: ignore[explicit-any, misc]  # noqa: ANN40
 def gh_token() -> str | None:
     try:
         return (
-            subprocess.run(
+            subprocess
+            .run(
                 ["gh", "auth", "token"],  # noqa: S607
                 check=True,
                 stdout=subprocess.PIPE,
