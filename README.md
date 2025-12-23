@@ -1,8 +1,28 @@
 # pre-commit-hooks
 
+## Installation
+
+Add the following to your `.pre-commit-config.yaml`:
+
+```yaml
+- repo: https://github.com/GideonBear/pre-commit-hooks
+  rev: v1.8.1
+  hooks:
+    - id: ...  # pick hooks from the list below
+    - id: ...
+```
+
+## Python version support
+
+This project currently supports Python 3.12 and up. This required may be increased in a major version bump.
+These hooks are guaranteed to always work in [pre-commit.ci](https://pre-commit.ci)
+
+# Hooks
+
 ## `docker-image-pin` & `gha-pin`
 
-Based on https://nickcunningh.am/blog/how-to-automate-version-updates-for-your-self-hosted-docker-containers-with-gitea-renovate-and-komodo
+Based
+on https://nickcunningh.am/blog/how-to-automate-version-updates-for-your-self-hosted-docker-containers-with-gitea-renovate-and-komodo
 
 ```yml
 # bad - don't do this
@@ -29,8 +49,9 @@ This has an added benefit when using Dependabot or Renovate, as PRs will bump th
 instead of just the digest, prompting the bot to link/embed the correct release notes
 instead of only a compare link.
 
-Certain actions and Docker images are exempted from certain rules by default (for example `debian` which uses `x.y` versioning).
-Feel free to contribute to [default_allows.py](https://github.com/GideonBear/pre-commit-hooks/blob/main/src/pre_commit_hooks/default_allows.py)
+Certain actions and Docker images are exempted from certain rules by default (for example `debian` which uses `x.y`
+versioning). Feel free to contribute
+to [default_allows.py](https://github.com/GideonBear/pre-commit-hooks/blob/main/src/pre_commit_hooks/default_allows.py)
 with any other known exceptions!
 
 `gha-pin` provides autofixes for most errors. These autofixes use the GitHub API, which means they will not be
