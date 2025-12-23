@@ -7,19 +7,4 @@
     lockFileMaintenance: {
         enabled: true,
     },
-    packageRules: [
-        {
-            matchDepTypes: [
-                "requires-python",
-            ],
-            rangeStrategy: "bump",
-        },
-        {
-            matchDepTypes: [
-                "requires-python",
-            ],
-            matchUpdateTypes: "patch",
-            enabled: false,
-        },
-    ],
 }
