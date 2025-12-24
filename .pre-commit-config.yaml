@@ -51,7 +51,7 @@ repos:
         exclude: "^tests/add_mock.py$|^tests/[a-z-]*/.*.py$"
 
   - repo: https://github.com/GideonBear/pre-commit-hooks
-    rev: v1.8.1
+    rev: v1.9.0
     hooks:
       # General
       - id: gha-pin
@@ -69,6 +69,9 @@ repos:
       # Python
       - id: pre-commit-additional-dependencies
       - id: requires-python
+      # Specific
+      - id: bumpsync
+        files: ^README.md$
 
   # General
 
