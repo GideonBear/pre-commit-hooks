@@ -14,6 +14,7 @@ import pytest
 import responses
 
 from pre_commit_hooks import (
+    bumpsync,
     docker,
     gha,
     pcad,
@@ -104,6 +105,22 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
             "uv-lock.toml",
             "uv-lock-out.toml",
             ["uv-lock.toml"],
+            False,
+            0,  # *
+        ),
+        (
+            bumpsync,
+            "pre-commit.md",
+            "pre-commit-out.md",
+            ["pre-commit.md", "--pyproject", "pyproject.toml"],
+            False,
+            0,  # *
+        ),
+        (
+            bumpsync,
+            "single_line.py",
+            "single_line-out.py",
+            ["single_line.py", "--pyproject", "pyproject.toml"],
             False,
             0,  # *
         ),

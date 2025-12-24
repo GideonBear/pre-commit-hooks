@@ -128,12 +128,3 @@ Designed for use with Renovate:
 ```
 
 Since Renovate always wants to pin it to `major.minor.patch`, and doesn't support anything else.
-
-## `bumpsync`
-
-Synchronizes the version from `pyproject.toml` to any other file of your choosing.
-On the line where the version resides, or any line above it, put:
-`bumpsync: "{}"`. This will match on anything matching the regex `[0-9]+\.[0-9]+\.[0-9]+`.
-Besides the version (`{}`), other text can be added inside the quotes, to narrow down what to replace.
-See this file (README.md) for an example: in the `## Installation` section, `bumpsync` is used to keep
-the `.pre-commit-config.yaml` example in sync.

@@ -4,7 +4,7 @@ requires = [ "uv-build>=0.9.8,<0.10" ]
 
 [project]
 name = "pre-commit-hooks"
-version = "1.8.1"
+version = "1.9.0"
 description = "Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files"
 readme = "README.md"
 license = "GPL-3.0-only"
@@ -30,7 +30,6 @@ dependencies = [
 urls.bugs = "https://github.com/GideonBear/pre-commit-hooks/issues"
 urls.homepage = "https://github.com/GideonBear/pre-commit-hooks"
 
-scripts.bumpsync = "pre_commit_hooks.bumpsync:main"
 scripts.docker-image-pin = "pre_commit_hooks.docker:main"
 scripts.gha-pin = "pre_commit_hooks.gha:main"
 scripts.pre-commit-additional-dependencies = "pre_commit_hooks.pcad:main"

@@ -88,3 +88,9 @@
     entry: requires-python
     language: python
     files: ^pyproject.toml$|^uv.lock$
+
+-   id: bumpsync
+    name: bumpsync
+    description: Simple version synchronizer
+    entry: bumpsync
+    language: python
