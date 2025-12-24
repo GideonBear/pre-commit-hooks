@@ -139,3 +139,6 @@ See this file (README.md) for an example: in the `## Installation` section, `bum
 the `.pre-commit-config.yaml` example in sync.
 
 By default `bumpsync` runs on all text files, but you should probably constrain it using `filenames`.
+
+By default `bumpsync` only properly does it's job when running with `--all-files`, e.g. in pre-commit.ci.
+If you want `bumpsync` to work locally, set `always_run: true`.
