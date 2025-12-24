@@ -137,3 +137,5 @@ On the line where the version resides, or any line above it, put:
 Besides the version (`{}`), other text can be added inside the quotes, to narrow down what to replace.
 See this file (README.md) for an example: in the `## Installation` section, `bumpsync` is used to keep
 the `.pre-commit-config.yaml` example in sync.
+
+By default `bumpsync` runs on all text files, but you should probably constrain it using `filenames`.
