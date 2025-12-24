@@ -94,3 +94,4 @@
     description: Simple version synchronizer
     entry: bumpsync
     language: python
+    types: [text]
