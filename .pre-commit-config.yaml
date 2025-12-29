@@ -57,15 +57,6 @@ repos:
       - id: gha-pin
         exclude: ^tests/
       - id: pre-commit-ci-skip
-      - id: pre-commit-config-sections-shell
-        exclude: ^tests/
-      - id: pre-commit-config-sections-python
-        exclude: ^tests/
-      - id: pre-commit-config-sections-pytest
-      - id: pre-commit-config-sections-docker
-        exclude: ^tests/
-      - id: pre-commit-config-sections-gha
-        exclude: ^tests/
       # Python
       - id: pre-commit-additional-dependencies
       - id: requires-python
