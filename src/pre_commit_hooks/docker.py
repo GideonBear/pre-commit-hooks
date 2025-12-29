@@ -41,7 +41,7 @@ class Processor(LineProcessor):
             )
         else:
             if "-" in version:
-                version, _extra = version.split("-")
+                version, _extra = version.split("-", maxsplit=1)
             error = process_version(version)
             if error:
                 logger.error(error)
