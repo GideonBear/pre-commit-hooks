@@ -57,10 +57,6 @@ repos:
       - id: gha-pin
         exclude: ^tests/
       - id: pre-commit-ci-skip
-        exclude: ^tests/
-        exclude: ^tests/
-        exclude: ^tests/
-        exclude: ^tests/
       # Python
       - id: pre-commit-additional-dependencies
       - id: requires-python
