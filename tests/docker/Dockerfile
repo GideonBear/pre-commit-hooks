@@ -21,3 +21,7 @@ FROM releaseargus/argus:0.26.3@4f3ae64ad26e22f62a237277ef6e82229ff833adba77def32
 FROM releaseargus/argus:0.26.3@sha256:4f3ae64ad26e22f62a237277ef6e82229ff833adba77def32694e7b1db964a7  # Error: invalid sha256 digest ('4f3ae64ad26e22f62a237277ef6e82229ff833adba77def32694e7b1db964a7')
 
 FROM lukaszlach/docker-tc:latest@sha256:faefaa9230b77acc95acceff073791c682339676e2de129f5221abb206d1e310
+
+# Multiple dashes
+FROM python:3.14.2-slim-bookworm@sha256:404ca55875fc24a64f0a09e9ec7d405d725109aec04c9bf0991798fd45c7b898
+FROM python:3.14.2-slim-bookworm@sha256:404ca55875fc24a64f0a09e9ec7d405d725109aec04c9bf0991798fd45c7b89  # Error: invalid sha256 digest ('404ca55875fc24a64f0a09e9ec7d405d725109aec04c9bf0991798fd45c7b89')
