@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 from typing import TYPE_CHECKING
 
 from pre_commit_hooks.common import is_valid_sha256, process_version
@@ -21,6 +22,13 @@ class Processor(LineProcessor):
 
         line = line.removeprefix("image:").strip()
         line = line.removeprefix("FROM").strip()
+        with contextlib.suppress(ValueError):
+            potential_platform, rest = line.split(" ", maxsplit=1)
+            if potential_platform.startswith("--platform"):
+                line = rest
+        with contextlib.suppress(ValueError):
+            line, _layer = line.split(" AS ", maxsplit=1)
+
         try:
             rest, digest = line.split("@")
         except ValueError:
