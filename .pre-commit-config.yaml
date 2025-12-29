@@ -143,6 +143,11 @@ repos:
       - id: deptry
         args: ["src", "--package-module-name-map", "ruamel-yaml=ruamel"]
 
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.18
+    hooks:
+      - id: uv-lock
+
   # Pytest
 
   - repo: local
@@ -153,8 +158,3 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
-
-  - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.18
-    hooks:
-      - id: uv-lock
