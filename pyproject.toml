@@ -83,6 +83,9 @@ lint.isort.required-imports = [ "from __future__ import annotations" ]
 
 lint.preview = true
 
+[tool.deptry.package_module_name_map]
+ruamel-yaml = "ruamel"
+
 [tool.pyproject-fmt]
 indent = 4
 
