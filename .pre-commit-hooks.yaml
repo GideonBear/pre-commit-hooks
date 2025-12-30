@@ -1,97 +1,97 @@
--   id: docker-image-pin
-    name: docker-image-pin
-    description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
-    entry: docker-image-pin
-    language: python
-#    types_or: [yaml, dockerfile]  # This excludes things like `blah.Dockerfile`
-    files: docker-compose\.ya?ml$|Dockerfile$
+- id: docker-image-pin
+  name: docker-image-pin
+  description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
+  entry: docker-image-pin
+  language: python
+  #types_or: [yaml, dockerfile]  # This excludes things like `blah.Dockerfile`
+  files: docker-compose\.ya?ml$|Dockerfile$
 
--   id: gha-pin
-    name: gha-pin
-    description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
-    entry: gha-pin
-    language: python
-    types: [yaml]
+- id: gha-pin
+  name: gha-pin
+  description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
+  entry: gha-pin
+  language: python
+  types: [ yaml ]
 
--   id: shfuncdecfmt
-    name: shfuncdecfmt
-    description: Shell function declaration formatter
-    entry: shfuncdecfmt
-    language: python
-    types: [shell]
+- id: shfuncdecfmt
+  name: shfuncdecfmt
+  description: Shell function declaration formatter
+  entry: shfuncdecfmt
+  language: python
+  types: [ shell ]
 
--   id: set-euo-pipefail
-    name: set-euo-pipefail
-    description: Add `set -euo pipefail` to shell scripts
-    entry: set-euo-pipefail
-    language: python
-    types: [shell]
+- id: set-euo-pipefail
+  name: set-euo-pipefail
+  description: Add `set -euo pipefail` to shell scripts
+  entry: set-euo-pipefail
+  language: python
+  types: [ shell ]
 
--   id: pre-commit-additional-dependencies
-    name: pre-commit-additional-dependencies
-    description: Sync pre-commit additional_dependencies with uv.lock
-    entry: pre-commit-additional-dependencies
-    language: python
-    pass_filenames: false
-    files: ^uv.lock$|^.pre-commit-config.yaml$
+- id: pre-commit-additional-dependencies
+  name: pre-commit-additional-dependencies
+  description: Sync pre-commit additional_dependencies with uv.lock
+  entry: pre-commit-additional-dependencies
+  language: python
+  pass_filenames: false
+  files: ^uv.lock$|^.pre-commit-config.yaml$
 
--   id: pre-commit-ci-skip
-    name: pre-commit-ci-skip
-    description: "Add `language: system` hooks to `ci: skip:` automatically"
-    entry: pre-commit-ci-skip
-    language: python
-    files: ^.pre-commit-config.yaml$
+- id: pre-commit-ci-skip
+  name: pre-commit-ci-skip
+  description: "Add `language: system` hooks to `ci: skip:` automatically"
+  entry: pre-commit-ci-skip
+  language: python
+  files: ^.pre-commit-config.yaml$
 
--   id: pre-commit-config-sections-shell
-    name: pre-commit-config.yaml sections (shell)
-    description: Check that sections are included for the included languages
-    entry: pre-commit-config-sections shell
-    language: python
-    pass_filenames: false
-    types: [shell]
+- id: pre-commit-config-sections-shell
+  name: pre-commit-config.yaml sections (shell)
+  description: Check that sections are included for the included languages
+  entry: pre-commit-config-sections shell
+  language: python
+  pass_filenames: false
+  types: [ shell ]
 
--   id: pre-commit-config-sections-python
-    name: pre-commit-config.yaml sections (python)
-    description: Check that sections are included for the included languages
-    entry: pre-commit-config-sections python
-    language: python
-    pass_filenames: false
-    types: [python]
+- id: pre-commit-config-sections-python
+  name: pre-commit-config.yaml sections (python)
+  description: Check that sections are included for the included languages
+  entry: pre-commit-config-sections python
+  language: python
+  pass_filenames: false
+  types: [ python ]
 
--   id: pre-commit-config-sections-docker
-    name: pre-commit-config.yaml sections (docker)
-    description: Check that sections are included for the included languages
-    entry: pre-commit-config-sections docker
-    language: python
-    pass_filenames: false
-    files: docker-compose\.ya?ml$|Dockerfile$
+- id: pre-commit-config-sections-docker
+  name: pre-commit-config.yaml sections (docker)
+  description: Check that sections are included for the included languages
+  entry: pre-commit-config-sections docker
+  language: python
+  pass_filenames: false
+  files: docker-compose\.ya?ml$|Dockerfile$
 
--   id: pre-commit-config-sections-pytest
-    name: pre-commit-config.yaml sections (pytest)
-    description: Check that sections are included for the included languages
-    entry: pre-commit-config-sections pytest
-    language: python
-    pass_filenames: false
-    files: ^tests/.*\.py$
+- id: pre-commit-config-sections-pytest
+  name: pre-commit-config.yaml sections (pytest)
+  description: Check that sections are included for the included languages
+  entry: pre-commit-config-sections pytest
+  language: python
+  pass_filenames: false
+  files: ^tests/.*\.py$
 
--   id: pre-commit-config-sections-gha
-    name: pre-commit-config.yaml sections (gha)
-    description: Check that sections are included for the included languages
-    entry: pre-commit-config-sections gha
-    language: python
-    pass_filenames: false
-    files: ^.github/workflows/
+- id: pre-commit-config-sections-gha
+  name: pre-commit-config.yaml sections (gha)
+  description: Check that sections are included for the included languages
+  entry: pre-commit-config-sections gha
+  language: python
+  pass_filenames: false
+  files: ^.github/workflows/
 
--   id: requires-python
-    name: requires-python
-    description: Unpins requires-python patch versions
-    entry: requires-python
-    language: python
-    files: ^pyproject.toml$|^uv.lock$
+- id: requires-python
+  name: requires-python
+  description: Unpins requires-python patch versions
+  entry: requires-python
+  language: python
+  files: ^pyproject.toml$|^uv.lock$
 
--   id: bumpsync
-    name: bumpsync
-    description: Simple version synchronizer
-    entry: bumpsync
-    language: python
-    types: [text]
+- id: bumpsync
+  name: bumpsync
+  description: Simple version synchronizer
+  entry: bumpsync
+  language: python
+  types: [ text ]
