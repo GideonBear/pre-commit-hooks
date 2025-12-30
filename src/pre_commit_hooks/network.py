@@ -7,6 +7,7 @@ from subprocess import CalledProcessError
 from typing import Any
 
 import requests
+from colorama import Fore
 
 
 REMOTE_SERVER = "one.one.one.one"
@@ -24,8 +25,11 @@ def is_connected() -> bool:
         return True  # noqa: TRY300
     except Exception as err:  # noqa: BLE001
         print(
-            f"Warning: no network connection detected "
-            f"(error: {err}), running without autofixes"
+            f"{Fore.YELLOW}Warning{Fore.RESET}: no network connection detected "
+            f"(error: {err}), running without autofixes. "
+            f"If you're seeing this in CI, you can fix most "
+            f"of these errors automatically by running this hook "
+            f"locally."
         )
 
     return False
