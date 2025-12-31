@@ -143,32 +143,38 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
 
     args = [str(hookdir / arg) if (hookdir / arg).exists() else arg for arg in args]
 
-    with tempfile.NamedTemporaryFile() as tmp:
+    with tempfile.NamedTemporaryFile() as tmp, tempfile.NamedTemporaryFile() as inp_m:
         tmp = Path(tmp.name)
-        shutil.copy(inp, tmp)
+        inp_m = Path(inp_m.name)
 
         # Replace inp with tmp
         args = [str(tmp) if arg == str(inp) else arg for arg in args]
 
-        expected_logs = []
-        first_block = True
-        for lineno, line in enumerate(inp.read_text(encoding="utf-8").splitlines()):
-            if first_block:
-                if line.startswith(("# Error:", "# Warning:", "# Info:")):
-                    msg = line.removeprefix("# ")
-                    expected_logs.append((tmp, None, msg))
-                    continue
-                first_block = False
-            diag_part = None
-            for type_ in ("Error:", "Warning:", "Info:"):
-                if type_ in line:
-                    _, diag_part = line.split(f"# {type_}", maxsplit=1)
-                    diag_part = type_ + diag_part
-                    break
-            if diag_part:
-                expected_logs.extend(
-                    (tmp, lineno, msg) for msg in diag_part.split(" |AND| ")
-                )
+        with inp_m.open("w") as file:
+            expected_logs = []
+            first_block = True
+            for lineno, line in enumerate(inp.read_text(encoding="utf-8").splitlines()):
+                if first_block:
+                    if line.startswith(("# Error:", "# Warning:", "# Info:")):
+                        msg = line.removeprefix("# ")
+                        expected_logs.append((tmp, None, msg))
+                        continue
+                    first_block = False
+
+                diag_part = None
+                for type_ in ("Error:", "Warning:", "Info:"):
+                    if type_ in line:
+                        line, diag_part = line.split(f"# {type_}", maxsplit=1)
+                        line = line.rstrip(" ")
+                        diag_part = type_ + diag_part
+                        break
+                if diag_part:
+                    expected_logs.extend(
+                        (tmp, lineno, msg) for msg in diag_part.split(" |AND| ")
+                    )
+                file.write(line + "\n")
+
+        shutil.copy(inp_m, tmp)
 
         logs = []
 
@@ -177,6 +183,7 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
                 url=fs_url_decode(mock.name),
                 body=mock.read_text(),
             )
+
         with (
             patch(f"{hook_module.__name__}.is_connected", return_value=False)
             if offline
@@ -188,4 +195,4 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
         if out:
             assert Path(tmp).read_text(encoding="utf-8") == out.read_text()
         else:
-            assert Path(tmp).read_text(encoding="utf-8") == inp.read_text()
+            assert Path(tmp).read_text(encoding="utf-8") == inp_m.read_text()

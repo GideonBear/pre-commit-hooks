@@ -13,15 +13,15 @@ repos:
           - types-requests
           - types-requests==1.2.3
           - playwright==1.56.0
-          - playwright==1.56.0  # Error: [out-of-sync] playwright is 1.56.0 in lockfile, but 1.55.0 in pre-commit-config.yaml
-          - playwright==1.56.0  # Error: [out-of-sync] playwright is 1.56.0 in lockfile, but 1.57.0 in pre-commit-config.yaml
-          - playwright==1.56.0  # Error: [unsynced] playwright is 1.56.0 in lockfile, but unpinned in pre-commit-config.yaml
+          - playwright==1.56.0
+          - playwright==1.56.0
+          - playwright==1.56.0
           - playwright==1.55.0  # allow-out-of-sync
           - playwright  # allow-unsynced
-          - charset-normalizer==3.4.4  # Error: [unnormalized] charset_normalizer is not normalized |AND| Error: [unsynced] charset-normalizer is 3.4.4 in lockfile, but unpinned in pre-commit-config.yaml
-          - charset-normalizer==3.4.4  # Error: [unsynced] charset-normalizer is 3.4.4 in lockfile, but unpinned in pre-commit-config.yaml
-          - charset-normalizer==3.3.0  # allow-out-of-sync  # Error: [unnormalized] charset_normalizer is not normalized
-          - charset-normalizer  # allow-unsynced  # Error: [unnormalized] charset_normalizer is not normalized
+          - charset-normalizer==3.4.4
+          - charset-normalizer==3.4.4
+          - charset-normalizer==3.3.0  # allow-out-of-sync
+          - charset-normalizer  # allow-unsynced
 
   - repo: https://github.com/GideonBear/pre-commit-hooks
     rev: v1.1.1

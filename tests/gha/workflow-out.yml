@@ -1,46 +1,46 @@
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1.0  # Error: [weird-version] version contains more than three parts (major.minor.patch.???)
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1.0
 uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [major-minor] version contains only two parts (major.minor). Can the version be pinned further?
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [major] version contains only one part (major). Can the version be pinned further?
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [main] using 'main' branch. Can you use a tag instead?
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [master] using 'master' branch. Can you use a tag instead?
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [mutable-rev] used revision is not a version. Can you use a tag instead?
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [mutable-rev] used revision is not a version. Can you use a tag instead?
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-version] no '#' but using digest; add a comment with a tag
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # allow-no-version
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-digest] no '#', using tag or branch (v6.0.1) instead of digest.
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 uses: actions/checkout@v6.0.1  # allow-no-digest
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-digest] no '#', using tag or branch (v6) instead of digest. |AND| Error: [major] version contains only one part (major). Can the version be pinned further?
-uses: actions/checkout@v6  # allow-no-digest  # Error: [major] version contains only one part (major). Can the version be pinned further?
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1  # Error: [no-digest] no '#', using tag or branch (main) instead of digest. |AND| Error: [main] using 'main' branch. Can you use a tag instead?
-uses: actions/checkout@main  # allow-no-digest  # Error: [main] using 'main' branch. Can you use a tag instead?
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # main  # allow-main  # Error: [no-digest] no '#', using tag or branch (main) instead of digest.
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+uses: actions/checkout@v6  # allow-no-digest
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+uses: actions/checkout@main  # allow-no-digest
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # main  # allow-main
 uses: actions/checkout@main  # allow-all  # Technically we should do 'allow-no-digest, allow-main' here, but there's no support for multiple allows
 
-uses: actions/checkout  # Error: no '@'
-uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e # v6.0.1  # Error: invalid sha1 digest ('8e8c483db84b4bee98b60c0593521ed34d9990e')
+uses: actions/checkout
+uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e # v6.0.1
 
-uses: dawidd6/action-homebrew-bump-formula@1446dca236b0440c6f02723a3f14f13be2c04ab0 # v7  # Error: [major] version contains only one part (major). Can the version be pinned further? |AND| Warning: Autofix found no further expanded versions. Consider adding '# allow-major'.
+uses: dawidd6/action-homebrew-bump-formula@1446dca236b0440c6f02723a3f14f13be2c04ab0 # v7
 
-uses: vedantmgoyal2009/winget-releaser@19e706d4c9121098010096f9c495a70a7518b30f # main  # Error: [main] using 'main' branch. Can you use a tag instead? |AND| Warning: Could not find a tag matching commit 19e706d4c9121098010096f9c495a70a7518b30f. Consider adding `# allow-main`.
+uses: vedantmgoyal2009/winget-releaser@19e706d4c9121098010096f9c495a70a7518b30f # main
 
 uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # master
-uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # master  # Error: [no-digest] no '#', using tag or branch (master) instead of digest. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information.
-uses: dtolnay/rust-toolchain@4be9e76fd7c4901c61fb841f559994984270fce7 # stable  # Error: [not-master] expected master, as it was specified with an `allow-` comment, or a default allow. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information.
-uses: dtolnay/rust-toolchain@881ba7bf39a41cda34ac9e123fb41b44ed08232f # nightly  # Error: [not-master] expected master, as it was specified with an `allow-` comment, or a default allow. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information.
-uses: dtolnay/rust-toolchain@9710f9012180ecfb08dcfc878269be6dc6f1d80e # 1.89  # Error: [not-master] expected master, as it was specified with an `allow-` comment, or a default allow. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information.
-uses: dtolnay/rust-toolchain@9710f9012180ecfb08dcfc878269be6dc6f1d80e # 1.89.0  # Error: [not-master] expected master, as it was specified with an `allow-` comment, or a default allow. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information.
-uses: dtolnay/rust-toolchain@4be9e76fd7c4901c61fb841f559994984270fce7 # stable  # Error: [no-digest] no '#', using tag or branch (stable) instead of digest. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information. |AND| Error: [not-master] expected master, as it was specified with an `allow-` comment, or a default allow. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information.
-uses: dtolnay/rust-toolchain@881ba7bf39a41cda34ac9e123fb41b44ed08232f # nightly  # Error: [no-digest] no '#', using tag or branch (nightly) instead of digest. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information. |AND| Error: [not-master] expected master, as it was specified with an `allow-` comment, or a default allow. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information.
-uses: dtolnay/rust-toolchain@9710f9012180ecfb08dcfc878269be6dc6f1d80e # 1.89  # Error: [no-digest] no '#', using tag or branch (1.89) instead of digest. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information. |AND| Error: [not-master] expected master, as it was specified with an `allow-` comment, or a default allow. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information.
-uses: dtolnay/rust-toolchain@9710f9012180ecfb08dcfc878269be6dc6f1d80e # 1.89.0  # Error: [no-digest] no '#', using tag or branch (1.89.0) instead of digest. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information. |AND| Error: [not-master] expected master, as it was specified with an `allow-` comment, or a default allow. |AND| Info: This action uses special versioning. Specify the Rust toolchain version using `with: toolchain: <version>` instead, and pin the action to the latest commit in `master`. See https://github.com/dtolnay/rust-toolchain#install-rust-toolchain for more information.
+uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # master
+uses: dtolnay/rust-toolchain@4be9e76fd7c4901c61fb841f559994984270fce7 # stable
+uses: dtolnay/rust-toolchain@881ba7bf39a41cda34ac9e123fb41b44ed08232f # nightly
+uses: dtolnay/rust-toolchain@9710f9012180ecfb08dcfc878269be6dc6f1d80e # 1.89
+uses: dtolnay/rust-toolchain@9710f9012180ecfb08dcfc878269be6dc6f1d80e # 1.89.0
+uses: dtolnay/rust-toolchain@4be9e76fd7c4901c61fb841f559994984270fce7 # stable
+uses: dtolnay/rust-toolchain@881ba7bf39a41cda34ac9e123fb41b44ed08232f # nightly
+uses: dtolnay/rust-toolchain@9710f9012180ecfb08dcfc878269be6dc6f1d80e # 1.89
+uses: dtolnay/rust-toolchain@9710f9012180ecfb08dcfc878269be6dc6f1d80e # 1.89.0
 
 uses: taiki-e/install-action@bfc291e1e39400b67eda124e4a7b4380e93b3390 # v2.65.0
-uses: taiki-e/install-action@bfc291e1e39400b67eda124e4a7b4380e93b3390 # v2.65.0  # Error: [no-digest] no '#', using tag or branch (v2.65.0) instead of digest. |AND| Info: This action uses special versioning. Specify thetool using `with: tool: <tool>` instead, and pin the action to the latestversion. See https://github.com/taiki-e/install-action#example-workflowfor more information.
-uses: taiki-e/install-action@865ba08f24a1572e79ea196ffa257783326efa0c # cargo-hack  # Error: [mutable-rev] used revision is not a version. Can you use a tag instead? |AND| Info: This action uses special versioning. Specify thetool using `with: tool: <tool>` instead, and pin the action to the latestversion. See https://github.com/taiki-e/install-action#example-workflowfor more information. |AND| Warning: Could not find a tag matching commit 865ba08f24a1572e79ea196ffa257783326efa0c. Consider adding `# allow-mutable-rev`. |AND| Info: This action uses special versioning. Specify thetool using `with: tool: <tool>` instead, and pin the action to the latestversion. See https://github.com/taiki-e/install-action#example-workflowfor more information.
-uses: taiki-e/install-action@865ba08f24a1572e79ea196ffa257783326efa0c # cargo-hack  # Error: [no-digest] no '#', using tag or branch (cargo-hack) instead of digest. |AND| Info: This action uses special versioning. Specify thetool using `with: tool: <tool>` instead, and pin the action to the latestversion. See https://github.com/taiki-e/install-action#example-workflowfor more information. |AND| Error: [mutable-rev] used revision is not a version. Can you use a tag instead? |AND| Info: This action uses special versioning. Specify thetool using `with: tool: <tool>` instead, and pin the action to the latestversion. See https://github.com/taiki-e/install-action#example-workflowfor more information. |AND| Warning: Could not find a tag matching commit 865ba08f24a1572e79ea196ffa257783326efa0c. Consider adding `# allow-mutable-rev`. |AND| Info: This action uses special versioning. Specify thetool using `with: tool: <tool>` instead, and pin the action to the latestversion. See https://github.com/taiki-e/install-action#example-workflowfor more information.
+uses: taiki-e/install-action@bfc291e1e39400b67eda124e4a7b4380e93b3390 # v2.65.0
+uses: taiki-e/install-action@865ba08f24a1572e79ea196ffa257783326efa0c # cargo-hack
+uses: taiki-e/install-action@865ba08f24a1572e79ea196ffa257783326efa0c # cargo-hack
 
-uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # master  # allow-master  # Warning: allow comment specified while there is a default allow for this action. The allow comment will be ignored. (specified 'master', default 'master')
+uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # master  # allow-master
 uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561 # master  # allow-all
