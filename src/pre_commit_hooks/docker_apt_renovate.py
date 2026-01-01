@@ -111,7 +111,7 @@ class Processor(LineProcessor):
 
             return make_env_line(debian_codename, depname, logger=logger)
 
-        if line.startswith("FROM"):
+        if line.startswith(("FROM", "# docker-apt-renovate: FROM")):
             self.process_line_from(line, logger)
             return None
 
@@ -133,6 +133,7 @@ class Processor(LineProcessor):
         return None
 
     def process_line_from(self, line: str, logger: Logger) -> None:
+        line = line.removeprefix("# docker-apt-renovate: ")
         line = line.removeprefix("FROM").strip()
         for _version_no, codename, _suite_name in debian_releases:
             if codename in line:
