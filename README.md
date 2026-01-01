@@ -155,7 +155,7 @@ configuration:
         {
             customType: "regex",
             managerFilePatterns: [
-                "/^Dockerfile$/",
+                "/Dockerfile$/",
             ],
             matchStrings: [
                 "#\\s*renovate:\\s*?(suite=(?<suite>.*?))?\\s*depName=(?<depName>.*?)?\\sENV .*?_VERSION=\"(?<currentValue>.*)\"",
