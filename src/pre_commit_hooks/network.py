@@ -4,7 +4,7 @@ import socket
 import subprocess
 from functools import cache
 from subprocess import CalledProcessError
-from typing import Any
+from typing import Any, Literal, overload
 
 import requests
 from colorama import Fore
@@ -35,8 +35,22 @@ def is_connected() -> bool:
     return False
 
 
+@overload
+def request(
+    url: str, params: frozenset[tuple[str, str]] | None = None, *, json: Literal[False]
+) -> str: ...
+@overload
+def request(  # type: ignore[explicit-any]
+    url: str, params: frozenset[tuple[str, str]] | None = None, *, json: Literal[True]
+) -> Any: ...  # noqa: ANN401
+@overload
+def request(  # type: ignore[explicit-any]
+    url: str, params: frozenset[tuple[str, str]] | None = None
+) -> Any: ...  # noqa: ANN401
 @cache
-def request(url: str, params: frozenset[tuple[str, str]] | None = None) -> Any:  # type: ignore[explicit-any, misc]  # noqa: ANN401
+def request(  # type: ignore[explicit-any, misc]
+    url: str, params: frozenset[tuple[str, str]] | None = None, *, json: bool = True
+) -> Any:
     headers = {}
     if url.startswith("https://api.github.com"):
         token = gh_token()
@@ -45,7 +59,9 @@ def request(url: str, params: frozenset[tuple[str, str]] | None = None) -> Any: 
 
     resp = requests.get(url, timeout=60, headers=headers, params=params)
     resp.raise_for_status()
-    return resp.json()
+    if json:
+        return resp.json()
+    return resp.text
 
 
 @cache

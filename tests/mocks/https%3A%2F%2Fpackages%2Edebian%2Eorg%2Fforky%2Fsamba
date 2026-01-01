@@ -1,0 +1,886 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<title>Debian -- Details of package samba in forky</title>
+<link rev="made" href="mailto:webmaster@debian.org">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="Author" content="Debian Webmaster, webmaster@debian.org">
+<meta name="Description" content="SMB/CIFS file, print, and login server for Unix">
+<meta name="Keywords" content="Debian,  forky, us, main, net, 2:4.23.4+dfsg-1">
+
+
+<link href="/debpkg.css" rel="stylesheet" type="text/css" media="all">
+
+<script src="/packages.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="header">
+   <div id="upperheader">
+
+   <div id="logo">
+  <!-- very Debian specific use of the logo stuff -->
+<a href="https://www.debian.org/"><img src="/Pics/openlogo-50.png" alt="Debian" with="50" height="61"></a>
+</div> <!-- end logo -->
+<p class="hidecss"><a href="#inner">skip the navigation</a></p>
+<p class="section"><a href="/">Packages</a></p>
+</div> <!-- end upperheader -->
+<!-- navbar -->
+<div id="navbar">
+<ul>
+   <li><a href="https://www.debian.org/intro/about">About Debian</a></li>
+   <li><a href="https://www.debian.org/distrib/">Getting Debian</a></li>
+   <li><a href="https://www.debian.org/support">Support</a></li>
+   <li><a href="https://www.debian.org/devel/">Developers'&nbsp;Corner</a></li>
+</ul>
+</div> <!-- end navbar -->
+
+<div id="pnavbar">
+ &nbsp;&#x2F; <a href="/" title="Debian Packages Homepage">Packages</a>
+
+ &#x2F; <a href="/forky/" title="Overview over this suite">forky (testing)</a> 
+
+ &#x2F; <a href="/forky/net/" title="All packages in this section">net</a> 
+
+ &#x2F; samba 
+
+</div> <!-- end navbar -->
+
+</div> <!-- end header -->
+<div id="content">
+
+
+<form method="GET" action="/search">
+<div id="hpacketsearch">
+
+
+
+
+
+
+<input type="submit" value="Search">
+<select size="1" name="searchon">
+<option value="names" selected="selected">
+package names</option>
+<option value="all" >descriptions</option>
+<option value="sourcenames" >source package names</option>
+<option value="contents" >package contents</option>
+</select>
+<input type="text" size="30" name="keywords" value="" id="kw">
+<span style="font-size: 60%"><a href="/">all options</a></span>
+</div> <!-- end hpacketsearch -->
+</form>
+
+<!-- show.tmpl -->
+
+
+   <div id="pothers">       [&nbsp;    <a  href="/bullseye/samba">bullseye</a>  &nbsp;]
+          [&nbsp;    <a  href="/bookworm/samba">bookworm</a>  &nbsp;]
+          [&nbsp;    <a  href="/bookworm-updates/samba">bookworm-updates</a>  &nbsp;]
+          [&nbsp;    <a  href="/bookworm-backports/samba">bookworm-backports</a>  &nbsp;]
+          [&nbsp;    <a  href="/trixie/samba">trixie</a>  &nbsp;]
+          [&nbsp;    <a  href="/trixie-backports/samba">trixie-backports</a>  &nbsp;]
+          [&nbsp;   <strong>forky</strong>  &nbsp;]
+          [&nbsp;    <a  href="/sid/samba">sid</a>  &nbsp;]</div>
+
+
+<div id="psource">
+  [&nbsp;Source:    <a title="Source package building this package" href="/source/forky/samba">samba</a>  &nbsp;]
+</div>
+
+<!-- messages.tmpl -->
+
+<h1>Package: samba (2:4.23.4+dfsg-1)
+</h1>
+
+
+<div id="pmoreinfo">
+<h2>Links for samba</h2>
+
+<div class="screenshot">
+<a id="screenshot" href="https://screenshots.debian.net/package/samba"><img src="https://screenshots.debian.net/thumbnail-with-version//samba/2:4.23.4+dfsg-1" alt="Screenshot" border="0"/></a>
+</div>
+
+<h3>Debian Resources:</h3>
+<ul>
+<li><a href="https://bugs.debian.org/samba">Bug Reports</a></li>
+
+<li><a href="https://tracker.debian.org/samba">Developer Information</a></li>
+
+
+
+<li><a href="https://metadata.ftp-master.debian.org/changelogs//main/s/samba/samba_4.23.4+dfsg-1_changelog">Debian Changelog</a></li>
+<li><a href="https://metadata.ftp-master.debian.org/changelogs//main/s/samba/samba_4.23.4+dfsg-1_copyright">Copyright File</a></li>
+
+
+
+
+  
+      
+      
+    
+    <li><a href="https://sources.debian.org/patches/samba/2:4.23.4+dfsg-1/">Debian Patch Tracker</a></li>
+      
+</ul>
+
+
+  <h3>Download Source Package <a href="/source/forky/samba">samba</a>:</h3>
+  
+    <ul>
+    <li><a href="http://deb.debian.org/debian/pool/main/s/samba/samba_4.23.4+dfsg-1.dsc">[samba_4.23.4+dfsg-1.dsc]</a></li>
+    
+  
+    
+    <li><a href="http://deb.debian.org/debian/pool/main/s/samba/samba_4.23.4+dfsg.orig.tar.xz">[samba_4.23.4+dfsg.orig.tar.xz]</a></li>
+    
+  
+    
+    <li><a href="http://deb.debian.org/debian/pool/main/s/samba/samba_4.23.4+dfsg-1.debian.tar.xz">[samba_4.23.4+dfsg-1.debian.tar.xz]</a></li>
+    </ul>
+  
+  
+
+
+  <h3>Maintainers:</h3><ul>	<li><a href="mailto:pkg-samba-maint@lists.alioth.debian.org">Debian Samba Maintainers</a>
+	(<a href="https://qa.debian.org/developer.php?login=pkg-samba-maint%40lists.alioth.debian.org" title="An overview over the maintainer's packages and uploads">QA&nbsp;Page</a>, <a href="https://lists.alioth.debian.org/pipermail/pkg-samba-maint/" title="Archive of the Maintainer Mailinglist">Mail&nbsp;Archive</a>)
+	</li>	<li><a href="mailto:jelmer@debian.org">Jelmer Vernooĳ</a>
+	(<a href="https://qa.debian.org/developer.php?login=jelmer%40debian.org" title="An overview over the maintainer's packages and uploads">QA&nbsp;Page</a>)
+	</li>	<li><a href="mailto:sathieu@debian.org">Mathieu Parent</a>
+	(<a href="https://qa.debian.org/developer.php?login=sathieu%40debian.org" title="An overview over the maintainer's packages and uploads">QA&nbsp;Page</a>)
+	</li>	<li><a href="mailto:mjt@tls.msk.ru">Michael Tokarev</a>
+	(<a href="https://qa.debian.org/developer.php?login=mjt%40tls.msk.ru" title="An overview over the maintainer's packages and uploads">QA&nbsp;Page</a>)
+	</li></ul>
+
+<h3>External Resources:</h3>
+<ul>
+<li><a href="https://www.samba.org">Homepage</a> [www.samba.org]</li>
+</ul>
+
+
+
+	
+	<h3>Similar packages:</h3>
+	<ul>
+	
+	<li><a href="/libpam-winbind">libpam-winbind</a></li>
+	
+
+	
+	<li><a href="/libnss-winbind">libnss-winbind</a></li>
+	
+
+	
+	<li><a href="/samba-libs">samba-libs</a></li>
+	
+
+	
+	<li><a href="/samba-dsdb-modules">samba-dsdb-modules</a></li>
+	
+
+	
+	<li><a href="/python3-samba">python3-samba</a></li>
+	
+
+	
+	<li><a href="/samba-testsuite">samba-testsuite</a></li>
+	
+
+	
+	<li><a href="/samba-dev">samba-dev</a></li>
+	
+
+	
+	<li><a href="/registry-tools">registry-tools</a></li>
+	
+
+	
+	<li><a href="/samba-common-bin">samba-common-bin</a></li>
+	
+
+	
+	<li><a href="/winbind">winbind</a></li>
+	</ul>
+
+
+</div> <!-- end pmoreinfo -->
+
+
+
+
+<div id="ptablist">
+</div>
+
+
+<div id="pdesctab">
+
+<div id="pdesc" >
+	
+	<h2>SMB/CIFS file, print, and login server for Unix</h2>
+	<p>
+Samba is an implementation of the SMB/CIFS protocol for Unix systems,
+providing support for cross-platform file and printer sharing with
+Microsoft Windows, OS X, and other Unix systems.  Samba can also function
+as an Active Directory or NT4-style domain controller, and can integrate
+with Active Directory realms or NT4 domains as a member server.
+<p>
+This package provides the components necessary to use Samba as a stand-alone
+file and print server or as an NT4 domain controller.  For use in an NT4
+domain or Active Directory realm, you will also need the winbind package.
+To use samba as an Active Directory domain controller (AD DC), please install
+samba-ad-dc package.
+<p>
+This package is not required for connecting to existing SMB/CIFS servers
+(see smbclient) or for mounting remote filesystems (see cifs-utils).
+	
+
+</div> <!-- end pdesc -->
+
+
+      <div id="ptags"><p>
+    <a href="https://debtags.debian.org/search/?wl=&q=samba&qf=default">Tags</a>:
+  
+  System Administration: 
+  
+   <a href="/about/debtags#admin::filesystem">Filesystem Tool</a>, 
+  
+  
+  
+
+  
+  
+  Implemented in: 
+  
+   <a href="/about/debtags#implemented-in::c">C</a>, 
+  
+  
+  
+
+  
+  
+  User Interface: 
+  
+  interface::daemon,
+ network::server, 
+  
+  
+  
+
+  
+  
+  Networking: 
+  
+   <a href="/about/debtags#network::service">Service</a>, 
+  
+  
+  
+
+  
+  
+  Network Protocol: 
+  
+   <a href="/about/debtags#protocol::smb">SMB</a>, 
+  
+  
+  
+
+  
+  
+  Role: 
+  
+  role::program,
+ suite::samba, 
+  
+  
+  
+
+  
+  
+  Purpose: 
+  
+   <a href="/about/debtags#use::configuring">Configuration</a>
+  
+  
+      </p>
+    </div> <!-- end ptags -->
+
+
+
+</div> <!-- pdesctab -->
+
+
+
+
+
+      <div id="pdeps">
+    <h2>Other Packages Related to samba</h2>
+
+    <table id="pdeplegend" class="visual" summary="legend"><tr>
+    
+    <td><ul class="uldep"><li>depends</li></ul></td>
+    <td><ul class="ulrec"><li>recommends</li></ul></td>
+    <td><ul class="ulsug"><li>suggests</li></ul></td>
+    <td><ul class="ulenh"><li>enhances</li></ul></td>
+    
+    </tr></table>
+
+  <ul class="uldep">
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/init-system-helpers">init-system-helpers</a>
+	 (>= 1.54~)
+        </dt>        <dd lang="en">helper tools for all init systems
+        </dd>
+      
+      </dl>
+    
+  
+  </ul>
+
+  
+
+  
+
+  <ul class="uldep">
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libbsd0">libbsd0</a>
+	 (>= 0.6.0)
+        </dt>        <dd lang="en">utility functions from BSD systems - shared library
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libc6">libc6</a>
+	 (>= 2.38)
+         [not i386]</dt>        <dd lang="en">GNU C Library: Shared libraries	  <br>also a virtual package provided by
+	  
+	    <span id="js_libc6" class="p_js_elem"></span> <span id="html_libc6"><a href="/forky/libc6-udeb">libc6-udeb</a></span>
+	
+        
+        </dd>
+      
+      </dl>
+    
+  
+    
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libc6">libc6</a>
+	 (>= 2.42)
+         [i386]</dt>
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libcups2t64">libcups2t64</a>
+	 (>= 1.7.0)
+        </dt>        <dd lang="en">Common UNIX Printing System(tm) - Core library
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libdbus-1-3">libdbus-1-3</a>
+	 (>= 1.10)
+        </dt>        <dd lang="en">simple interprocess messaging system (library)
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libgnutls30t64">libgnutls30t64</a>
+	 (>= 3.7.0)
+        </dt>        <dd lang="en">GNU TLS library - main runtime library
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libldap2">libldap2</a>
+	 (>= 2.6.2)
+        </dt>        <dd lang="en">OpenLDAP libraries
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libldb2">libldb2</a>
+	 (>= 2:2.6.1)
+        </dt>        <dd lang="en">LDAP-like embedded database - shared library
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	libndr6
+	 (>= 2:4.20.0~rc1)
+        </dt>        <dd lang="en">Package not available
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libpopt0">libpopt0</a>
+	 (>= 1.14)
+        </dt>        <dd lang="en">lib for parsing cmdline parameters
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libtalloc2">libtalloc2</a>
+	 (>= 2.4.0)
+        </dt>        <dd lang="en">hierarchical pool based memory allocator
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libtdb1">libtdb1</a>
+	 (>= 1.2.7+git20101214)
+        </dt>        <dd lang="en">Trivial Database - shared library
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libtevent0t64">libtevent0t64</a>
+	 (>= 0.15.0)
+        </dt>        <dd lang="en">talloc-based event loop library - shared library
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/libtirpc3t64">libtirpc3t64</a>
+	 (>= 1.0.2)
+        </dt>        <dd lang="en">transport-independent RPC library
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/liburing2">liburing2</a>
+	 (>= 2.3)
+        </dt>        <dd lang="en">Linux kernel io_uring access library - shared library
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/passwd">passwd</a>
+	
+        </dt>        <dd lang="en">change and administer password and group data
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/samba-common">samba-common</a>
+	
+        </dt>        <dd lang="en">common files used by both the Samba server and client
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/samba-common-bin">samba-common-bin</a>
+	 (= 2:4.23.4+dfsg-1)
+        </dt>        <dd lang="en">Samba common files used by both the server and the client
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">dep:</span>
+	<a href="/forky/samba-libs">samba-libs</a>
+	 (= 2:4.23.4+dfsg-1)
+        </dt>        <dd lang="en">Samba core libraries
+        </dd>
+      
+      </dl>
+    
+  
+  </ul>
+
+  
+
+  
+
+  <ul class="ulsug">
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">sug:</span>
+	<a href="/forky/attr">attr</a>
+	
+        </dt>        <dd lang="en">utilities for manipulating filesystem extended attributes
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">sug:</span>
+	<a href="/forky/ctdb">ctdb</a>
+	
+        </dt>        <dd lang="en">clustered database to store temporary data
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">sug:</span>
+	<a href="/forky/python3-samba">python3-samba</a>
+	
+        </dt>        <dd lang="en">Python 3 bindings for Samba
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">sug:</span>
+	<a href="/forky/samba-vfs-ceph">samba-vfs-ceph</a>
+	
+        </dt>        <dd lang="en">Samba Virtual FileSystem ceph modules
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">sug:</span>
+	<a href="/forky/samba-vfs-glusterfs">samba-vfs-glusterfs</a>
+	
+        </dt>        <dd lang="en">Samba Virtual FileSystem glusterfs modules
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">sug:</span>
+	<a href="/forky/ufw">ufw</a>
+	
+        </dt>        <dd lang="en">program for managing a Netfilter firewall
+        </dd>
+      
+      </dl>
+    
+  
+    <li>
+    
+      <dl>
+      <dt><span class="nonvisual">sug:</span>
+	<a href="/forky/winbind">winbind</a>
+	
+        </dt>        <dd lang="en">service to resolve user and group information from Windows NT servers
+        </dd>
+      
+      </dl>
+    
+  
+  </ul>
+
+      </div> <!-- end pdeps -->
+
+
+
+      <div id="pdownload">
+    <h2>Download samba</h2>
+    
+    <table summary="The download table links to the download of the package and a file overview. In addition it gives information about the package size and the installed size.">
+    <caption class="hidecss">Download for all available architectures</caption>
+    <tr><th>Architecture</th>
+	
+	<th>Package Size</th>
+	<th>Installed Size</th>
+	<th>Files</th>
+    </tr>
+
+<tr>
+
+<th><a href="/forky/amd64/samba/download">amd64</a></th>
+
+
+<td class="size">1,173.0&nbsp;kB</td><td class="size">5,019.0&nbsp;kB</td>
+<td>
+
+  [<a href="/forky/amd64/samba/filelist">list of files</a>]
+
+</td>
+</tr>
+
+  
+
+  
+
+<tr>
+
+<th><a href="/forky/arm64/samba/download">arm64</a></th>
+
+
+<td class="size">1,094.5&nbsp;kB</td><td class="size">7,718.0&nbsp;kB</td>
+<td>
+
+  [<a href="/forky/arm64/samba/filelist">list of files</a>]
+
+</td>
+</tr>
+
+  
+
+  
+
+<tr>
+
+<th><a href="/forky/armhf/samba/download">armhf</a></th>
+
+
+<td class="size">1,093.1&nbsp;kB</td><td class="size">6,750.0&nbsp;kB</td>
+<td>
+
+  [<a href="/forky/armhf/samba/filelist">list of files</a>]
+
+</td>
+</tr>
+
+  
+
+  
+
+<tr>
+
+<th><a href="/forky/i386/samba/download">i386</a></th>
+
+
+<td class="size">1,253.9&nbsp;kB</td><td class="size">5,206.0&nbsp;kB</td>
+<td>
+
+  [<a href="/forky/i386/samba/filelist">list of files</a>]
+
+</td>
+</tr>
+
+  
+
+  
+
+<tr>
+
+<th><a href="/forky/ppc64el/samba/download">ppc64el</a></th>
+
+
+<td class="size">1,196.6&nbsp;kB</td><td class="size">8,294.0&nbsp;kB</td>
+<td>
+
+  [<a href="/forky/ppc64el/samba/filelist">list of files</a>]
+
+</td>
+</tr>
+
+  
+
+  
+
+<tr>
+
+<th><a href="/forky/riscv64/samba/download">riscv64</a></th>
+
+
+<td class="size">1,167.0&nbsp;kB</td><td class="size">4,334.0&nbsp;kB</td>
+<td>
+
+  [<a href="/forky/riscv64/samba/filelist">list of files</a>]
+
+</td>
+</tr>
+
+  
+
+  
+
+<tr>
+
+<th><a href="/forky/s390x/samba/download">s390x</a></th>
+
+
+<td class="size">1,109.8&nbsp;kB</td><td class="size">4,803.0&nbsp;kB</td>
+<td>
+
+  [<a href="/forky/s390x/samba/filelist">list of files</a>]
+
+</td>
+</tr>
+
+      </table>
+
+    </div> <!-- end pdownload -->
+
+
+
+
+
+</div> <!-- end inner -->
+
+<div id="footer">
+
+
+<hr class="hidecss">
+<!--UdmComment-->
+<div id="pageLang">
+<div id="langSelector">
+<p>This page is also available in the following languages (How to set <a href="https://www.debian.org/intro/cn">the default document language</a>):</p>
+<div id="langContainer">
+
+<a href="/bg/forky/samba" title="Bulgarian" hreflang="bg" lang="bg" rel="alternate">&#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080; (B&#601;lgarski)</a>
+
+<a href="/da/forky/samba" title="Danish" hreflang="da" lang="da" rel="alternate">dansk</a>
+
+<a href="/de/forky/samba" title="German" hreflang="de" lang="de" rel="alternate">Deutsch</a>
+
+<a href="/fi/forky/samba" title="Finnish" hreflang="fi" lang="fi" rel="alternate">suomi</a>
+
+<a href="/fr/forky/samba" title="French" hreflang="fr" lang="fr" rel="alternate">fran&ccedil;ais</a>
+
+<a href="/hu/forky/samba" title="Hungarian" hreflang="hu" lang="hu" rel="alternate">magyar</a>
+
+<a href="/it/forky/samba" title="Italian" hreflang="it" lang="it" rel="alternate">Italiano</a>
+
+<a href="/ja/forky/samba" title="Japanese" hreflang="ja" lang="ja" rel="alternate">&#26085;&#26412;&#35486; (Nihongo)</a>
+
+<a href="/nl/forky/samba" title="Dutch" hreflang="nl" lang="nl" rel="alternate">Nederlands</a>
+
+<a href="/pl/forky/samba" title="Polish" hreflang="pl" lang="pl" rel="alternate">polski</a>
+
+<a href="/pt-br/forky/samba" title="Portuguese (Brasilia)" hreflang="pt-br" lang="pt-br" rel="alternate">Portugu&ecirc;s (br)</a>
+
+<a href="/ru/forky/samba" title="Russian" hreflang="ru" lang="ru" rel="alternate">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; (Russkij)</a>
+
+<a href="/sk/forky/samba" title="Slovak" hreflang="sk" lang="sk" rel="alternate">slovensky</a>
+
+<a href="/sv/forky/samba" title="Swedish" hreflang="sv" lang="sv" rel="alternate">svenska</a>
+
+<a href="/tr/forky/samba" title="Turkish" hreflang="tr" lang="tr" rel="alternate">T&uuml;rk&ccedil;e</a>
+
+<a href="/uk/forky/samba" title="Ukrainian" hreflang="uk" lang="uk" rel="alternate">&#1091;&#1082;&#1088;&#1072;&#1111;&#1085;&#1089;&#1100;&#1082;&#1072; (ukrajins'ka)</a>
+
+<a href="/zh-cn/forky/samba" title="Chinese (China)" hreflang="zh-cn" lang="zh-cn" rel="alternate">&#20013;&#25991; (Zhongwen,&#31616;)</a>
+
+<a href="/zh-tw/forky/samba" title="Chinese (Taiwan)" hreflang="zh-tw" lang="zh-tw" rel="alternate">&#20013;&#25991; (Zhongwen,&#32321;)</a>
+
+</div>
+</div>
+</div>
+<!--/UdmComment-->
+
+
+<hr class="hidecss">
+<div id="fineprint" class="bordertop">
+<div id="impressum">
+
+<p>See our <a href="https://www.debian.org/contact">contact page</a> to get in touch.</p>
+
+
+<p>
+Content Copyright &copy; 1997 - 2026 <a href="https://www.spi-inc.org/">SPI Inc.</a>; See <a href="https://www.debian.org/license">license terms</a>. Debian is a <a href="https://www.debian.org/trademark">trademark</a> of SPI Inc.
+ <a href="/about/">Learn more about this site</a>.</p>
+
+</div> <!-- end impressum -->
+
+<div id="sponsorfooter"><p>
+This service is sponsored by <a href="http://cs.helsinki.fi/index.en.html">University of Helsinki - Department of Computer Science</a>.</p></div>
+
+</div> <!-- end fineprint -->
+</div> <!-- end footer -->
+</body>
+</html>

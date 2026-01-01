@@ -41,6 +41,7 @@ repos:
           - --indent=4
           - --no-sort-keys
       - id: trailing-whitespace
+        exclude: "^tests/mocks/"
       # Python
       # - id: check-ast  # ruff-format and ruff-check already do this
       # - id: check-builtin-literals  # mostly done by ruff-check (UP018 and C408)

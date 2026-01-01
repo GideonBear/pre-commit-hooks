@@ -39,32 +39,20 @@ def get_version(debian: str, depname: str, *, logger: Logger) -> str | None:
         msg = "This function is only supposed to be called in connected contexts"
         raise Exception(msg)  # noqa: TRY002
 
-    data = request(
-        f"https://sources.debian.org/api/src/{depname}/",
-        params=frozenset({("suite", debian)}),
+    url = f"https://packages.debian.org/{debian}/{depname}"
+    text = request(url, json=False)
+    match = re.search(
+        rf"Package: {depname} \((?P<version>{DEB_VER_RE})( and others)?\)", text
     )
-    if "error" in data:
-        logger.warn(
-            f"Error getting version for package '{depname}' failed. "
-            f"Error: '{data['error']}'"
-        )
+    if not match:
+        logger.warn(f"getting version for package '{depname}' from url '{url}' failed")
         return None
-    versions = data["versions"]
-    if len(versions) == 0:
-        logger.warn(
-            f"Debian API returned no versions for package {depname} in suite {debian}"
-        )
-        return None
-    if len(versions) > 1:
-        logger.warn(
-            f"Debian API returned multiple versions for package {depname} in suite "
-            f"{debian}, using the first. Versions: {versions}"
-        )
-    return versions[0]["version"]  # type: ignore[no-any-return]
+    return match.group("version")
 
 
 DEB_PAK_RE = r"[a-z0-9][a-z0-9+\-.]+"
-DEB_PAK_PINNED_RE = rf"{DEB_PAK_RE}=.*"
+DEB_VER_RE = r"[^\s]+?"  # Dirty, but doesn't matter
+DEB_PAK_PINNED_RE = rf"{DEB_PAK_RE}={DEB_VER_RE}"
 
 debian_releases: Sequence[tuple[str | None, str, str | None]] = (
     (None, "sid", "unstable"),

@@ -7,12 +7,18 @@ ENV CIFSUTILS_VERSION="2:7.4-1"
 
 # renovate: suite=trixie depName=curl
 ENV CURL_VERSION="8.14.1-2+deb13u2"
+# renovate: suite=trixie depName=gosu
+ENV GOSU_VERSION="1.17-3"
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         samba=${SAMBA_VERSION} \
         cifs-utils=${CIFSUTILS_VERSION} \
+        # Also tests comments \
         # Some unnecessary package: ffmpeg \
+        # Also tests multiple versions. Had warning when using API, html implementation does this fine. \
         curl=${CURL_VERSION} \
+        # Also tests "and others" \
+        gosu=${GOSU_VERSION} \
     && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
     && apt-get clean \
     && mkdir /mnt/remotedir \

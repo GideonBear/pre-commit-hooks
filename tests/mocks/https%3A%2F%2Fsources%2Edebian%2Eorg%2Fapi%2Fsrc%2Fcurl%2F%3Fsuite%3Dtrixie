@@ -1,1 +1,0 @@
-{"package":"curl","path":"curl","pathl":[["curl","/src/curl"]],"suite":"trixie","type":"package","versions":[{"area":"main","suites":["trixie"],"version":"8.14.1-2+deb13u2"},{"area":"main","suites":["trixie"],"version":"8.14.1-2"}]}
