@@ -103,7 +103,13 @@ class Processor(LineProcessor):
                 logger.error("line after renovate comment should start with `ENV`")
                 return None
 
-            return make_env_line(debian, depname, logger=logger)
+            debian_codename = debian
+            for _version_no, codename, suite_name in debian_releases:
+                if self.current_debian == suite_name:
+                    debian_codename = codename
+                    break
+
+            return make_env_line(debian_codename, depname, logger=logger)
 
         if line.startswith("FROM"):
             self.process_line_from(line, logger)
