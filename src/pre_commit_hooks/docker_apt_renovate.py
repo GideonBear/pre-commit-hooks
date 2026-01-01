@@ -25,6 +25,8 @@ def envilize(depname: str) -> str:
 
 def make_env_line(debian: str, depname: str, *, logger: Logger) -> str:
     version = get_version(debian, depname, logger=logger)
+    if version is None:
+        version = "<insert version here>"
     return f'ENV {envilize(depname)}="{version}"\n'
 
 
@@ -41,6 +43,12 @@ def get_version(debian: str, depname: str, *, logger: Logger) -> str | None:
         f"https://sources.debian.org/api/src/{depname}/",
         params=frozenset({("suite", debian)}),
     )
+    if "error" in data:
+        logger.error(
+            f"Error getting version for package '{depname}' failed. "
+            f"Error: '{data['error']}'"
+        )
+        return None
     versions = data["versions"]
     if len(versions) == 0:
         logger.error(
