@@ -183,10 +183,7 @@ class Processor(LineProcessor):
 
         numeric_debian = None
         for version_no, codename, suite_name in debian_releases:
-            if debian == codename:
-                break
-            if debian == suite_name:
-                debian = codename
+            if debian in {codename, suite_name}:
                 break
             if debian == version_no:
                 numeric_debian = codename
