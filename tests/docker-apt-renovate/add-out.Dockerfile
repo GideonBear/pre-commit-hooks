@@ -28,6 +28,21 @@ RUN apt-get update \
     && chown root /etc/win-credentials \
     && chmod 600 /etc/win-credentials
 
-COPY entrypoint.sh /usr/bin
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+# renovate: suite=trixie depName=curl
+ENV CURL_VERSION="8.14.1-2+deb13u2"
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        samba=${SAMBA_VERSION} \
+        cifs-utils=${CIFSUTILS_VERSION} \
+        curl=${CURL_VERSION}
+
+# renovate: suite=trixie depName=curl
+ENV CURL_VERSION="8.14.1-2+deb13u2"
+# renovate: suite=trixie depName=gosu
+ENV GOSU_VERSION="1.17-3"
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        samba=${SAMBA_VERSION} \
+        cifs-utils=${CIFSUTILS_VERSION} \
+        curl=${CURL_VERSION} \
+        gosu=${GOSU_VERSION}

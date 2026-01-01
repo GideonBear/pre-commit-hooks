@@ -213,6 +213,7 @@ class Processor(LineProcessor):
     def process_line_in_run(  # noqa: C901, PLR0912
         self, orig_line: str, line: str, logger: Logger
     ) -> str | None:
+        in_run = self.in_run
         if line[-1] == "\\":
             line = line.removesuffix("\\").strip()
         else:
@@ -230,7 +231,7 @@ class Processor(LineProcessor):
             self.in_install = True
 
         if self.in_install:  # noqa: PLR1702
-            assert self.in_run is not None  # noqa: S101
+            assert in_run is not None  # noqa: S101
 
             if self.current_debian is None:
                 logger.error("No FROM line")
@@ -259,7 +260,7 @@ class Processor(LineProcessor):
                                 debian_codename = codename
                                 break
 
-                        self.in_run.write(
+                        in_run.write(
                             make_renovate_line(self.current_debian, arg)
                             + make_env_line(debian_codename, arg, logger=logger),
                         )
@@ -274,12 +275,8 @@ class Processor(LineProcessor):
                         else:  # If it isn't the only thing on this line  # noqa: RET505
                             # Remove it from the line, keeping the rest intact
                             orig_line = remove_ws_splitted_part(orig_line, arg)
-
-                            # Only if the original line ended in a backslash (this could
-                            #  be the last line) add a backslash here as well
-                            end = " \\\n" if orig_line.endswith("\\\n") else "\n"
                             indent = " " * self.indent * 2
-                            new_lines.append(f"{indent}{replacement}{end}")
+                            new_lines.append(f"{indent}{replacement} \\\n")
                 else:
                     logger.error(
                         id="unexpected-install-arg",
@@ -288,9 +285,13 @@ class Processor(LineProcessor):
                     )
 
             if new_lines:
-                # If we removed all args from the line, and only a continuation remains,
-                #  we remove the line entirely
-                if orig_line.strip() != "\\":
+                # If the original line didn't end in a backslash, remove the backslash
+                #  from the last line
+                if not orig_line.endswith("\\\n"):
+                    new_lines[-1] = new_lines[-1].replace(" \\\n", "\n")
+                # If we removed all args from the line, and nothing (or only a
+                # continuation) remains, we remove the line entirely
+                if orig_line.strip() not in {"\\", ""}:
                     new_lines = [orig_line, *new_lines]
                 return "".join(new_lines)
 

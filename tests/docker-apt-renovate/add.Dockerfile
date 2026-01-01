@@ -23,6 +23,14 @@ RUN apt-get update \
     && chown root /etc/win-credentials \
     && chmod 600 /etc/win-credentials
 
-COPY entrypoint.sh /usr/bin
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        samba=${SAMBA_VERSION} \
+        cifs-utils=${CIFSUTILS_VERSION} \
+        curl  # Error: [unpinned] 'curl' is unpinned
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        samba=${SAMBA_VERSION} \
+        cifs-utils=${CIFSUTILS_VERSION} \
+        curl gosu  # Error: [unpinned] 'curl' is unpinned |AND| Error: [unpinned] 'gosu' is unpinned
