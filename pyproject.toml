@@ -31,6 +31,7 @@ urls.bugs = "https://github.com/GideonBear/pre-commit-hooks/issues"
 urls.homepage = "https://github.com/GideonBear/pre-commit-hooks"
 
 scripts.bumpsync = "pre_commit_hooks.bumpsync:main"
+scripts.docker-apt-renovate = "pre_commit_hooks.docker_apt_renovate:main"
 scripts.docker-image-pin = "pre_commit_hooks.docker:main"
 scripts.gha-pin = "pre_commit_hooks.gha:main"
 scripts.pre-commit-additional-dependencies = "pre_commit_hooks.pcad:main"
