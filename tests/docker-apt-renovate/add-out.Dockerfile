@@ -11,6 +11,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         samba=${SAMBA_VERSION} \
         cifs-utils=${CIFSUTILS_VERSION} \
+        # Some unnecessary package: ffmpeg \
         curl=${CURL_VERSION} \
     && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
     && apt-get clean \

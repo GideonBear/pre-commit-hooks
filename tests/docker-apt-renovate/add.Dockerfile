@@ -9,6 +9,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         samba=${SAMBA_VERSION} \
         cifs-utils=${CIFSUTILS_VERSION} \
+        # Some unnecessary package: ffmpeg \
         curl \  # Error: [unpinned] 'curl' is unpinned |AND| Warning: Debian API returned multiple versions for package curl in suite trixie, using the first. Versions: [{'area': 'main', 'suites': ['trixie'], 'version': '8.14.1-2+deb13u2'}, {'area': 'main', 'suites': ['trixie'], 'version': '8.14.1-2'}]
     && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
     && apt-get clean \

@@ -248,6 +248,9 @@ class Processor(LineProcessor):
                 logger.error("No FROM line")
                 return None
 
+            if line.startswith("#"):
+                return None
+
             args = line.split()
             new_lines = []
             for arg in args:
