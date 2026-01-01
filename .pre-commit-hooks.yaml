@@ -97,6 +97,7 @@
   types: [ text ]
 
 - id: docker-apt-renovate
+  name: docker-apt-renovate
   description: Helps with pinning apt packages in Dockerfiles, and bumping them with Renovate
   entry: docker-apt-renovate
   language: python
