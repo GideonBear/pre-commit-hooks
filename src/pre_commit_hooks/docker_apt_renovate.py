@@ -44,14 +44,14 @@ def get_version(debian: str, depname: str, *, logger: Logger) -> str | None:
         params=frozenset({("suite", debian)}),
     )
     if "error" in data:
-        logger.error(
+        logger.warn(
             f"Error getting version for package '{depname}' failed. "
             f"Error: '{data['error']}'"
         )
         return None
     versions = data["versions"]
     if len(versions) == 0:
-        logger.error(
+        logger.warn(
             f"Debian API returned no versions for package {depname} in suite {debian}"
         )
         return None
