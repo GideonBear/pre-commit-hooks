@@ -216,6 +216,7 @@ class Processor(LineProcessor):
     ) -> str | None:
         if self.current_debian is None:
             logger.error("No FROM line")
+            self.in_run = None
             return None
 
         if line[-1] == "\\":
