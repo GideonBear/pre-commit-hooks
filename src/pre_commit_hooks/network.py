@@ -36,14 +36,14 @@ def is_connected() -> bool:
 
 
 @cache
-def request(url: str) -> Any:  # type: ignore[explicit-any, misc]  # noqa: ANN401
+def request(url: str, params: frozenset[tuple[str, str]] | None = None) -> Any:  # type: ignore[explicit-any, misc]  # noqa: ANN401
     headers = {}
     if url.startswith("https://api.github.com"):
         token = gh_token()
         if token:
             headers["Authorization"] = f"token {token}"
 
-    resp = requests.get(url, timeout=60, headers=headers)
+    resp = requests.get(url, timeout=60, headers=headers, params=params)
     resp.raise_for_status()
     return resp.json()
 

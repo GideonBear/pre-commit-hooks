@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import random
+import string
 from abc import ABC, abstractmethod
 from argparse import ArgumentParser
 from pathlib import Path
@@ -80,16 +82,29 @@ class FileContentProcessor(FileProcessor, ABC):
 class LineProcessor(FileContentProcessor, ABC):
     remove_comments = True
 
+    def __init__(self, args: Args) -> None:
+        super().__init__(args)
+        self.bookmarks: list[Bookmark] = []
+        self.bookmarks_this_line: list[Bookmark] = []
+
     def process_file_internal(self, content: str, *, logger: Logger) -> str:
         new_content = ""
         for lnr, line in enumerate(content.splitlines(keepends=True)):
             new_line = self.process_line(lnr, line, file_logger=logger)
-            if new_line is not None:
-                new_content += new_line
-            else:
-                new_content += line
+            new_content += new_line
+
+        for bookmark in self.bookmarks:
+            new_content = new_content.replace(
+                bookmark.placeholder(), "".join(bookmark.lines)
+            )
 
         return new_content
+
+    def bookmark(self) -> Bookmark:
+        bookmark = Bookmark()
+        self.bookmarks.append(bookmark)
+        self.bookmarks_this_line.append(bookmark)
+        return bookmark
 
     def process_line(
         self,
@@ -97,7 +112,7 @@ class LineProcessor(FileContentProcessor, ABC):
         line: str,
         *,
         file_logger: Logger,
-    ) -> str | None:
+    ) -> str:
         orig_line = line
         line = line.strip()
 
@@ -114,7 +129,7 @@ class LineProcessor(FileContentProcessor, ABC):
         # Normally the logger handles allows, but with `allow-all`
         #  we can skip processing the entire line.
         if allow == "all":
-            return None
+            return orig_line
 
         logger = file_logger.with_line(lnr, allow)
 
@@ -127,6 +142,13 @@ class LineProcessor(FileContentProcessor, ABC):
             line = line.strip()
 
         ret = self.process_line_internal(orig_line, line, logger)
+        if ret is None:
+            ret = orig_line
+
+        for bookmark in self.bookmarks_this_line:
+            ret = bookmark.placeholder() + ret
+        self.bookmarks_this_line = []
+
         file_logger.consume(logger)
         return ret
 
@@ -134,3 +156,18 @@ class LineProcessor(FileContentProcessor, ABC):
     def process_line_internal(
         self, orig_line: str, line: str, logger: Logger
     ) -> str | None: ...
+
+
+class Bookmark:
+    def __init__(self) -> None:
+        self.id = "".join(random.choices(string.ascii_letters + string.digits, k=10))  # noqa: S311
+        self.lines: list[str] = []
+
+    def placeholder(self) -> str:
+        return f"<bookmark id={self.id}>\n"
+
+    def __hash__(self) -> int:
+        return hash(self.id)
+
+    def write(self, line: str) -> None:
+        self.lines.append(line)
