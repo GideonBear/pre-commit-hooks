@@ -288,7 +288,11 @@ class Processor(LineProcessor):
                     )
 
             if new_lines:
-                return "".join((orig_line, *new_lines))
+                # If we removed all args from the line, and only a continuation remains,
+                #  we remove the line entirely
+                if orig_line.strip() != "\\":
+                    new_lines = [orig_line, *new_lines]
+                return "".join(new_lines)
 
         return None
 

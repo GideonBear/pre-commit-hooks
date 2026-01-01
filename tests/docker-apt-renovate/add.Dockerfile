@@ -11,10 +11,10 @@ RUN apt-get update \
         cifs-utils=${CIFSUTILS_VERSION} \
         # Also tests comments \
         # Some unnecessary package: ffmpeg \
-        # Also tests multiple versions. Had warning when using API, html implementation does this fine. \
-        curl \  # Error: [unpinned] 'curl' is unpinned
-        # Also tests "and others" \
-        gosu \  # Error: [unpinned] 'gosu' is unpinned
+        # Also tests multiple on one line doesn't result in an empty line \
+        # curl also tests multiple versions. Had warning when using API, html implementation does this fine. \
+        # gosu also tests "and others" \
+        curl gosu \  # Error: [unpinned] 'curl' is unpinned |AND| Error: [unpinned] 'gosu' is unpinned
     && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
     && apt-get clean \
     && mkdir /mnt/remotedir \

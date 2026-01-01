@@ -15,9 +15,10 @@ RUN apt-get update \
         cifs-utils=${CIFSUTILS_VERSION} \
         # Also tests comments \
         # Some unnecessary package: ffmpeg \
-        # Also tests multiple versions. Had warning when using API, html implementation does this fine. \
+        # Also tests multiple on one line doesn't result in an empty line \
+        # curl also tests multiple versions. Had warning when using API, html implementation does this fine. \
+        # gosu also tests "and others" \
         curl=${CURL_VERSION} \
-        # Also tests "and others" \
         gosu=${GOSU_VERSION} \
     && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
     && apt-get clean \
