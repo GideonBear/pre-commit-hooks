@@ -41,6 +41,8 @@ def get_version(debian: str, depname: str, *, logger: Logger) -> str | None:
 
     url = f"https://packages.debian.org/{debian}/{depname}"
     text = request(url, json=False)
+    # TODO(GideonBear): example gosu: 1.17-3 (what we currently get) isn't valid,
+    #  1.17-3+b4 is expected. API has the same problem.
     match = re.search(
         rf"Package: {depname} \((?P<version>{DEB_VER_RE})( and others)?\)", text
     )
