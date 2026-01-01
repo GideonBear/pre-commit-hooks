@@ -130,7 +130,13 @@ class Processor(LineProcessor):
 
     def process_line_from(self, line: str, logger: Logger) -> None:
         line = line.removeprefix("FROM").strip()
+        for _version_no, codename, _suite_name in debian_releases:
+            if codename in line:
+                self.current_debian = codename
+                return
+
         if not line.startswith("debian:"):
+            self.current_debian = "stable"
             return
         line = line.removeprefix("debian:")
         match = re.match(r"[a-z0-9]+", line)
@@ -230,7 +236,7 @@ class Processor(LineProcessor):
             line = line.removeprefix("apt-get install").strip()
             self.in_install = True
 
-        if self.in_install:
+        if self.in_install:  # noqa: PLR1702
             assert self.in_run is not None  # noqa: S101
 
             if self.current_debian is None:
@@ -251,9 +257,15 @@ class Processor(LineProcessor):
                     logger.error(id="unpinned", msg=f"'{arg}' is unpinned")
 
                     if is_connected():
+                        debian_codename = self.current_debian
+                        for _version_no, codename, suite_name in debian_releases:
+                            if self.current_debian == suite_name:
+                                debian_codename = codename
+                                break
+
                         self.in_run.write(
                             make_renovate_line(self.current_debian, arg)
-                            + make_env_line(self.current_debian, arg, logger=logger),
+                            + make_env_line(debian_codename, arg, logger=logger),
                         )
 
                         replacement = f"{arg}=${{{envilize(arg)}}}"
