@@ -214,11 +214,6 @@ class Processor(LineProcessor):
     def process_line_in_run(  # noqa: C901, PLR0912
         self, orig_line: str, line: str, logger: Logger
     ) -> str | None:
-        if self.current_debian is None:
-            logger.error("No FROM line")
-            self.in_run = None
-            return None
-
         if line[-1] == "\\":
             line = line.removesuffix("\\").strip()
         else:
@@ -237,6 +232,10 @@ class Processor(LineProcessor):
 
         if self.in_install:
             assert self.in_run is not None  # noqa: S101
+
+            if self.current_debian is None:
+                logger.error("No FROM line")
+                return None
 
             args = line.split()
             new_lines = []
