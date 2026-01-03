@@ -94,9 +94,7 @@ class DebianRelease:
     @classmethod
     def from_docker_tag(cls, tag: str, *, logger: Logger) -> DebianRelease | None:
         for release in DEBIAN_RELEASES:
-            if tag == release.codename:
-                return release
-            if tag == release.numeric:
+            if tag in {release.codename, release.numeric}:
                 return release
             if tag == release.suite:
                 if tag != "unstable":
