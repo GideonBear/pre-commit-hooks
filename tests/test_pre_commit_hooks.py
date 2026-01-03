@@ -230,7 +230,7 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
 
                 diag_part = None
                 for type_ in ("Error:", "Warning:", "Info:"):
-                    if type_ in line:
+                    if f"# {type_}" in line:
                         line, diag_part = line.split(f"# {type_}", maxsplit=1)
                         line = line.rstrip(" ")
                         diag_part = type_ + diag_part

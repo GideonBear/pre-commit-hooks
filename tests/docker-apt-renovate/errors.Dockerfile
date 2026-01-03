@@ -11,5 +11,6 @@ FROM debian:unstable-slim@sha256:foo
 
 FROM debian:foo  # Error: [unknown-debian-version] unknown debian version 'foo'
 
+FROM debian:trixie
 # renovate: suite=foo depName=samba  # Error: [renovate-unknown-debian-version] unknown debian version 'foo'
 # renovate: suite=13 depName=samba  # Error: [renovate-unknown-debian-version] unknown debian version '13' (hint: this doesn't accept numeric versions. Did you mean 'trixie'?)
