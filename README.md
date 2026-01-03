@@ -168,3 +168,7 @@ configuration:
 ```
 
 For more information, see [the Renovate docs](https://docs.renovatebot.com/modules/datasource/deb/#usage-example)
+
+### Command line arguments
+
+- `--indent` (default `4`): set the amount of spaces you want to indent your dockerfile with.
