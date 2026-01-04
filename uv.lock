@@ -115,7 +115,7 @@ wheels = [
 
 [[package]]
 name = "pre-commit-hooks"
-version = "1.9.2"
+version = "1.11.1"
 source = { editable = "." }
 dependencies = [
     { name = "colorama" },

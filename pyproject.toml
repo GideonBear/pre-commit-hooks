@@ -4,7 +4,7 @@ requires = [ "uv-build>=0.9.8,<0.10" ]
 
 [project]
 name = "pre-commit-hooks"
-version = "1.9.2"
+version = "1.11.1"
 description = "Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files"
 readme = "README.md"
 license = "GPL-3.0-only"
