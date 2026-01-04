@@ -63,6 +63,7 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
     ("hook_module", "inp", "out", "args", "offline", "retval"),
     [
         (shfuncdecfmt, "readme.sh", "readme-out.sh", ["readme.sh"], False, 0),  # *
+        (shfuncdecfmt, "readme-out.sh", None, ["readme-out.sh"], False, 0),
         (set_euo_pipefail, "bad.sh", None, ["bad.sh"], False, 1),
         (set_euo_pipefail, "good.sh", None, ["good.sh"], False, 0),
         (
@@ -73,8 +74,18 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
             False,
             1,
         ),
+        (
+            pcad,
+            "basic-out.yaml",
+            None,
+            ["--configs", "basic-out.yaml", "--lockfile", "basic-uv.lock"],
+            False,
+            0,
+        ),
         (pccs, "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 0),  # *
+        (pccs, "basic-out.yaml", None, ["basic-out.yaml"], False, 0),
         (pccs, "partial.yaml", "partial-out.yaml", ["partial.yaml"], False, 0),  # *
+        (pccs, "partial-out.yaml", None, ["partial-out.yaml"], False, 0),
         (
             pccs,
             "basic-existing-ci.yaml",
@@ -82,6 +93,14 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
             ["basic-existing-ci.yaml"],
             False,
             0,  # *
+        ),
+        (
+            pccs,
+            "basic-existing-ci-out.yaml",
+            None,
+            ["basic-existing-ci-out.yaml"],
+            False,
+            0,
         ),
         (pccs, "good.yaml", None, ["good.yaml"], False, 0),
         (docker, "docker-compose.yml", None, ["docker-compose.yml"], False, 1),
@@ -91,6 +110,7 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
         (sections, "bad.yaml", None, ["python", "--configs", "bad.yaml"], False, 1),
         (sections, "good.yaml", None, ["python", "--configs", "good.yaml"], False, 0),
         (requires_python, "bad.toml", "bad-out.toml", ["bad.toml"], False, 0),  # *
+        (requires_python, "bad-out.toml", None, ["bad-out.toml"], False, 0),
         (requires_python, "good.toml", None, ["good.toml"], False, 0),
         (
             requires_python,
@@ -110,6 +130,14 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
             0,  # *
         ),
         (
+            requires_python,
+            "uv-lock-out.toml",
+            None,
+            ["uv-lock-out.toml"],
+            False,
+            0,
+        ),
+        (
             bumpsync,
             "pre-commit.md",
             "pre-commit-out.md",
@@ -119,13 +147,30 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
         ),
         (
             bumpsync,
+            "pre-commit-out.md",
+            None,
+            ["pre-commit-out.md", "--pyproject", "pyproject.toml"],
+            False,
+            0,
+        ),
+        (
+            bumpsync,
             "single_line.py",
             "single_line-out.py",
             ["single_line.py", "--pyproject", "pyproject.toml"],
             False,
             0,  # *
         ),
+        (
+            bumpsync,
+            "single_line-out.py",
+            None,
+            ["single_line-out.py", "--pyproject", "pyproject.toml"],
+            False,
+            0,
+        ),
         (docker_apt_renovate, "Dockerfile", "out.Dockerfile", ["Dockerfile"], False, 1),
+        (docker_apt_renovate, "out.Dockerfile", None, ["out.Dockerfile"], False, 0),
         (docker_apt_renovate, "Dockerfile", None, ["Dockerfile"], True, 1),
         (
             docker_apt_renovate,
@@ -137,11 +182,27 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
         ),
         (
             docker_apt_renovate,
+            "extra-debian-out.Dockerfile",
+            None,
+            ["extra-debian-out.Dockerfile"],
+            False,
+            0,
+        ),
+        (
+            docker_apt_renovate,
             "custom-debian.Dockerfile",
             "custom-debian-out.Dockerfile",
             ["custom-debian.Dockerfile"],
             False,
             1,
+        ),
+        (
+            docker_apt_renovate,
+            "custom-debian-out.Dockerfile",
+            None,
+            ["custom-debian-out.Dockerfile"],
+            False,
+            0,
         ),
         (
             docker_apt_renovate,
@@ -151,6 +212,7 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
             False,
             1,
         ),
+        # No out-check because of the warning
         (
             docker_apt_renovate,
             "add.Dockerfile",
@@ -161,11 +223,27 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
         ),
         (
             docker_apt_renovate,
+            "add-out.Dockerfile",
+            None,
+            ["add-out.Dockerfile"],
+            False,
+            0,
+        ),
+        (
+            docker_apt_renovate,
             "update-suite.Dockerfile",
             "update-suite-out.Dockerfile",
             ["update-suite.Dockerfile"],
             False,
             1,
+        ),
+        (
+            docker_apt_renovate,
+            "update-suite-out.Dockerfile",
+            None,
+            ["update-suite-out.Dockerfile"],
+            False,
+            0,
         ),
         (
             docker_apt_renovate,
@@ -202,6 +280,8 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
     offline: bool,
     retval: int,
 ) -> None:
+    assert inp in args  # Sanity check for accidents in parametrize
+
     hook = hook_module.__name__.split(".")[1].replace("_", "-")
     hookdir = Path(__file__).parent / hook
     inp = hookdir / inp
