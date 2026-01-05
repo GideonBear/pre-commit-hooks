@@ -131,7 +131,7 @@ repos:
           - types-colorama
           - packaging==25.0
           - tomlkit==0.13.3
-          - ruamel-yaml==0.18.17
+          - ruamel-yaml==0.19.1
 
   - repo: https://github.com/tox-dev/pyproject-fmt
     rev: v2.11.1
