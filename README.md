@@ -8,7 +8,7 @@ Add the following to your `.pre-commit-config.yaml`:
 
 ```yaml
 - repo: https://github.com/GideonBear/pre-commit-hooks
-  rev: v1.9.2
+  rev: v1.11.1
   hooks:
     - id: ...  # pick hooks from the list below
     - id: ...
