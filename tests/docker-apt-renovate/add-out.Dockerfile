@@ -21,12 +21,7 @@ RUN apt-get update \
         curl=${CURL_VERSION} \
         gosu=${GOSU_VERSION} \
     && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
-    && apt-get clean \
-    && mkdir /mnt/remotedir \
-    && chmod 777 /mnt/remotedir \
-    && touch /etc/win-credentials \
-    && chown root /etc/win-credentials \
-    && chmod 600 /etc/win-credentials
+    && apt-get clean
 
 # renovate: suite=trixie depName=curl
 ENV CURL_VERSION="8.14.1-2+deb13u2"

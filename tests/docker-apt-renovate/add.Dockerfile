@@ -16,12 +16,7 @@ RUN apt-get update \
         # gosu also tests "and others" \
         curl gosu \  # Error: [unpinned] 'curl' is unpinned |AND| Error: [unpinned] 'gosu' is unpinned
     && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
-    && apt-get clean \
-    && mkdir /mnt/remotedir \
-    && chmod 777 /mnt/remotedir \
-    && touch /etc/win-credentials \
-    && chown root /etc/win-credentials \
-    && chmod 600 /etc/win-credentials
+    && apt-get clean
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
