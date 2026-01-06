@@ -228,7 +228,7 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
         (
             docker_apt_renovate,
             "debian-default-debian.Dockerfile",
-            "debian-default-debian-out.Dockerfile",
+            None,
             ["debian-default-debian.Dockerfile"],
             False,
             1,
