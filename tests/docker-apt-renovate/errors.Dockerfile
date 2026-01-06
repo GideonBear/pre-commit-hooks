@@ -1,3 +1,16 @@
+FROM debian:14@sha256:foo
+FROM debian:14
+FROM debian:14.0@sha256:foo
+FROM debian:14.0
+FROM debian:14-slim@sha256:foo
+FROM debian:14-slim
+FROM debian:14.0-slim@sha256:foo
+FROM debian:14.0-slim
+FROM debian:bookworm
+FROM debian:bookworm@sha256:foo
+FROM debian:bookworm-slim
+FROM debian:bookworm-slim@sha256:foo
+
 FROM debian:oldoldstable@sha256:foo  # Error: [dynamic-suite] using dynamic suite name ('oldoldstable'), which breaks this hook. Use the codename ('bullseye') or version number ('11') instead.
 FROM debian:oldstable@sha256:foo  # Error: [dynamic-suite] using dynamic suite name ('oldstable'), which breaks this hook. Use the codename ('bookworm') or version number ('12') instead.
 FROM debian:stable@sha256:foo  # Error: [dynamic-suite] using dynamic suite name ('stable'), which breaks this hook. Use the codename ('trixie') or version number ('13') instead.
