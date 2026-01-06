@@ -6,7 +6,7 @@ import string
 from abc import ABC, abstractmethod
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, ClassVar
 
 from pre_commit_hooks.logger import Logger
 
@@ -80,7 +80,7 @@ class FileContentProcessor(FileProcessor, ABC):
 
 
 class LineProcessor(FileContentProcessor, ABC):
-    remove_comments = True
+    remove_comments: ClassVar[bool] = True
 
     def __init__(self, args: Args) -> None:
         super().__init__(args)
