@@ -93,7 +93,18 @@ class OsRelease(ABC):
         if not match:
             logger.error(f"couldn't find tag for {cls.docker_image()} image")
             return None
-        return cls.from_docker_tag(match.group(), logger=logger)
+
+        tag = match.group()
+        if tag == "latest":
+            logger.error(
+                id="latest-tag",
+                msg=f"using dynamic tag ('{tag}'), which breaks this "
+                f"hook. Use a proper pinned version number or codename instead.",
+            )
+            # We could salvage, but let's not support this at all. If we want to
+            #  support this later, we need to remove the error anyway.
+            return None
+        return cls.from_docker_tag(tag, logger=logger)
 
     @classmethod
     @abstractmethod
@@ -109,6 +120,9 @@ class OsRelease(ABC):
     def make_renovate_line(self, depname: str) -> str: ...
 
     @abstractmethod
+    def renovate_version(self) -> str: ...
+
+    @abstractmethod
     def get_version(self, depname: str, *, logger: Logger) -> str | None: ...
 
     @abstractmethod
@@ -120,8 +134,8 @@ class OsRelease(ABC):
 
 
 DEB_PAK_RE = r"[a-z0-9][a-z0-9+\-.]+"
-DEB_VER_RE = r"[^\s]+?"  # Dirty, but doesn't matter
-DEB_PAK_PINNED_RE = rf"{DEB_PAK_RE}={DEB_VER_RE}"
+PAK_VER_RE = r"[^\s]+?"  # Dirty, but doesn't matter
+DEB_PAK_PINNED_RE = rf"{DEB_PAK_RE}={PAK_VER_RE}"
 
 
 @dataclass
@@ -173,6 +187,9 @@ class DebianRelease(OsRelease):
                         }"
                         f"instead.",
                     )
+                    # We could salvage, but let's not support this at all. If we want to
+                    #  support this later, we need to remove the error anyway.
+                    return None
                 return release
 
         logger.error(
@@ -202,6 +219,9 @@ class DebianRelease(OsRelease):
         )
         return None
 
+    def renovate_version(self) -> str:
+        return self.codename
+
     def make_renovate_line(self, depname: str) -> str:
         return f"# renovate: suite={self} depName={depname}\n"
 
@@ -215,7 +235,7 @@ class DebianRelease(OsRelease):
         # TODO(GideonBear): example gosu: 1.17-3 (what we currently get) isn't valid,
         #  1.17-3+b4 is expected. API has the same problem.
         match = re.search(
-            rf"Package: {depname} \((?P<version>{DEB_VER_RE})( and others)?\)", text
+            rf"Package: {depname} \((?P<version>{PAK_VER_RE})( and others)?\)", text
         )
         if not match:
             logger.warn(
@@ -239,6 +259,147 @@ DebianRelease.releases = (
     DebianRelease("6", "squeeze", None),
     DebianRelease("5", "lenny", None),
     DebianRelease("4", "etch", None),
+)
+
+
+@dataclass
+class AlpineRelease(OsRelease):
+    version: str  # x.y version or "edge"
+
+    @staticmethod
+    def docker_image() -> str:
+        return "alpine"
+
+    @staticmethod
+    def install_command() -> str:
+        return "apk add"
+
+    def identifier(self) -> str:
+        return self.version
+
+    def __str__(self) -> str:
+        return self.version
+
+    def foreign_image_identifier(self) -> str:
+        return f"alpine{self.version}"
+
+    def version_with_v(self) -> str:
+        if self.version == "edge":
+            return self.version
+        return f"v{self.version}"
+
+    @staticmethod
+    @cache
+    def renovate_re() -> Pattern[str]:
+        return re.compile(
+            r"#\s*renovate:\s*?datasource=repology\s*?depName=alpine_(?P<osRelease>.*?)/(?P<depName>.*?)($|\s)"
+        )
+
+    @classmethod
+    def from_docker_tag(cls, tag: str, *, logger: Logger) -> AlpineRelease | None:
+        # Tags like 20251224, which is edge
+        if tag.isdecimal() and len(tag) == 8:  # noqa: PLR2004
+            return cls("edge")
+
+        if tag.count(".") == 0 and tag != "edge":
+            latest = cls.releases[1]  # First is edge, second is latest
+            logger.error(
+                id="dynamic-suite",
+                msg=f"using dynamic suite name ('{tag}'), which breaks this "
+                f"hook. Use the 'x.y' ('{latest}') or 'x.y.z' version instead.",
+            )
+            # We could salvage, but let's not support this at all. If we want to
+            #  support this later, we need to remove the error anyway.
+            return None
+        if tag.count(".") > 1:
+            x, y, _ = tag.split(".", 2)
+            tag = f"{x}.{y}"
+
+        for release in cls.releases:
+            if tag == release.version:
+                return release
+
+        logger.error(
+            id="unknown-alpine-version",
+            msg=f"unknown alpine version '{tag}'",
+        )
+        return None
+
+    @classmethod
+    def from_renovate(cls, renovate: str, *, logger: Logger) -> AlpineRelease | None:
+        renovate = renovate.replace("_", ".")
+        for release in cls.releases:
+            if renovate == release.version:
+                return release
+
+        logger.error(
+            id="renovate-unknown-alpine-version",
+            msg=f"unknown alpine version '{renovate}'",
+        )
+        return None
+
+    def renovate_version(self) -> str:
+        return self.version.replace(".", "_")
+
+    def make_renovate_line(self, depname: str) -> str:
+        return (
+            f"# renovate: datasource=repology "
+            f"depName=alpine_{self.renovate_version()}/{depname}\n"
+        )
+
+    def get_version(self, depname: str, *, logger: Logger) -> str | None:
+        if not is_connected():
+            msg = "This function is only supposed to be called in connected contexts"
+            raise Exception(msg)  # noqa: TRY002
+
+        url = f"https://pkgs.alpinelinux.org/package/{self.version_with_v()}/main/x86_64/{depname}"
+        text = request(url, json=False)
+        match = re.search(
+            rf'<th class="header">Version</th>\s*'
+            rf"<td>\s*<strong>\s*(?P<version>{PAK_VER_RE})\s*</strong>\s*</td>",
+            text,
+        )
+        if not match:
+            logger.warn(
+                f"getting version for package '{depname}' from url '{url}' failed"
+            )
+            return None
+        return match.group("version")
+
+
+AlpineRelease.releases = (
+    AlpineRelease("edge"),
+    AlpineRelease("3.23"),
+    AlpineRelease("3.22"),
+    AlpineRelease("3.21"),
+    AlpineRelease("3.20"),
+    AlpineRelease("3.19"),
+    AlpineRelease("3.18"),
+    AlpineRelease("3.17"),
+    AlpineRelease("3.16"),
+    AlpineRelease("3.15"),
+    AlpineRelease("3.14"),
+    AlpineRelease("3.13"),
+    AlpineRelease("3.12"),
+    AlpineRelease("3.11"),
+    AlpineRelease("3.10"),
+    AlpineRelease("3.9"),
+    AlpineRelease("3.8"),
+    AlpineRelease("3.7"),
+    AlpineRelease("3.6"),
+    AlpineRelease("3.5"),
+    AlpineRelease("3.4"),
+    AlpineRelease("3.3"),
+    AlpineRelease("3.2"),
+    AlpineRelease("3.1"),
+    AlpineRelease("3.0"),
+    AlpineRelease("2.7"),
+    AlpineRelease("2.6"),
+    AlpineRelease("2.5"),
+    AlpineRelease("2.4"),
+    AlpineRelease("2.3"),
+    AlpineRelease("2.2"),
+    AlpineRelease("2.1"),
 )
 
 
@@ -333,7 +494,7 @@ class Processor(LineProcessor):
                 return line_replace(
                     orig_line,
                     os_s,
-                    str(self.current_os),
+                    self.current_os.renovate_version(),
                     logger=logger,
                 )
 
@@ -413,13 +574,17 @@ class Processor(LineProcessor):
                     )
 
             if new_lines:
-                # If the original line didn't end in a backslash, remove the backslash
-                #  from the last line
+                # If the original line didn't end in a backslash
                 if not orig_line.endswith("\\\n"):
+                    # Remove the backslash from the last line
                     new_lines[-1] = new_lines[-1].replace(" \\\n", "\n")
-                # If we removed all args from the line, and nothing (or only a
-                # continuation) remains, we remove the line entirely
-                if orig_line.strip() not in {"\\", ""}:
+                    # And add it back to the original line
+                    assert "\n" in orig_line  # noqa: S101  # sanity
+                    orig_line = orig_line.replace("\n", " \\\n")
+                # If we removed all args from the line, and nothing (only a
+                #  continuation) remains, we remove the line entirely. If it was
+                #  empty, we added a continuation above.
+                if orig_line.strip() != "\\":
                     new_lines = [orig_line, *new_lines]
                 return "".join(new_lines)
 

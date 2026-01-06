@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>jq - Alpine Linux packages</title>
+        <link rel="stylesheet" href="/static/css/pure-min.css">
+        <link rel="stylesheet" href="/static/css/grids-responsive-min.css">
+        <link rel="stylesheet" href="/static/css/hint.min.css">
+        <link rel="stylesheet" href="/static/css/style.css">
+        <link rel="shortcut icon" href="/static/favicon.ico">
+    </head>
+    <body>
+        <div id="wrapper">
+            <header class="pure-g" id="header">
+                <div class="pure-u-1 pure-u-lg-4-24">
+                    <div class="logo">
+                        <a href="/"><img src="/static/alpinelinux-logo.svg" class="pure-img" alt=""/></a>
+                    </div>
+                </div>
+                <input type="checkbox" id="menu-toggle-cb">
+                <label id="menu-toggle" for="menu-toggle-cb" onclick>
+                    <s class="bar"></s>
+                    <s class="bar"></s>
+                    <s class="bar"></s>
+                </label>
+                <div class="pure-u-1 pure-u-lg-20-24 box-relative menu-wrapper">
+                    <nav class="pure-menu pure-menu-horizontal menu-local">
+                        <ul class="pure-menu-list">
+                            <li class="pure-menu-item"><a href="/packages" class="pure-menu-link">Packages</a></li>
+                            <li class="pure-menu-item"><a href="/contents" class="pure-menu-link">Contents</a></li>
+                            
+                                <li class="pure-menu-item"><a href="/flagged" class="pure-menu-link">Flagged</a></li>
+                                <li class="pure-menu-item"><a href="/flagging" class="pure-menu-link">How to flag</a></li>
+                            
+                        </ul>
+                    </nav>
+                    <nav class="pure-menu pure-menu-horizontal menu-external">
+                        <ul class="pure-menu-list">
+                            
+                            <li class="pure-menu-item">
+                                <a href="https://wiki.alpinelinux.org/" class="pure-menu-link">wiki</a>
+                            </li>
+                            
+                            <li class="pure-menu-item">
+                                <a href="https://mirrors.alpinelinux.org/" class="pure-menu-link">mirrors</a>
+                            </li>
+                            
+                            <li class="pure-menu-item">
+                                <a href="https://gitlab.alpinelinux.org/" class="pure-menu-link">gitlab</a>
+                            </li>
+                            
+                            <li class="pure-menu-item">
+                                <a href="https://git.alpinelinux.org/" class="pure-menu-link">git</a>
+                            </li>
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            
+    <main id="package">
+        <div class="grid-head">Package details</div>
+        <div class="grid-body">
+            <div class="pure-g">
+                <div class="pure-u-1 pure-u-lg-15-24">
+                    <div class="table-responsive">
+                        <table class="pure-table pure-table-striped" id="package">
+                            <tr>
+                                <th class="header">Package</th>
+                                <td>jq</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Version</th>
+                                <td>
+                                
+                                    <strong>1.8.1-r0</strong>
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="header">Description</th>
+                                <td>A lightweight and flexible command-line JSON processor</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Project</th>
+                                <td><a href="https://jqlang.github.io/jq/">https://jqlang.github.io/jq/</a></td>
+                            </tr>
+                            <tr>
+                                <th class="header">License</th>
+                                <td>MIT</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Branch</th>
+                                <td>v3.23</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Repository</th>
+                                <td>main</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Architecture</th>
+                                <td>x86_64</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Size</th>
+                                <td>147.9KiB</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Installed size</th>
+                                <td>335.7KiB</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Origin</th>
+                                <td>
+                                    <a href="/package/v3.23/main/x86_64/jq">
+                                        jq
+                                    </a></td>
+                            </tr>
+                            <tr>
+                                <th class="header">Maintainer</th>
+                                <td>Patrycja Rosa</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Build time</th>
+                                <td>2025-09-09 09:47:25</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Commit</th>
+                                <td><a href="https://gitlab.alpinelinux.org/alpine/aports/-/commit/633a6cc86a90e8e5b78eaff91542c572e0377ca5">633a6cc86a90e8e5b78eaff91542c572e0377ca5</a></td>
+                            </tr>
+			    </tr>
+			    <th class="header">Merge request</th>
+				
+				<td>N/A</a>
+				
+                            <tr>
+                                <th class="header">Git repository</th>
+                                <td><a href="https://gitlab.alpinelinux.org/alpine/aports/-/tree/3.23-stable/main/jq">Git repository</a></td>
+                            </tr>
+                            <tr>
+                                <th class="header">Build log</th>
+                                <td><a href="https://build.alpinelinux.org/buildlogs/build-3-23-x86_64/main/jq/jq-1.8.1-r0.log">Build log</a></td>
+                            </tr>
+                            <tr>
+                                <th class="header">Issues</th>
+                                <td><a href="https://gitlab.alpinelinux.org/alpine/aports/-/issues/?search=jq">Open packaging issues</a></td>
+                            </tr>
+                            <tr>
+                                <th class="header">Contents</th>
+                                <td>
+                                    <a href="/contents?name=jq&repo=main&branch=v3.23&arch=x86_64">
+                                        Contents of package
+                                    </a></td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                        <div class="flag-button">
+                            <a class="pure-button" href="/flagging">Flag</a>
+                        </div>
+                    
+                </div>
+                <div class="pure-u-1 pure-u-lg-3-24"></div>
+                <div class="pure-u-1 pure-u-lg-6-24 multi-fields">
+                    <details>
+                        <summary>Depends (2)</summary>
+                        <div class="pure-menu custom-restricted-width">
+                            <ul class="pure-menu-list">
+                                
+                                    <li class="pure-menu-item">
+                                        
+                                            <a class="pure-menu-link"
+                                               href="/package/v3.23/main/x86_64/musl">
+                                                so:libc.musl-x86_64.so.1
+                                            </a>
+                                        
+                                   </li>
+                                
+                                    <li class="pure-menu-item">
+                                        
+                                            <a class="pure-menu-link"
+                                               href="/package/v3.23/main/x86_64/oniguruma">
+                                                so:libonig.so.5
+                                            </a>
+                                        
+                                   </li>
+                                
+                            </ul>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Required by (19)</summary>
+                        <div class="pure-menu custom-restricted-width">
+                            <ul class="pure-menu-list">
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/asn">
+                                            asn
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/main/x86_64/cvechecker">
+                                            cvechecker
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/dk-doc">
+                                            dk-doc
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/dracut-tests">
+                                            dracut-tests
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/grimshot">
+                                            grimshot
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/hyprland-plugin-manager">
+                                            hyprland-plugin-manager
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/incus-feature-utils">
+                                            incus-feature-utils
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/incus-utils">
+                                            incus-utils
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/main/x86_64/jq-dev">
+                                            jq-dev
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/main/x86_64/lxc-templates-oci">
+                                            lxc-templates-oci
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/mepo">
+                                            mepo
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/oq">
+                                            oq
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/main/x86_64/setup-box">
+                                            setup-box
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/sxmo-utils">
+                                            sxmo-utils
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/sxmo-utils-audio-bluetooth">
+                                            sxmo-utils-audio-bluetooth
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/todoman-zsh-completion">
+                                            todoman-zsh-completion
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/tree-sitter-dev">
+                                            tree-sitter-dev
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/yq-python">
+                                            yq-python
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/community/x86_64/ytfzf">
+                                            ytfzf
+                                        </a>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Sub Packages (2)</summary>
+                        <div class="pure-menu custom-restricted-width">
+                            <ul class="pure-menu-list">
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/main/x86_64/jq-dev">
+                                            jq-dev
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.23/main/x86_64/jq-doc">
+                                            jq-doc
+                                        </a>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Provides (2)</summary>
+                        <div class="pure-menu custom-restricted-width">
+                            <ul class="pure-menu-list">
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link">cmd:jq</a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link">so:libjq.so.1</a>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Install if (0)</summary>
+                        <div class="pure-menu custom-restricted-width">
+                            <ul class="pure-menu-list">
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link">None</a>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+	    <footer>Alpine Linux | <a href="https://alpinelinux.org/privacy-policy.html">Privacy Policy</a> | <a href="https://gitlab.alpinelinux.org/alpine/infra/apkbrowser">Apkbrowser Project</a></footer>
+        </div>
+    </body>
+</html>

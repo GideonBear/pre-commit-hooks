@@ -145,13 +145,14 @@ If you want `bumpsync` to work locally, set `always_run: true`.
 
 ## `docker-apt-renovate`
 
-Helps with pinning apt packages in Dockerfiles, and bumping them with Renovate. Use with the following Renovate
-configuration:
+Helps with pinning Debian (apt) or Alpine (apk) packages in Dockerfiles, and bumping them with Renovate. Use with the
+following Renovate configuration:
 
 ```json5
 {
     $schema: "https://docs.renovatebot.com/renovate-schema.json",
     customManagers: [
+        // Debian
         {
             customType: "regex",
             managerFilePatterns: [
@@ -162,6 +163,17 @@ configuration:
             ],
             registryUrlTemplate: "https://deb.debian.org/debian?suite={{#if suite }}{{suite}}{{else}}stable{{/if}}&components=main,contrib,non-free&binaryArch=amd64",
             datasourceTemplate: "deb",
+        },
+        // Alpine
+        {
+            "customType": "regex",
+            "managerFilePatterns": [
+                "/^Dockerfile$/"
+            ],
+            "matchStrings": [
+                "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\sENV .*?_VERSION=\"(?<currentValue>.*)\"\\s"
+            ],
+            "versioningTemplate": "loose",
         },
     ],
 }

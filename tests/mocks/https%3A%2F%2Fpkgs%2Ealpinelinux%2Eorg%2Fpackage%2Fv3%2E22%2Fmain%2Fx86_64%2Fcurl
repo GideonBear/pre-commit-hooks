@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>curl - Alpine Linux packages</title>
+        <link rel="stylesheet" href="/static/css/pure-min.css">
+        <link rel="stylesheet" href="/static/css/grids-responsive-min.css">
+        <link rel="stylesheet" href="/static/css/hint.min.css">
+        <link rel="stylesheet" href="/static/css/style.css">
+        <link rel="shortcut icon" href="/static/favicon.ico">
+    </head>
+    <body>
+        <div id="wrapper">
+            <header class="pure-g" id="header">
+                <div class="pure-u-1 pure-u-lg-4-24">
+                    <div class="logo">
+                        <a href="/"><img src="/static/alpinelinux-logo.svg" class="pure-img" alt=""/></a>
+                    </div>
+                </div>
+                <input type="checkbox" id="menu-toggle-cb">
+                <label id="menu-toggle" for="menu-toggle-cb" onclick>
+                    <s class="bar"></s>
+                    <s class="bar"></s>
+                    <s class="bar"></s>
+                </label>
+                <div class="pure-u-1 pure-u-lg-20-24 box-relative menu-wrapper">
+                    <nav class="pure-menu pure-menu-horizontal menu-local">
+                        <ul class="pure-menu-list">
+                            <li class="pure-menu-item"><a href="/packages" class="pure-menu-link">Packages</a></li>
+                            <li class="pure-menu-item"><a href="/contents" class="pure-menu-link">Contents</a></li>
+                            
+                                <li class="pure-menu-item"><a href="/flagged" class="pure-menu-link">Flagged</a></li>
+                                <li class="pure-menu-item"><a href="/flagging" class="pure-menu-link">How to flag</a></li>
+                            
+                        </ul>
+                    </nav>
+                    <nav class="pure-menu pure-menu-horizontal menu-external">
+                        <ul class="pure-menu-list">
+                            
+                            <li class="pure-menu-item">
+                                <a href="https://wiki.alpinelinux.org/" class="pure-menu-link">wiki</a>
+                            </li>
+                            
+                            <li class="pure-menu-item">
+                                <a href="https://mirrors.alpinelinux.org/" class="pure-menu-link">mirrors</a>
+                            </li>
+                            
+                            <li class="pure-menu-item">
+                                <a href="https://gitlab.alpinelinux.org/" class="pure-menu-link">gitlab</a>
+                            </li>
+                            
+                            <li class="pure-menu-item">
+                                <a href="https://git.alpinelinux.org/" class="pure-menu-link">git</a>
+                            </li>
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            
+    <main id="package">
+        <div class="grid-head">Package details</div>
+        <div class="grid-body">
+            <div class="pure-g">
+                <div class="pure-u-1 pure-u-lg-15-24">
+                    <div class="table-responsive">
+                        <table class="pure-table pure-table-striped" id="package">
+                            <tr>
+                                <th class="header">Package</th>
+                                <td>curl</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Version</th>
+                                <td>
+                                
+                                    <strong>8.14.1-r2</strong>
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="header">Description</th>
+                                <td>URL retrival utility and library</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Project</th>
+                                <td><a href="https://curl.se/">https://curl.se/</a></td>
+                            </tr>
+                            <tr>
+                                <th class="header">License</th>
+                                <td>curl</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Branch</th>
+                                <td>v3.22</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Repository</th>
+                                <td>main</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Architecture</th>
+                                <td>x86_64</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Size</th>
+                                <td>162.0KiB</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Installed size</th>
+                                <td>260.6KiB</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Origin</th>
+                                <td>
+                                    <a href="/package/v3.22/main/x86_64/curl">
+                                        curl
+                                    </a></td>
+                            </tr>
+                            <tr>
+                                <th class="header">Maintainer</th>
+                                <td>fossdd</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Build time</th>
+                                <td>2025-10-02 16:17:30</td>
+                            </tr>
+                            <tr>
+                                <th class="header">Commit</th>
+                                <td><a href="https://gitlab.alpinelinux.org/alpine/aports/-/commit/13c653cc49d9ba3c47da59b415dc3aaa33d38fd6">13c653cc49d9ba3c47da59b415dc3aaa33d38fd6</a></td>
+                            </tr>
+			    </tr>
+			    <th class="header">Merge request</th>
+				
+				<td>N/A</a>
+				
+                            <tr>
+                                <th class="header">Git repository</th>
+                                <td><a href="https://gitlab.alpinelinux.org/alpine/aports/-/tree/3.22-stable/main/curl">Git repository</a></td>
+                            </tr>
+                            <tr>
+                                <th class="header">Build log</th>
+                                <td><a href="https://build.alpinelinux.org/buildlogs/build-3-22-x86_64/main/curl/curl-8.14.1-r2.log">Build log</a></td>
+                            </tr>
+                            <tr>
+                                <th class="header">Issues</th>
+                                <td><a href="https://gitlab.alpinelinux.org/alpine/aports/-/issues/?search=curl">Open packaging issues</a></td>
+                            </tr>
+                            <tr>
+                                <th class="header">Contents</th>
+                                <td>
+                                    <a href="/contents?name=curl&repo=main&branch=v3.22&arch=x86_64">
+                                        Contents of package
+                                    </a></td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                        <div class="flag-button">
+                            <a class="pure-button" href="/flagging">Flag</a>
+                        </div>
+                    
+                </div>
+                <div class="pure-u-1 pure-u-lg-3-24"></div>
+                <div class="pure-u-1 pure-u-lg-6-24 multi-fields">
+                    <details>
+                        <summary>Depends (4)</summary>
+                        <div class="pure-menu custom-restricted-width">
+                            <ul class="pure-menu-list">
+                                
+                                    <li class="pure-menu-item">
+                                        
+                                            <a class="pure-menu-link"
+                                               href="/package/v3.22/main/x86_64/libcurl">
+                                                libcurl
+                                            </a>
+                                        
+                                   </li>
+                                
+                                    <li class="pure-menu-item">
+                                        
+                                            <a class="pure-menu-link"
+                                               href="/package/v3.22/main/x86_64/musl">
+                                                so:libc.musl-x86_64.so.1
+                                            </a>
+                                        
+                                   </li>
+                                
+                                    <li class="pure-menu-item">
+                                        
+                                            <a class="pure-menu-link"
+                                               href="/package/v3.22/main/x86_64/libcurl">
+                                                so:libcurl.so.4
+                                            </a>
+                                        
+                                   </li>
+                                
+                                    <li class="pure-menu-item">
+                                        
+                                            <a class="pure-menu-link"
+                                               href="/package/v3.22/main/x86_64/zlib">
+                                                so:libz.so.1
+                                            </a>
+                                        
+                                   </li>
+                                
+                            </ul>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Required by (33)</summary>
+                        <div class="pure-menu custom-restricted-width">
+                            <ul class="pure-menu-list">
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/acme.sh">
+                                            acme.sh
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/asn">
+                                            asn
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/cabal">
+                                            cabal
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/cesnet-tcs-cli">
+                                            cesnet-tcs-cli
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/curlie">
+                                            curlie
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/ddclient">
+                                            ddclient
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/dns-root-hints">
+                                            dns-root-hints
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/dpaste">
+                                            dpaste
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/emacs-lab">
+                                            emacs-lab
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/emacs-plz">
+                                            emacs-plz
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/git-annex">
+                                            git-annex
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/ix">
+                                            ix
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/kodi">
+                                            kodi
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/libmaxminddb">
+                                            libmaxminddb
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/luarocks">
+                                            luarocks
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/luarocks5.1">
+                                            luarocks5.1
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/luarocks5.2">
+                                            luarocks5.2
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/luarocks5.3">
+                                            luarocks5.3
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/luarocks5.4">
+                                            luarocks5.4
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/mepo">
+                                            mepo
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/opam">
+                                            opam
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/perl-http-tinyish-curl">
+                                            perl-http-tinyish-curl
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/rutorrent">
+                                            rutorrent
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/spamassassin">
+                                            spamassassin
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/sxmo-utils">
+                                            sxmo-utils
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/sxmo-utils-audio-bluetooth">
+                                            sxmo-utils-audio-bluetooth
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/tpaste">
+                                            tpaste
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/trafficserver9-utils">
+                                            trafficserver9-utils
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/unit-openrc">
+                                            unit-openrc
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/unit-tools">
+                                            unit-tools
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/xfce4-screenshooter-imgur">
+                                            xfce4-screenshooter-imgur
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/ytfzf">
+                                            ytfzf
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/community/x86_64/zef">
+                                            zef
+                                        </a>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Sub Packages (7)</summary>
+                        <div class="pure-menu custom-restricted-width">
+                            <ul class="pure-menu-list">
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/curl-dbg">
+                                            curl-dbg
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/curl-dev">
+                                            curl-dev
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/curl-doc">
+                                            curl-doc
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/curl-fish-completion">
+                                            curl-fish-completion
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/curl-static">
+                                            curl-static
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/curl-zsh-completion">
+                                            curl-zsh-completion
+                                        </a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link"
+                                           href="/package/v3.22/main/x86_64/libcurl">
+                                            libcurl
+                                        </a>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Provides (3)</summary>
+                        <div class="pure-menu custom-restricted-width">
+                            <ul class="pure-menu-list">
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link">wcurl</a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link">cmd:curl</a>
+                                    </li>
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link">cmd:wcurl</a>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    </details>
+                    <details>
+                        <summary>Install if (0)</summary>
+                        <div class="pure-menu custom-restricted-width">
+                            <ul class="pure-menu-list">
+                                
+                                    <li class="pure-menu-item">
+                                        <a class="pure-menu-link">None</a>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+	    <footer>Alpine Linux | <a href="https://alpinelinux.org/privacy-policy.html">Privacy Policy</a> | <a href="https://gitlab.alpinelinux.org/alpine/infra/apkbrowser">Apkbrowser Project</a></footer>
+        </div>
+    </body>
+</html>
