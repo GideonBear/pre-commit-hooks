@@ -88,7 +88,8 @@ class OsRelease(ABC):
             return None
         line = line.removeprefix(f"{cls.docker_image()}:")
         # Try to find the tag
-        match = re.match(r"[a-z0-9]+", line)
+        # Match until finding a @ (sha), or end of line (whitespace or end)
+        match = re.match(r"[^@\s$]+", line)
         if not match:
             logger.error(f"couldn't find tag for {cls.docker_image()} image")
             return None
@@ -155,6 +156,7 @@ class DebianRelease(OsRelease):
 
     @classmethod
     def from_docker_tag(cls, tag: str, *, logger: Logger) -> DebianRelease | None:
+        tag = re.split(r"[.-]", tag, maxsplit=1)[0]
         for release in cls.releases:
             if tag in {release.codename, release.numeric}:
                 return release
