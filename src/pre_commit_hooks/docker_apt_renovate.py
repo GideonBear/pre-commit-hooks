@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import re
-from copy import copy
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Self
+from functools import cache
+from re import Pattern
+from typing import TYPE_CHECKING, ClassVar, Self
 
 from pre_commit_hooks.common import line_replace, remove_ws_splitted_part
 from pre_commit_hooks.network import is_connected, request
@@ -25,33 +27,95 @@ def envilize(depname: str) -> str:
     return re.sub(r"[^a-z0-9]", "", depname).upper() + "_VERSION"
 
 
-def make_env_line(debian: DebianRelease, depname: str, *, logger: Logger) -> str:
-    version = get_version(debian, depname, logger=logger)
-    if version is None:
-        version = "<insert version here>"
-    return f'ENV {envilize(depname)}="{version}"\n'
+class OsRelease(ABC):
+    types: ClassVar[list[type[OsRelease]]] = []
+    # Intentionally violate types, this is an abstract classvar.
+    #  Subclasses should override this.
+    # noinspection PyClassVar
+    releases: ClassVar[Sequence[Self]] = None  # type: ignore[assignment]
 
+    def __init_subclass__(cls) -> None:
+        cls.types.append(cls)
+        super().__init_subclass__()
 
-def make_renovate_line(debian: DebianRelease, depname: str) -> str:
-    return f"# renovate: suite={debian} depName={depname}\n"
+    @abstractmethod
+    def __str__(self) -> str: ...
 
+    @abstractmethod
+    def identifier(self) -> str: ...
 
-def get_version(debian: DebianRelease, depname: str, *, logger: Logger) -> str | None:
-    if not is_connected():
-        msg = "This function is only supposed to be called in connected contexts"
-        raise Exception(msg)  # noqa: TRY002
+    def __eq__(self, other: object) -> bool:
+        # This does not exclude any subclasses, since the reverse is also tried
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.identifier() == other.identifier()
 
-    url = f"https://packages.debian.org/{debian.codename}/{depname}"
-    text = request(url, json=False)
-    # TODO(GideonBear): example gosu: 1.17-3 (what we currently get) isn't valid,
-    #  1.17-3+b4 is expected. API has the same problem.
-    match = re.search(
-        rf"Package: {depname} \((?P<version>{DEB_VER_RE})( and others)?\)", text
-    )
-    if not match:
-        logger.warn(f"getting version for package '{depname}' from url '{url}' failed")
+    def __hash__(self) -> int:
+        return hash(self.identifier())
+
+    @abstractmethod
+    def foreign_image_identifier(self) -> str: ...
+
+    # This could be a classvar, but that's hard
+    @staticmethod
+    @abstractmethod
+    def docker_image() -> str: ...
+
+    # This could be a classvar, but that's hard
+    @staticmethod
+    @abstractmethod
+    def install_command() -> str: ...
+
+    @classmethod
+    def from_from_line(cls, line: str, *, logger: Logger) -> OsRelease | None:
+        for type_ in cls.types:
+            ret = type_._from_from_line_single(line, logger=logger)  # noqa: SLF001
+            if ret:
+                return ret
+
         return None
-    return match.group("version")
+
+    @classmethod
+    def _from_from_line_single(cls, line: str, *, logger: Logger) -> OsRelease | None:
+        for release in cls.releases:
+            # For images like python-bookworm.
+            # When using debian:bookworm, that should also get caught by from_docker_tag
+            #  but is unintentionally also done here.
+            if release.foreign_image_identifier() in line:
+                return release
+
+        if not line.startswith(f"{cls.docker_image()}:"):
+            return None
+        line = line.removeprefix(f"{cls.docker_image()}:")
+        # Try to find the tag
+        match = re.match(r"[a-z0-9]+", line)
+        if not match:
+            logger.error(f"couldn't find tag for {cls.docker_image()} image")
+            return None
+        return cls.from_docker_tag(match.group(), logger=logger)
+
+    @classmethod
+    @abstractmethod
+    def from_docker_tag(cls, tag: str, *, logger: Logger) -> OsRelease | None: ...
+
+    def make_env_line(self, depname: str, *, logger: Logger) -> str:
+        version = self.get_version(depname, logger=logger)
+        if version is None:
+            version = "<insert version here>"
+        return f'ENV {envilize(depname)}="{version}"\n'
+
+    @abstractmethod
+    def make_renovate_line(self, depname: str) -> str: ...
+
+    @abstractmethod
+    def get_version(self, depname: str, *, logger: Logger) -> str | None: ...
+
+    @abstractmethod
+    def from_renovate(self, os: str, *, logger: Logger) -> OsRelease | None: ...
+
+    @staticmethod
+    @abstractmethod
+    def renovate_re() -> Pattern[str]: ...
 
 
 DEB_PAK_RE = r"[a-z0-9][a-z0-9+\-.]+"
@@ -60,40 +124,38 @@ DEB_PAK_PINNED_RE = rf"{DEB_PAK_RE}={DEB_VER_RE}"
 
 
 @dataclass
-class DebianRelease:
+class DebianRelease(OsRelease):
     numeric: str | None
     codename: str
     suite: str | None
-    priority: str | None = None
+
+    @staticmethod
+    def docker_image() -> str:
+        return "debian"
+
+    @staticmethod
+    def install_command() -> str:
+        return "apt-get install"
+
+    def identifier(self) -> str:
+        return self.codename
 
     def __str__(self) -> str:
-        return self.priority or self.codename
+        return self.codename
 
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, DebianRelease):
-            return NotImplemented
-        return self.codename == other.codename
+    def foreign_image_identifier(self) -> str:
+        return self.codename
 
-    def __hash__(self) -> int:
-        return hash(self.codename)
-
-    def with_priority(self, priority: str) -> Self:
-        new = copy(self)
-        new.priority = priority
-        return new
-
-    @classmethod
-    def stable(cls) -> DebianRelease:
-        for release in DEBIAN_RELEASES:
-            if release.suite == "stable":
-                return release.with_priority("stable")
-
-        msg = "Invalid DEBIAN_RELEASES, didn't find 'stable' suite"
-        raise AssertionError(msg)
+    @staticmethod
+    @cache
+    def renovate_re() -> Pattern[str]:
+        return re.compile(
+            r"#\s*renovate:\s*?suite=(?P<osRelease>.*?)\s*depName=(?P<depName>.*?)($|\s)"
+        )
 
     @classmethod
     def from_docker_tag(cls, tag: str, *, logger: Logger) -> DebianRelease | None:
-        for release in DEBIAN_RELEASES:
+        for release in cls.releases:
             if tag in {release.codename, release.numeric}:
                 return release
             if tag == release.suite:
@@ -120,11 +182,9 @@ class DebianRelease:
     @classmethod
     def from_renovate(cls, renovate: str, *, logger: Logger) -> DebianRelease | None:
         numeric_debian = None
-        for release in DEBIAN_RELEASES:
-            if renovate == release.codename:
+        for release in cls.releases:
+            if renovate in {release.codename, release.suite}:
                 return release
-            if renovate == release.suite:
-                return release.with_priority(renovate)
             if renovate == release.numeric:
                 numeric_debian = release
 
@@ -140,8 +200,30 @@ class DebianRelease:
         )
         return None
 
+    def make_renovate_line(self, depname: str) -> str:
+        return f"# renovate: suite={self} depName={depname}\n"
 
-DEBIAN_RELEASES: Sequence[DebianRelease] = (
+    def get_version(self, depname: str, *, logger: Logger) -> str | None:
+        if not is_connected():
+            msg = "This function is only supposed to be called in connected contexts"
+            raise Exception(msg)  # noqa: TRY002
+
+        url = f"https://packages.debian.org/{self.codename}/{depname}"
+        text = request(url, json=False)
+        # TODO(GideonBear): example gosu: 1.17-3 (what we currently get) isn't valid,
+        #  1.17-3+b4 is expected. API has the same problem.
+        match = re.search(
+            rf"Package: {depname} \((?P<version>{DEB_VER_RE})( and others)?\)", text
+        )
+        if not match:
+            logger.warn(
+                f"getting version for package '{depname}' from url '{url}' failed"
+            )
+            return None
+        return match.group("version")
+
+
+DebianRelease.releases = (
     DebianRelease(None, "sid", "unstable"),
     DebianRelease("15", "duke", None),
     DebianRelease("14", "forky", "testing"),
@@ -158,6 +240,14 @@ DEBIAN_RELEASES: Sequence[DebianRelease] = (
 )
 
 
+UNKNOWN_OS_MSG = (
+    "the hook doesn't know what version of Debian this is. "
+    "Use an image with the Debian codename in the tag (like python:3.14-trixie), "
+    "or put a comment after the `FROM` line, like "
+    "`# docker-apt-renovate: FROM debian:trixie`, to make the Debian version explicit."
+)
+
+
 class Processor(LineProcessor):
     remove_comments = False  # renovate comments
 
@@ -171,7 +261,7 @@ class Processor(LineProcessor):
         )
 
     def __init__(self, args: Args) -> None:
-        self.current_debian: DebianRelease | None = None
+        self.current_os: OsRelease | None = None
         self.in_run: Bookmark | None = None
         self.in_install = False
         self.bump_version_next: str | None = None
@@ -189,18 +279,15 @@ class Processor(LineProcessor):
                 return None
 
             # We checked when setting bump_version_next
-            assert self.current_debian is not None  # noqa: S101
+            assert self.current_os is not None  # noqa: S101
 
-            return make_env_line(self.current_debian, depname, logger=logger)
+            return self.current_os.make_env_line(depname, logger=logger)
 
         if line.startswith(("FROM", "# docker-apt-renovate: FROM")):
             self.process_line_from(line, logger)
             return None
 
-        if match := re.match(
-            r"#\s*renovate:\s*?suite=(?P<suite>.*?)\s*depName=(?P<depName>.*?)($|\s)",
-            line,
-        ):
+        if self.current_os and (match := self.current_os.renovate_re().match(line)):
             return self.process_line_renovate(orig_line, match, logger)
 
         if line.startswith("RUN"):
@@ -218,53 +305,33 @@ class Processor(LineProcessor):
         # If we find this comment, we can process the line like normal
         line = line.removeprefix("# docker-apt-renovate: ")
         line = line.removeprefix("FROM").strip()
-        for release in DEBIAN_RELEASES:
-            # For images like python-bookworm.
-            # When using debian:bookworm, that should also get caught by below but is
-            #  unintentionally also done here.
-            if release.codename in line:
-                self.current_debian = release
-                return
-
-        if not line.startswith("debian:"):
-            # If we don't know the version, assume stable so we have something at least
-            self.current_debian = DebianRelease.stable()
-            return
-        line = line.removeprefix("debian:")
-        # Try to find the tag
-        match = re.match(r"[a-z0-9]+", line)
-        if not match:
-            logger.error("couldn't find tag for debian image")
-            return
-        self.current_debian = DebianRelease.from_docker_tag(
-            match.group(), logger=logger
-        )
+        self.current_os = OsRelease.from_from_line(line, logger=logger)
 
     def process_line_renovate(
         self, orig_line: str, match: re.Match[str], logger: Logger
     ) -> str | None:
-        if self.current_debian is None:
-            logger.error("No FROM line")
+        if self.current_os is None:
+            logger.error(UNKNOWN_OS_MSG)
             return None
 
-        debian = match.group("suite")
+        os_s = match.group("osRelease")
         depname = match.group("depName")
 
-        debian = DebianRelease.from_renovate(debian, logger=logger)
-        if debian is None:
+        os = self.current_os.from_renovate(os_s, logger=logger)
+        if os is None:
             return None
-        if debian != self.current_debian:
+        if os != self.current_os:
             logger.error(
                 id="wrong-suite",
-                msg=f"suite set to `{debian}`, while FROM image suggests suite "
-                f"`{self.current_debian}`",
+                msg=f"suite set to `{os}`, while FROM image suggests suite "
+                f"`{self.current_os}`",
             )
             if is_connected():
                 self.bump_version_next = depname
                 return line_replace(
                     orig_line,
-                    debian.codename,
-                    self.current_debian.codename,
+                    os_s,
+                    str(self.current_os),
                     logger=logger,
                 )
 
@@ -286,27 +353,20 @@ class Processor(LineProcessor):
             # If we were in an install, it's ended now
             self.in_install = False
 
-        if not self.in_install and line.startswith("apt-get install"):
-            line = line.removeprefix("apt-get install").strip()
+        if self.current_os is None:
+            for os in OsRelease.types:
+                if line.startswith(os.install_command()):
+                    logger.error(UNKNOWN_OS_MSG)
+                    return None
+
+            return None
+
+        if not self.in_install and line.startswith(self.current_os.install_command()):
+            line = line.removeprefix(self.current_os.install_command()).strip()
             self.in_install = True
 
         if self.in_install:
             assert in_run is not None  # noqa: S101
-
-            if self.current_debian is None:
-                logger.error("No FROM line")
-                return None
-
-            # Kind of a hack
-            if self.current_debian.priority == "stable":
-                logger.warn(
-                    f"assuming Debian 'stable' (currently "
-                    f"'{self.current_debian.codename}'). Use an image with the Debian "
-                    f"codename in the tag (like python:3.14-bookworm), or put a "
-                    f"comment after the `FROM` line, like `# docker-apt-renovate: "
-                    f"FROM debian:{self.current_debian.codename}`, "
-                    f"to make the Debian version explicit."
-                )
 
             if line.startswith("#"):
                 return None
@@ -326,8 +386,8 @@ class Processor(LineProcessor):
 
                     if is_connected():
                         in_run.write(
-                            make_renovate_line(self.current_debian, arg)
-                            + make_env_line(self.current_debian, arg, logger=logger),
+                            self.current_os.make_renovate_line(arg)
+                            + self.current_os.make_env_line(arg, logger=logger),
                         )
 
                         replacement = f"{arg}=${{{envilize(arg)}}}"
@@ -345,7 +405,8 @@ class Processor(LineProcessor):
                 else:
                     logger.error(
                         id="unexpected-install-arg",
-                        msg=f"Unexpected argument to `apt install` found ('{arg}') "
+                        msg=f"Unexpected argument to "
+                        f"`{self.current_os.install_command()}` found ('{arg}') "
                         f"that is not a valid package name",
                     )
 
