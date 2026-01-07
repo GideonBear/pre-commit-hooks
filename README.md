@@ -17,7 +17,8 @@ Add the following to your `.pre-commit-config.yaml`:
 ## Python version support
 
 This project currently supports Python 3.12 and up. This requirement may be increased with a major version bump.
-These hooks are guaranteed to always work in [pre-commit.ci](https://pre-commit.ci).
+The Python version shipped with the latest stable Debian and latest LTS Ubuntu releases
+(currently 3.12 and 3.13 respectively) will always be supported.
 
 # Hooks
 
