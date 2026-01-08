@@ -167,14 +167,14 @@ following Renovate configuration:
         },
         // Alpine
         {
-            "customType": "regex",
-            "managerFilePatterns": [
-                "/^Dockerfile$/"
+            customType: "regex",
+            managerFilePatterns: [
+                "/^Dockerfile$/",
             ],
-            "matchStrings": [
-                "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\sENV .*?_VERSION=\"(?<currentValue>.*)\"\\s"
+            matchStrings: [
+                "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\sENV .*?_VERSION=\"(?<currentValue>.*)\"\\s",
             ],
-            "versioningTemplate": "loose",
+            versioningTemplate: "loose",
         },
     ],
 }
