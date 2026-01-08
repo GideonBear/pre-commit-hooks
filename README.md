@@ -172,7 +172,7 @@ following Renovate configuration:
                 "/^Dockerfile$/",
             ],
             matchStrings: [
-                "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\sENV .*?_VERSION=\"(?<currentValue>.*)\"\\s",
+                "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\sENV .*?_VERSION=\"(?<currentValue>.*)\"",
             ],
             versioningTemplate: "loose",
         },
