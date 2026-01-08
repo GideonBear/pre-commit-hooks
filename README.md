@@ -169,10 +169,10 @@ following Renovate configuration:
         {
             customType: "regex",
             managerFilePatterns: [
-                "/^Dockerfile$/",
+                "/Dockerfile$/",
             ],
             matchStrings: [
-                "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\sENV .*?_VERSION=\"(?<currentValue>.*)\"",
+                "#\\s*renovate:\\s*?datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\sENV .*?_VERSION=\"(?<currentValue>.*)\"",
             ],
             versioningTemplate: "loose",
         },
