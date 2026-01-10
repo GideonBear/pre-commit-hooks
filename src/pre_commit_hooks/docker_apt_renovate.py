@@ -247,6 +247,8 @@ class DebianRelease(OsRelease):
 
 DebianRelease.releases = (
     DebianRelease(None, "sid", "unstable"),
+    # Keep a single extra release, so the hook won't need an update immediately when you
+    #  update
     DebianRelease("15", "duke", None),
     DebianRelease("14", "forky", "testing"),
     DebianRelease("13", "trixie", "stable"),
@@ -302,7 +304,7 @@ class AlpineRelease(OsRelease):
             return cls("edge")
 
         if tag.count(".") == 0 and tag != "edge":
-            latest = cls.releases[1]  # First is edge, second is latest
+            latest = cls.releases[2]  # First is edge, second is buffer, third is latest
             logger.error(
                 id="dynamic-suite",
                 msg=f"using dynamic suite name ('{tag}'), which breaks this "
@@ -369,6 +371,9 @@ class AlpineRelease(OsRelease):
 
 AlpineRelease.releases = (
     AlpineRelease("edge"),
+    # Keep a single extra release, so the hook won't need an update immediately when you
+    #  update
+    AlpineRelease("3.24"),
     AlpineRelease("3.23"),
     AlpineRelease("3.22"),
     AlpineRelease("3.21"),
