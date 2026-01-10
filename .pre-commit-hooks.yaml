@@ -3,7 +3,7 @@
   description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
   entry: docker-image-pin
   language: python
-  #types_or: [yaml, dockerfile]  # This excludes things like `blah.Dockerfile`
+  # types_or: [yaml, dockerfile]  # This excludes things like `blah.Dockerfile`
   files: docker-compose\.ya?ml$|Dockerfile$
 
 - id: gha-pin
@@ -11,21 +11,21 @@
   description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
   entry: gha-pin
   language: python
-  types: [ yaml ]
+  types: [yaml]
 
 - id: shfuncdecfmt
   name: shfuncdecfmt
   description: Shell function declaration formatter
   entry: shfuncdecfmt
   language: python
-  types: [ shell ]
+  types: [shell]
 
 - id: set-euo-pipefail
   name: set-euo-pipefail
   description: Add `set -euo pipefail` to shell scripts
   entry: set-euo-pipefail
   language: python
-  types: [ shell ]
+  types: [shell]
 
 - id: pre-commit-additional-dependencies
   name: pre-commit-additional-dependencies
@@ -48,7 +48,7 @@
   entry: pre-commit-config-sections shell
   language: python
   pass_filenames: false
-  types: [ shell ]
+  types: [shell]
 
 - id: pre-commit-config-sections-python
   name: pre-commit-config.yaml sections (python)
@@ -56,7 +56,7 @@
   entry: pre-commit-config-sections python
   language: python
   pass_filenames: false
-  types: [ python ]
+  types: [python]
 
 - id: pre-commit-config-sections-docker
   name: pre-commit-config.yaml sections (docker)
@@ -94,11 +94,11 @@
   description: Simple version synchronizer
   entry: bumpsync
   language: python
-  types: [ text ]
+  types: [text]
 
 - id: docker-apt-renovate
   name: docker-apt-renovate
   description: Helps with pinning apt packages in Dockerfiles, and bumping them with Renovate
   entry: docker-apt-renovate
   language: python
-  types: [ dockerfile ]
+  types: [dockerfile]
