@@ -146,41 +146,29 @@ If you want `bumpsync` to work locally, set `always_run: true`.
 
 ## `docker-apt-renovate`
 
-Helps with pinning Debian (apt) or Alpine (apk) packages in Dockerfiles, and bumping them with Renovate. Use with the
-following Renovate configuration:
+Helps with pinning Debian (apt) or Alpine (apk) packages in Dockerfiles, and bumping them with Renovate.
+
+This repository contains Renovate presets with `customManagers` that work with `docker-apt-renovate`.
+These configs are derived from the Renovate docs
+([1](https://docs.renovatebot.com/modules/datasource/deb/#usage-example), [2](https://docs.renovatebot.com/modules/datasource/repology/#description)).
+Available presets:
 
 ```json5
 {
-    $schema: "https://docs.renovatebot.com/renovate-schema.json",
-    customManagers: [
-        // Debian
-        {
-            customType: "regex",
-            managerFilePatterns: [
-                "/Dockerfile$/",
-            ],
-            matchStrings: [
-                "#\\s*renovate:\\s*?(suite=(?<suite>.*?))?\\s*depName=(?<depName>.*?)?\\sENV .*?_VERSION=\"(?<currentValue>.*)\"",
-            ],
-            registryUrlTemplate: "https://deb.debian.org/debian?suite={{#if suite }}{{suite}}{{else}}stable{{/if}}&components=main,contrib,non-free&binaryArch=amd64",
-            datasourceTemplate: "deb",
-        },
-        // Alpine
-        {
-            customType: "regex",
-            managerFilePatterns: [
-                "/Dockerfile$/",
-            ],
-            matchStrings: [
-                "#\\s*renovate:\\s*?datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\sENV .*?_VERSION=\"(?<currentValue>.*)\"",
-            ],
-            versioningTemplate: "loose",
-        },
+    "extends": [
+        // Debian and Alpine, and any future package managers supported by `docker-apt-renovate`
+        "github>GideonBear/pre-commit-hooks//renovate/all.json5",
+        // Debian only
+        "github>GideonBear/pre-commit-hooks//renovate/debian.json5",
+        // Alpine only
+        "github>GideonBear/pre-commit-hooks//renovate/alpine.json5",
     ],
 }
 ```
 
-For more information, see [the Renovate docs](https://docs.renovatebot.com/modules/datasource/deb/#usage-example)
+If you don't want to use presets, you can copy the configuration
+from [those files](https://github.com/GideonBear/pre-commit-hooks/tree/main/renovate) as well. You can edit the managers
+as you wish, but keep in mind `docker-apt-renovate` is only guaranteed to work with these presets.
 
 ### Command line arguments
 
