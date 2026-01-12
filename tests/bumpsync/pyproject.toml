@@ -51,7 +51,6 @@ format.preview = true
 lint.select = [ "ALL" ]
 
 lint.ignore = [
-    "RUF067", # I disagree
     "COM812",  # Conflict with formatter
     "CPY",     # No copyright statements
     "D1",      # Docstrings should not be enforced by default
@@ -61,6 +60,7 @@ lint.ignore = [
     "G004",    # (project) We don't use `logging`
     "G010",    # (project) We don't use `logging`
     "PLW2901", # (project) Re-assignments are really convenient here
+    "RUF067",  # I disagree
     "S404",    # Uses of subprocess are rejected, no need to reject the imports as well
     "T201",    # (project) Print is allowed
     "TD003",   # (project)
