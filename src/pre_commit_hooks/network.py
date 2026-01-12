@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import socket
-import subprocess
 from functools import cache
-from subprocess import CalledProcessError
 from typing import Any, Literal, overload
 
+import ghtoken
 import requests
 from colorama import Fore
 
@@ -67,17 +66,6 @@ def request(  # type: ignore[explicit-any, misc]
 @cache
 def gh_token() -> str | None:
     try:
-        return (
-            subprocess
-            .run(
-                ["gh", "auth", "token"],  # noqa: S607
-                check=True,
-                stdout=subprocess.PIPE,
-            )
-            .stdout.decode()
-            .strip()
-        )
-    except FileNotFoundError:
-        return None
-    except CalledProcessError:
+        return ghtoken.get_ghtoken()
+    except ghtoken.GHTokenNotFound:
         return None
