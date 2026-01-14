@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import re
 import shutil
 import tempfile
 import urllib.parse
@@ -33,10 +32,6 @@ if TYPE_CHECKING:
     from types import ModuleType
 
 
-def remove_color(s: str) -> str:
-    return re.sub(r"\x1b\[[0-9;]*m", "", s)
-
-
 def fs_url_decode(s: str) -> str:
     return urllib.parse.unquote(s)
 
@@ -48,7 +43,7 @@ class ATestLogger(Logger, ABC):
 
     def log_no_info(self, msg: str) -> None:
         super().log_no_info(msg)
-        self._logs.append((self.file, self.lnr, remove_color(msg)))
+        self._logs.append((self.file, self.lnr, msg))
 
 
 def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATestLogger]:

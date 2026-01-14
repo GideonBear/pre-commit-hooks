@@ -3,17 +3,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Self, overload
 
-import colorama
-from colorama import Fore
+from termcolor import colored
 
 from pre_commit_hooks.default_allows import default_allows, infos
 
 
 if TYPE_CHECKING:
     from pathlib import Path
-
-
-colorama.init()
 
 
 @dataclass
@@ -68,7 +64,7 @@ class Logger:
     def log(self, msg: str) -> None:
         self.log_no_info(msg)
         if self.info is not None:
-            self.log_no_info(f"{Fore.LIGHTBLUE_EX}Info{Fore.RESET}: {self.info}")
+            self.log_no_info(colored("Info", "light_blue") + f": {self.info}")
 
     # It's allowed to pass a string in here, which means some errors
     #  will not have ids. But `allow-all` will still block these, as
@@ -101,12 +97,12 @@ class Logger:
         if isinstance(error, Error) and error.id == self.allow:
             return False
 
-        self.log(f"{Fore.LIGHTRED_EX}Error{Fore.RESET}: {error}")
+        self.log(colored("Error", "light_red") + f": {error}")
         self.retval |= 1
         return True
 
     def warn(self, msg: str) -> None:
-        self.log(f"{Fore.YELLOW}Warning{Fore.RESET}: {msg}")
+        self.log(colored("Warning", "yellow") + f": {msg}")
 
 
 @dataclass

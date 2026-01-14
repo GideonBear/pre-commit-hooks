@@ -123,11 +123,11 @@ repos:
         args: [.] # Removes default `--ignore-missing-imports`
         additional_dependencies:
           - types-requests
-          - types-colorama
           - packaging==25.0
           - tomlkit==0.13.3
           - ruamel-yaml==0.19.1
           - ghtoken==0.1.2
+          - termcolor==3.3.0
 
   - repo: https://github.com/tox-dev/pyproject-fmt
     rev: v2.11.1
