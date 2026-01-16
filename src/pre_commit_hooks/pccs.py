@@ -2,20 +2,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ruamel.yaml import YAML
-
 from pre_commit_hooks.processors import FileProcessor
+from pre_commit_hooks.yaml import yaml
 
 
 if TYPE_CHECKING:
     from pathlib import Path
 
     from pre_commit_hooks.logger import Logger
-
-
-yaml = YAML()
-yaml.preserve_quotes = True
-yaml.indent(mapping=2, sequence=4, offset=2)
 
 
 class Processor(FileProcessor):
