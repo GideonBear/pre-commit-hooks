@@ -39,15 +39,7 @@ class Processor(FileProcessor):
                 pos = 0
             data.insert(pos, "ci", {"skip": to_skip})
         else:
-            pos = keys.index("ci") + 1
-            key = next(iter(data["ci"].keys()))
-            data["ci"].ca.items[key] = None
             data["ci"]["skip"] = to_skip
-
-        key_after = keys[pos]
-        data.yaml_set_comment_before_after_key(  # adds a blank line after
-            key_after, before="\n"
-        )
 
         with file.open("wb") as f:
             yaml.dump(data, f)

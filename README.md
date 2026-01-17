@@ -87,7 +87,10 @@ Syncs any `additional_dependencies` in your `.pre-commit-config.yaml` with `uv.l
 
 ## `pre-commit-ci-skip`
 
-Adds `language: system` hooks to `ci: skip:` automatically
+Adds `language: system` hooks to `ci: skip:` automatically.
+
+This hook messes up the formatting of `.pre-commit-config.yaml`. It's recommended to use `pre-commit-config-fmt` after
+this hook.
 
 ## `pre-commit-config-sections-*`
 
@@ -173,3 +176,9 @@ as you wish, but keep in mind `docker-apt-renovate` is only guaranteed to work w
 ### Command line arguments
 
 - `--indent` (default `4`): set the amount of spaces you want to indent your dockerfile with.
+
+## `pre-commit-config-fmt`
+
+Formats your `.pre-commit-config.yaml` with sensible newlines. If you use any other hooks that modify
+`.pre-commit-config.yaml`, like `pre-commit-additional-dependencies` or `pre-commit-ci-skip`, make sure
+to put `pre-commit-config-fmt` after them.

@@ -1,0 +1,21 @@
+minimum_pre_commit_version: '4.2.0'
+
+
+repos:
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.19.0
+    hooks:
+      - id: mypy
+        pass_filenames: false # Check all files to be thorough
+        args: [.] # Removes default `--ignore-missing-imports`
+      - id: test
+
+      - id: test
+
+  - repo: https://github.com/owner/repo
+  - repo: https://github.com/owner/repo
+
+  - repo: https://github.com/owner/repo
+
+
+  - repo: https://github.com/owner/repo

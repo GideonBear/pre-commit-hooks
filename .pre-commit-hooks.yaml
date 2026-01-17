@@ -102,3 +102,10 @@
   entry: docker-apt-renovate
   language: python
   types: [dockerfile]
+
+- id: pre-commit-config-fmt
+  name: pre-commit-config-fmt
+  description: Formats your .pre-commit-config.yaml with sensible newlines.
+  entry: pre-commit-config-fmt
+  language: python
+  files: ^.pre-commit-config.yaml$

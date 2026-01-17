@@ -18,6 +18,7 @@ from pre_commit_hooks import (
     docker_apt_renovate,
     gha,
     pcad,
+    pccf,
     pccs,
     requires_python,
     sections,
@@ -364,6 +365,42 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
             ["errors.Dockerfile"],
             False,
             1,
+        ),
+        (pccf, "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 0),  # *
+        (pccf, "basic-out.yaml", None, ["basic-out.yaml"], False, 0),
+        (
+            pccf,
+            "pccs-basic.yaml",
+            "pccs-basic-out.yaml",
+            ["pccs-basic.yaml"],
+            False,
+            0,  # *
+        ),
+        (pccf, "pccs-basic-out.yaml", None, ["pccs-basic-out.yaml"], False, 0),
+        (
+            pccf,
+            "pccs-partial.yaml",
+            "pccs-partial-out.yaml",
+            ["pccs-partial.yaml"],
+            False,
+            0,  # *
+        ),
+        (pccf, "pccs-partial-out.yaml", None, ["pccs-partial-out.yaml"], False, 0),
+        (
+            pccf,
+            "pccs-basic-existing-ci.yaml",
+            "pccs-basic-existing-ci-out.yaml",
+            ["pccs-basic-existing-ci.yaml"],
+            False,
+            0,  # *
+        ),
+        (
+            pccf,
+            "pccs-basic-existing-ci-out.yaml",
+            None,
+            ["pccs-basic-existing-ci-out.yaml"],
+            False,
+            0,
         ),
     ],
 )

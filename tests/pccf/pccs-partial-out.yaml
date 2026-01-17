@@ -4,6 +4,7 @@ ci:
   skip:
     - foo
     - bar
+
 repos:
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.19.0
@@ -24,5 +25,5 @@ repos:
         language: system
         entry: foo
       - id: bar
-        language: unsupported
+        language: system
         entry: bar
