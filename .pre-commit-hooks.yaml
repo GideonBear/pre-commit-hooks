@@ -8,7 +8,7 @@
 
 - id: gha-pin
   name: gha-pin
-  description: Checks if Docker images are properly pinned in docker-compose.yml and Dockerfile files
+  description: Checks if GitHub Actions are properly pinned
   entry: gha-pin
   language: python
   types: [yaml]
