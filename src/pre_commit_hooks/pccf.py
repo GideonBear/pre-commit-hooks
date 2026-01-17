@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class Processor(FileContentProcessor):
-    def process_file_internal(  # noqa: C901, PLR6301
+    def process_file_internal(  # noqa: C901, PLR0912, PLR6301
         self,
         content: str,
         *,
@@ -34,6 +34,12 @@ class Processor(FileContentProcessor):
                     if (not line.startswith("  ")) and (line != "\n"):
                         break
                     line = next(it)
+                    # Any comment followed by a newline is a separator,
+                    #  and should be kept intact
+                    if line.strip().startswith("#") and it.peek(None) == "\n":
+                        output += line
+                        output += next(it)
+                        continue
                     if line == "\n":
                         continue
                     output += line
