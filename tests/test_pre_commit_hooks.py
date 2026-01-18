@@ -511,6 +511,10 @@ def test_all_test_files_are_used() -> None:
         # Any tests whose output is not clean
         here / "gha/workflow-out.yml",
     }
+
+    for file in allow_unused_files:
+        assert file.exists()
+
     used_files = set()
     used_files.update(
         inp for _hook_module, inp, _out, _args, _offline, _retval in test_cases
