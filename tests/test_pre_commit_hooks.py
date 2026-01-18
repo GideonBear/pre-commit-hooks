@@ -531,5 +531,7 @@ def test_all_test_files_are_used() -> None:
     bad_files = unused_files - used_files - allow_unused_files
     if bad_files:
         pytest.fail(
-            f"files {', '.join(map(str, bad_files))} are not used in test parameters"
+            f"files {', '.join(map(str, bad_files))} are not used in test parameters. "
+            f"If these are output files, try adding a test verifying putting the output files back in "
+            f"leaves them unchanged and returns exit code 0."
         )
