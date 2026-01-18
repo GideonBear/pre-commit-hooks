@@ -5,6 +5,7 @@ import tempfile
 import urllib.parse
 from abc import ABC, abstractmethod
 from contextlib import nullcontext
+from itertools import starmap
 from pathlib import Path
 from typing import TYPE_CHECKING
 from unittest.mock import patch
@@ -55,354 +56,386 @@ def make_test_logger(logs: MutableSequence[tuple[Path, int, str]]) -> type[ATest
 
 
 # *: changed files, relies on pre-commit to see modifications
+test_cases_raw = [
+    (shfuncdecfmt, "readme.sh", "readme-out.sh", ["readme.sh"], False, 0),  # *
+    (shfuncdecfmt, "readme-out.sh", None, ["readme-out.sh"], False, 0),
+    (set_euo_pipefail, "bad.sh", None, ["bad.sh"], False, 1),
+    (set_euo_pipefail, "good.sh", None, ["good.sh"], False, 0),
+    (
+        pcad,
+        "basic.yaml",
+        "basic-out.yaml",
+        ["--configs", "basic.yaml", "--lockfile", "basic-uv.lock"],
+        False,
+        1,
+    ),
+    (
+        pcad,
+        "basic-out.yaml",
+        None,
+        ["--configs", "basic-out.yaml", "--lockfile", "basic-uv.lock"],
+        False,
+        0,
+    ),
+    (pccs, "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 0),  # *
+    (pccs, "basic-out.yaml", None, ["basic-out.yaml"], False, 0),
+    (pccs, "partial.yaml", "partial-out.yaml", ["partial.yaml"], False, 0),  # *
+    (pccs, "partial-out.yaml", None, ["partial-out.yaml"], False, 0),
+    (
+        pccs,
+        "basic-existing-ci.yaml",
+        "basic-existing-ci-out.yaml",
+        ["basic-existing-ci.yaml"],
+        False,
+        0,  # *
+    ),
+    (
+        pccs,
+        "basic-existing-ci-out.yaml",
+        None,
+        ["basic-existing-ci-out.yaml"],
+        False,
+        0,
+    ),
+    (pccs, "good.yaml", None, ["good.yaml"], False, 0),
+    (docker, "docker-compose.yml", None, ["docker-compose.yml"], False, 1),
+    (docker, "Dockerfile", None, ["Dockerfile"], False, 1),
+    # One of the few test outputs that doesn't pass
+    (gha, "workflow.yml", "workflow-out.yml", ["workflow.yml"], False, 1),
+    (gha, "workflow-offline.yml", None, ["workflow-offline.yml"], True, 1),
+    (sections, "bad.yaml", None, ["python", "--configs", "bad.yaml"], False, 1),
+    (sections, "good.yaml", None, ["python", "--configs", "good.yaml"], False, 0),
+    (requires_python, "bad.toml", "bad-out.toml", ["bad.toml"], False, 0),  # *
+    (requires_python, "bad-out.toml", None, ["bad-out.toml"], False, 0),
+    (requires_python, "good.toml", None, ["good.toml"], False, 0),
+    (
+        requires_python,
+        "invalid-major.toml",
+        None,
+        ["invalid-major.toml"],
+        False,
+        0,
+    ),
+    (requires_python, "none.toml", None, ["none.toml"], False, 1),
+    (
+        requires_python,
+        "uv-lock.toml",
+        "uv-lock-out.toml",
+        ["uv-lock.toml"],
+        False,
+        0,  # *
+    ),
+    (
+        requires_python,
+        "uv-lock-out.toml",
+        None,
+        ["uv-lock-out.toml"],
+        False,
+        0,
+    ),
+    (
+        bumpsync,
+        "pre-commit.md",
+        "pre-commit-out.md",
+        ["pre-commit.md", "--pyproject", "pyproject.toml"],
+        False,
+        0,  # *
+    ),
+    (
+        bumpsync,
+        "pre-commit-out.md",
+        None,
+        ["pre-commit-out.md", "--pyproject", "pyproject.toml"],
+        False,
+        0,
+    ),
+    (
+        bumpsync,
+        "single_line.py",
+        "single_line-out.py",
+        ["single_line.py", "--pyproject", "pyproject.toml"],
+        False,
+        0,  # *
+    ),
+    (
+        bumpsync,
+        "single_line-out.py",
+        None,
+        ["single_line-out.py", "--pyproject", "pyproject.toml"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "debian.Dockerfile",
+        "debian-out.Dockerfile",
+        ["debian.Dockerfile"],
+        False,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-out.Dockerfile",
+        None,
+        ["debian-out.Dockerfile"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "debian.Dockerfile",
+        None,
+        ["debian.Dockerfile"],
+        True,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "alpine.Dockerfile",
+        "alpine-out.Dockerfile",
+        ["alpine.Dockerfile"],
+        False,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "alpine-out.Dockerfile",
+        None,
+        ["alpine-out.Dockerfile"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "alpine.Dockerfile",
+        None,
+        ["alpine.Dockerfile"],
+        True,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-extra-debian.Dockerfile",
+        "debian-extra-debian-out.Dockerfile",
+        ["debian-extra-debian.Dockerfile"],
+        False,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-extra-debian-out.Dockerfile",
+        None,
+        ["debian-extra-debian-out.Dockerfile"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "alpine-extra-debian.Dockerfile",
+        "alpine-extra-debian-out.Dockerfile",
+        ["alpine-extra-debian.Dockerfile"],
+        False,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "alpine-extra-debian-out.Dockerfile",
+        None,
+        ["alpine-extra-debian-out.Dockerfile"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-custom-debian.Dockerfile",
+        "debian-custom-debian-out.Dockerfile",
+        ["debian-custom-debian.Dockerfile"],
+        False,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-custom-debian-out.Dockerfile",
+        None,
+        ["debian-custom-debian-out.Dockerfile"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "alpine-custom-debian.Dockerfile",
+        "alpine-custom-debian-out.Dockerfile",
+        ["alpine-custom-debian.Dockerfile"],
+        False,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "alpine-custom-debian-out.Dockerfile",
+        None,
+        ["alpine-custom-debian-out.Dockerfile"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-default-debian.Dockerfile",
+        None,
+        ["debian-default-debian.Dockerfile"],
+        False,
+        1,
+    ),
+    # No out-check because of the warning
+    (
+        docker_apt_renovate,
+        "debian-add.Dockerfile",
+        "debian-add-out.Dockerfile",
+        ["debian-add.Dockerfile"],
+        False,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-add-out.Dockerfile",
+        None,
+        ["debian-add-out.Dockerfile"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-update-suite.Dockerfile",
+        "debian-update-suite-out.Dockerfile",
+        ["debian-update-suite.Dockerfile"],
+        False,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-update-suite-out.Dockerfile",
+        None,
+        ["debian-update-suite-out.Dockerfile"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-update-suite.Dockerfile",
+        None,
+        ["debian-update-suite.Dockerfile"],
+        True,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "alpine-update-suite.Dockerfile",
+        "alpine-update-suite-out.Dockerfile",
+        ["alpine-update-suite.Dockerfile"],
+        False,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "alpine-update-suite-out.Dockerfile",
+        None,
+        ["alpine-update-suite-out.Dockerfile"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "alpine-update-suite.Dockerfile",
+        None,
+        ["alpine-update-suite.Dockerfile"],
+        True,
+        1,
+    ),
+    (
+        docker_apt_renovate,
+        "debian-no-update.Dockerfile",
+        None,
+        ["debian-no-update.Dockerfile"],
+        False,
+        0,
+    ),
+    (
+        docker_apt_renovate,
+        "errors.Dockerfile",
+        None,
+        ["errors.Dockerfile"],
+        False,
+        1,
+    ),
+    (pccf, "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 0),  # *
+    (pccf, "basic-out.yaml", None, ["basic-out.yaml"], False, 0),
+    (
+        pccf,
+        "pccs-basic.yaml",
+        "pccs-basic-out.yaml",
+        ["pccs-basic.yaml"],
+        False,
+        0,  # *
+    ),
+    (pccf, "pccs-basic-out.yaml", None, ["pccs-basic-out.yaml"], False, 0),
+    (
+        pccf,
+        "pccs-partial.yaml",
+        "pccs-partial-out.yaml",
+        ["pccs-partial.yaml"],
+        False,
+        0,  # *
+    ),
+    (pccf, "pccs-partial-out.yaml", None, ["pccs-partial-out.yaml"], False, 0),
+    (
+        pccf,
+        "pccs-basic-existing-ci.yaml",
+        "pccs-basic-existing-ci-out.yaml",
+        ["pccs-basic-existing-ci.yaml"],
+        False,
+        0,  # *
+    ),
+    (
+        pccf,
+        "pccs-basic-existing-ci-out.yaml",
+        None,
+        ["pccs-basic-existing-ci-out.yaml"],
+        False,
+        0,
+    ),
+]
+
+
+def process_test_case(  # noqa: PLR0913, PLR0917
+    hook_module: ModuleType,
+    inp: str,
+    out: str | None,
+    args: Sequence[str],
+    offline: bool,
+    retval: int,
+) -> tuple[ModuleType, Path, Path | None, Sequence[str], bool, int]:
+    # Sanity check for accidents in parametrize
+    assert inp in args
+
+    hook = hook_module.__name__.split(".")[1].replace("_", "-")
+    hookdir = Path(__file__).parent / hook
+
+    # Replace inp and out
+    inp = hookdir / inp
+    if out:
+        out = hookdir / out
+
+    # Replace args
+    args = [str(hookdir / arg) if (hookdir / arg).exists() else arg for arg in args]
+
+    return hook_module, inp, out, args, offline, retval
+
+
+test_cases = list(starmap(process_test_case, test_cases_raw))
+
+
 @pytest.mark.parametrize(
     ("hook_module", "inp", "out", "args", "offline", "retval"),
-    [
-        (shfuncdecfmt, "readme.sh", "readme-out.sh", ["readme.sh"], False, 0),  # *
-        (shfuncdecfmt, "readme-out.sh", None, ["readme-out.sh"], False, 0),
-        (set_euo_pipefail, "bad.sh", None, ["bad.sh"], False, 1),
-        (set_euo_pipefail, "good.sh", None, ["good.sh"], False, 0),
-        (
-            pcad,
-            "basic.yaml",
-            "basic-out.yaml",
-            ["--configs", "basic.yaml", "--lockfile", "basic-uv.lock"],
-            False,
-            1,
-        ),
-        (
-            pcad,
-            "basic-out.yaml",
-            None,
-            ["--configs", "basic-out.yaml", "--lockfile", "basic-uv.lock"],
-            False,
-            0,
-        ),
-        (pccs, "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 0),  # *
-        (pccs, "basic-out.yaml", None, ["basic-out.yaml"], False, 0),
-        (pccs, "partial.yaml", "partial-out.yaml", ["partial.yaml"], False, 0),  # *
-        (pccs, "partial-out.yaml", None, ["partial-out.yaml"], False, 0),
-        (
-            pccs,
-            "basic-existing-ci.yaml",
-            "basic-existing-ci-out.yaml",
-            ["basic-existing-ci.yaml"],
-            False,
-            0,  # *
-        ),
-        (
-            pccs,
-            "basic-existing-ci-out.yaml",
-            None,
-            ["basic-existing-ci-out.yaml"],
-            False,
-            0,
-        ),
-        (pccs, "good.yaml", None, ["good.yaml"], False, 0),
-        (docker, "docker-compose.yml", None, ["docker-compose.yml"], False, 1),
-        (docker, "Dockerfile", None, ["Dockerfile"], False, 1),
-        (gha, "workflow.yml", "workflow-out.yml", ["workflow.yml"], False, 1),
-        (gha, "workflow-offline.yml", None, ["workflow-offline.yml"], True, 1),
-        (sections, "bad.yaml", None, ["python", "--configs", "bad.yaml"], False, 1),
-        (sections, "good.yaml", None, ["python", "--configs", "good.yaml"], False, 0),
-        (requires_python, "bad.toml", "bad-out.toml", ["bad.toml"], False, 0),  # *
-        (requires_python, "bad-out.toml", None, ["bad-out.toml"], False, 0),
-        (requires_python, "good.toml", None, ["good.toml"], False, 0),
-        (
-            requires_python,
-            "invalid-major.toml",
-            None,
-            ["invalid-major.toml"],
-            False,
-            0,
-        ),
-        (requires_python, "none.toml", None, ["none.toml"], False, 1),
-        (
-            requires_python,
-            "uv-lock.toml",
-            "uv-lock-out.toml",
-            ["uv-lock.toml"],
-            False,
-            0,  # *
-        ),
-        (
-            requires_python,
-            "uv-lock-out.toml",
-            None,
-            ["uv-lock-out.toml"],
-            False,
-            0,
-        ),
-        (
-            bumpsync,
-            "pre-commit.md",
-            "pre-commit-out.md",
-            ["pre-commit.md", "--pyproject", "pyproject.toml"],
-            False,
-            0,  # *
-        ),
-        (
-            bumpsync,
-            "pre-commit-out.md",
-            None,
-            ["pre-commit-out.md", "--pyproject", "pyproject.toml"],
-            False,
-            0,
-        ),
-        (
-            bumpsync,
-            "single_line.py",
-            "single_line-out.py",
-            ["single_line.py", "--pyproject", "pyproject.toml"],
-            False,
-            0,  # *
-        ),
-        (
-            bumpsync,
-            "single_line-out.py",
-            None,
-            ["single_line-out.py", "--pyproject", "pyproject.toml"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "debian.Dockerfile",
-            "debian-out.Dockerfile",
-            ["debian.Dockerfile"],
-            False,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-out.Dockerfile",
-            None,
-            ["debian-out.Dockerfile"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "debian.Dockerfile",
-            None,
-            ["debian.Dockerfile"],
-            True,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "alpine.Dockerfile",
-            "alpine-out.Dockerfile",
-            ["alpine.Dockerfile"],
-            False,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "alpine-out.Dockerfile",
-            None,
-            ["alpine-out.Dockerfile"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "alpine.Dockerfile",
-            None,
-            ["alpine.Dockerfile"],
-            True,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-extra-debian.Dockerfile",
-            "debian-extra-debian-out.Dockerfile",
-            ["debian-extra-debian.Dockerfile"],
-            False,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-extra-debian-out.Dockerfile",
-            None,
-            ["debian-extra-debian-out.Dockerfile"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "alpine-extra-debian.Dockerfile",
-            "alpine-extra-debian-out.Dockerfile",
-            ["alpine-extra-debian.Dockerfile"],
-            False,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "alpine-extra-debian-out.Dockerfile",
-            None,
-            ["alpine-extra-debian-out.Dockerfile"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-custom-debian.Dockerfile",
-            "debian-custom-debian-out.Dockerfile",
-            ["debian-custom-debian.Dockerfile"],
-            False,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-custom-debian-out.Dockerfile",
-            None,
-            ["debian-custom-debian-out.Dockerfile"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "alpine-custom-debian.Dockerfile",
-            "alpine-custom-debian-out.Dockerfile",
-            ["alpine-custom-debian.Dockerfile"],
-            False,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "alpine-custom-debian-out.Dockerfile",
-            None,
-            ["alpine-custom-debian-out.Dockerfile"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-default-debian.Dockerfile",
-            None,
-            ["debian-default-debian.Dockerfile"],
-            False,
-            1,
-        ),
-        # No out-check because of the warning
-        (
-            docker_apt_renovate,
-            "debian-add.Dockerfile",
-            "debian-add-out.Dockerfile",
-            ["debian-add.Dockerfile"],
-            False,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-add-out.Dockerfile",
-            None,
-            ["debian-add-out.Dockerfile"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-update-suite.Dockerfile",
-            "debian-update-suite-out.Dockerfile",
-            ["debian-update-suite.Dockerfile"],
-            False,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-update-suite-out.Dockerfile",
-            None,
-            ["debian-update-suite-out.Dockerfile"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-update-suite.Dockerfile",
-            None,
-            ["debian-update-suite.Dockerfile"],
-            True,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "alpine-update-suite.Dockerfile",
-            "alpine-update-suite-out.Dockerfile",
-            ["alpine-update-suite.Dockerfile"],
-            False,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "alpine-update-suite-out.Dockerfile",
-            None,
-            ["alpine-update-suite-out.Dockerfile"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "alpine-update-suite.Dockerfile",
-            None,
-            ["alpine-update-suite.Dockerfile"],
-            True,
-            1,
-        ),
-        (
-            docker_apt_renovate,
-            "debian-no-update.Dockerfile",
-            None,
-            ["debian-no-update.Dockerfile"],
-            False,
-            0,
-        ),
-        (
-            docker_apt_renovate,
-            "errors.Dockerfile",
-            None,
-            ["errors.Dockerfile"],
-            False,
-            1,
-        ),
-        (pccf, "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 0),  # *
-        (pccf, "basic-out.yaml", None, ["basic-out.yaml"], False, 0),
-        (
-            pccf,
-            "pccs-basic.yaml",
-            "pccs-basic-out.yaml",
-            ["pccs-basic.yaml"],
-            False,
-            0,  # *
-        ),
-        (pccf, "pccs-basic-out.yaml", None, ["pccs-basic-out.yaml"], False, 0),
-        (
-            pccf,
-            "pccs-partial.yaml",
-            "pccs-partial-out.yaml",
-            ["pccs-partial.yaml"],
-            False,
-            0,  # *
-        ),
-        (pccf, "pccs-partial-out.yaml", None, ["pccs-partial-out.yaml"], False, 0),
-        (
-            pccf,
-            "pccs-basic-existing-ci.yaml",
-            "pccs-basic-existing-ci-out.yaml",
-            ["pccs-basic-existing-ci.yaml"],
-            False,
-            0,  # *
-        ),
-        (
-            pccf,
-            "pccs-basic-existing-ci-out.yaml",
-            None,
-            ["pccs-basic-existing-ci-out.yaml"],
-            False,
-            0,
-        ),
-    ],
+    test_cases,
 )
 @responses.activate
 def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
@@ -413,16 +446,6 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
     offline: bool,
     retval: int,
 ) -> None:
-    assert inp in args  # Sanity check for accidents in parametrize
-
-    hook = hook_module.__name__.split(".")[1].replace("_", "-")
-    hookdir = Path(__file__).parent / hook
-    inp = hookdir / inp
-    if out:
-        out = hookdir / out
-
-    args = [str(hookdir / arg) if (hookdir / arg).exists() else arg for arg in args]
-
     with tempfile.NamedTemporaryFile() as tmp, tempfile.NamedTemporaryFile() as inp_m:
         tmp = Path(tmp.name)
         inp_m = Path(inp_m.name)
@@ -476,3 +499,37 @@ def test_pre_commit_hooks(  # noqa: PLR0913, PLR0917
             assert Path(tmp).read_text(encoding="utf-8") == out.read_text()
         else:
             assert Path(tmp).read_text(encoding="utf-8") == inp_m.read_text()
+
+
+def test_all_test_files_are_used() -> None:
+    # All files must be used as input once, except...
+    here = Path(__file__).parent
+    allow_unused_files = {
+        # Any unmodifiable files entered with special args (e.g. --pyproject)
+        here / "bumpsync/pyproject.toml",
+        here / "pcad/basic-uv.lock",
+        # Any tests whose output is not clean
+        here / "gha/workflow-out.yml",
+    }
+    used_files = set()
+    used_files.update(
+        inp for _hook_module, inp, _out, _args, _offline, _retval in test_cases
+    )
+
+    weird_files = used_files & allow_unused_files
+    if weird_files:
+        pytest.fail(
+            f"files {', '.join(map(str, weird_files))} were assumed to not be used as input"
+        )
+
+    unused_files = set()
+    for hook in Path(__file__).parent.iterdir():
+        if not hook.is_dir() or hook.name in {"mocks", "__pycache__"}:
+            continue
+        unused_files.update(file for file in hook.iterdir())
+
+    bad_files = unused_files - used_files - allow_unused_files
+    if bad_files:
+        pytest.fail(
+            f"files {', '.join(map(str, bad_files))} are not used in test parameters"
+        )
