@@ -4,6 +4,7 @@ ci:
   autoupdate_commit_msg: "chore(pre-commit): autoupdate"
   skip:
     - pytest
+
 repos:
   # Multi
 
@@ -48,7 +49,7 @@ repos:
         exclude: ^tests/add_mock.py$|^tests/[a-z-]*/.*.py$
 
   - repo: https://github.com/GideonBear/pre-commit-hooks
-    rev: v2.0.2
+    rev: v2.0.3
     hooks:
       # General
       - id: gha-pin
@@ -60,6 +61,8 @@ repos:
       # Specific
       - id: bumpsync
         files: ^README.md$
+      # General - post
+      - id: pre-commit-config-fmt
 
   # General
 
