@@ -39,6 +39,10 @@ class Processor(FileProcessor):
                 pos = 0
             data.insert(pos, "ci", {"skip": to_skip})
         else:
+            # If the correct data is already present
+            if data["ci"].get("skip") == to_skip:
+                # Don't write it for performance, and to keep formatting
+                return
             data["ci"]["skip"] = to_skip
 
         with file.open("wb") as f:

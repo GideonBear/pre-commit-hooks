@@ -40,9 +40,19 @@ class Processor(FileProcessor):
             new_version = spec.version.rsplit(".", 1)[0]
             new = f"{spec.operator}{new_version}"
             if data.get("requires-python") is not None:
+                # If the correct data is already present
+                if data.get("requires-python") == new:
+                    # Don't write it for performance, and to keep formatting
+                    return
                 data["requires-python"] = new
             else:
-                data["project"]["requires-python"] = new  # type: ignore[index]  # we know it is because we got requires-python from it
+                # Can't use `Container` for some reason
+                assert isinstance(data["project"], dict)  # noqa: S101  # we know it is because we got requires-python from it
+                # If the correct data is already present
+                if data["project"].get("requires-python") == new:
+                    # Don't write it for performance, and to keep formatting
+                    return
+                data["project"]["requires-python"] = new
 
         toml_file.write(data)
 

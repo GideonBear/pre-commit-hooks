@@ -98,6 +98,7 @@ test_cases_raw = [
         0,
     ),
     (pccs, "good.yaml", None, ["good.yaml"], False, 0),
+    (pccs, "keep-formatting.yaml", None, ["keep-formatting.yaml"], False, 0),
     (docker, "docker-compose.yml", None, ["docker-compose.yml"], False, 1),
     (docker, "Dockerfile", None, ["Dockerfile"], False, 1),
     # One of the few test outputs that doesn't pass
