@@ -49,8 +49,8 @@ image: gitea/gitea:1.23.6@sha256:01bb6f98fb9e256554d59c85b9f1cb39f3da68202910ea0
 Exactly the same concept applies to GitHub actions.
 
 This has an added benefit when using Dependabot or Renovate, as PRs will bump the version
-instead of just the digest, prompting the bot to link/embed the correct release notes
-instead of only a compare link.
+instead of just the digest, prompting the bot to link/embed the release notes.
+Example: [before](https://github.com/GideonBear/smb-reshare/pull/32), [after](https://github.com/GideonBear/smb-reshare/pull/61).
 
 Certain actions and Docker images are exempted from certain rules by default (for example `debian` which uses `x.y`
 versioning). Feel free to contribute
