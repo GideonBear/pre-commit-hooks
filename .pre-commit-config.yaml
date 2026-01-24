@@ -57,7 +57,6 @@ repos:
       - id: pre-commit-ci-skip
       # Python
       - id: pre-commit-additional-dependencies
-      - id: requires-python
       # Specific
       - id: bumpsync
         files: ^README.md$
