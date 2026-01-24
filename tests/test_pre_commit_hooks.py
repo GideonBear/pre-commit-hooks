@@ -21,7 +21,6 @@ from pre_commit_hooks import (
     pcad,
     pccf,
     pccs,
-    requires_python,
     sections,
     set_euo_pipefail,
     shfuncdecfmt,
@@ -106,34 +105,6 @@ test_cases_raw = [
     (gha, "workflow-offline.yml", None, ["workflow-offline.yml"], True, 1),
     (sections, "bad.yaml", None, ["python", "--configs", "bad.yaml"], False, 1),
     (sections, "good.yaml", None, ["python", "--configs", "good.yaml"], False, 0),
-    (requires_python, "bad.toml", "bad-out.toml", ["bad.toml"], False, 0),  # *
-    (requires_python, "bad-out.toml", None, ["bad-out.toml"], False, 0),
-    (requires_python, "good.toml", None, ["good.toml"], False, 0),
-    (
-        requires_python,
-        "invalid-major.toml",
-        None,
-        ["invalid-major.toml"],
-        False,
-        0,
-    ),
-    (requires_python, "none.toml", None, ["none.toml"], False, 1),
-    (
-        requires_python,
-        "uv-lock.toml",
-        "uv-lock-out.toml",
-        ["uv-lock.toml"],
-        False,
-        0,  # *
-    ),
-    (
-        requires_python,
-        "uv-lock-out.toml",
-        None,
-        ["uv-lock-out.toml"],
-        False,
-        0,
-    ),
     (
         bumpsync,
         "pre-commit.md",

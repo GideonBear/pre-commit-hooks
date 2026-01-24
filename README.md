@@ -105,34 +105,6 @@ Currently supported:
 If a certain type of file is present, expects a section (e.g. `# Shell`) to be present in `.pre-commit-config.yaml`.
 This is meant to remind you to add pre-commit hooks when adding a new language to your repository.
 
-## `requires-python`
-
-Unpins your requires-python from `major.minor.patch` (`>=3.14.2`) to `major.minor` (`>=3.14`)
-
-Designed for use with Renovate:
-
-```json5
-{
-    packageRules: [
-        {
-            matchDepTypes: [
-                "requires-python",
-            ],
-            rangeStrategy: "bump",
-        },
-        {
-            matchDepTypes: [
-                "requires-python",
-            ],
-            matchUpdateTypes: "patch",
-            enabled: false,
-        },
-    ],
-}
-```
-
-Since Renovate always wants to pin it to `major.minor.patch`, and doesn't support anything else.
-
 ## `bumpsync`
 
 Synchronizes the version from `pyproject.toml` to any other file of your choosing.

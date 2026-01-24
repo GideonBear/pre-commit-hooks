@@ -22,11 +22,9 @@ classifiers = [
 dependencies = [
     "ghtoken>=0.1.2",
     "more-itertools>=10.8",
-    "packaging>=25",
     "requests>=2.32.5",
     "ruamel-yaml>=0.18.16",
     "termcolor>=3.3",
-    "tomlkit>=0.13.3",
 ]
 
 urls.bugs = "https://github.com/GideonBear/pre-commit-hooks/issues"
@@ -40,7 +38,6 @@ scripts.pre-commit-additional-dependencies = "pre_commit_hooks.pcad:main"
 scripts.pre-commit-ci-skip = "pre_commit_hooks.pccs:main"
 scripts.pre-commit-config-fmt = "pre_commit_hooks.pccf:main"
 scripts.pre-commit-config-sections = "pre_commit_hooks.sections:main"
-scripts.requires-python = "pre_commit_hooks.requires_python:main"
 scripts.set-euo-pipefail = "pre_commit_hooks.set_euo_pipefail:main"
 scripts.shfuncdecfmt = "pre_commit_hooks.shfuncdecfmt:main"
 

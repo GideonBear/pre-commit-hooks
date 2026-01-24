@@ -82,13 +82,6 @@
   pass_filenames: false
   files: ^.github/workflows/
 
-- id: requires-python
-  name: requires-python
-  description: Unpins requires-python patch versions
-  entry: requires-python
-  language: python
-  files: ^pyproject.toml$|^uv.lock$
-
 - id: bumpsync
   name: bumpsync
   description: Simple version synchronizer

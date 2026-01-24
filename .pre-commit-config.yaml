@@ -125,8 +125,6 @@ repos:
         args: [.] # Removes default `--ignore-missing-imports`
         additional_dependencies:
           - types-requests
-          - packaging==25.0
-          - tomlkit==0.14.0
           - ruamel-yaml==0.19.1
           - ghtoken==0.1.2
           - termcolor==3.3.0
