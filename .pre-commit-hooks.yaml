@@ -29,11 +29,11 @@
 
 - id: pre-commit-additional-dependencies
   name: pre-commit-additional-dependencies
-  description: Sync pre-commit additional_dependencies with uv.lock
+  description: Sync pre-commit additional_dependencies with pyproject.toml and uv.lock
   entry: pre-commit-additional-dependencies
   language: python
   pass_filenames: false
-  files: ^uv.lock$|^.pre-commit-config.yaml$
+  files: ^pyproject.toml$|^uv.lock$|^.pre-commit-config.yaml$
 
 - id: pre-commit-ci-skip
   name: pre-commit-ci-skip

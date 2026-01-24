@@ -128,11 +128,13 @@ repos:
           - ghtoken==0.1.2
           - termcolor==3.3.0
           - more-itertools==10.8.0
+          - packaging==25.0
 
   - repo: https://github.com/tox-dev/pyproject-fmt
     rev: v2.11.1
     hooks:
       - id: pyproject-fmt
+        exclude: ^tests/
 
   - repo: https://github.com/francescorubbo/deptry-pre-commit
     rev: v0.24.0.1

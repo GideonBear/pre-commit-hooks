@@ -62,19 +62,123 @@ test_cases_raw = [
     (set_euo_pipefail, "good.sh", None, ["good.sh"], False, 0),
     (
         pcad,
-        "basic.yaml",
-        "basic-out.yaml",
-        ["--configs", "basic.yaml", "--lockfile", "basic-uv.lock"],
+        "add.yaml",
+        "add-out.yaml",
+        [
+            "--configs",
+            "add.yaml",
+            "--pyproject",
+            "pyproject.toml",
+            "--lockfile",
+            "uv.lock",
+        ],
         False,
-        1,
+        0,  # *
     ),
     (
         pcad,
-        "basic-out.yaml",
+        "add-out.yaml",
         None,
-        ["--configs", "basic-out.yaml", "--lockfile", "basic-uv.lock"],
+        [
+            "--configs",
+            "add-out.yaml",
+            "--pyproject",
+            "pyproject.toml",
+            "--lockfile",
+            "uv.lock",
+        ],
         False,
         0,
+    ),
+    (
+        pcad,
+        "remove.yaml",
+        "remove-out.yaml",
+        [
+            "--configs",
+            "remove.yaml",
+            "--pyproject",
+            "remove-pyproject.toml",
+            "--lockfile",
+            "uv.lock",
+        ],
+        False,
+        0,  # *
+    ),
+    (
+        pcad,
+        "remove-out.yaml",
+        None,
+        [
+            "--configs",
+            "remove-out.yaml",
+            "--pyproject",
+            "remove-pyproject.toml",
+            "--lockfile",
+            "uv.lock",
+        ],
+        False,
+        0,
+    ),
+    (
+        pcad,
+        "sort.yaml",
+        "sort-out.yaml",
+        [
+            "--configs",
+            "sort.yaml",
+            "--pyproject",
+            "pyproject.toml",
+            "--lockfile",
+            "uv.lock",
+        ],
+        False,
+        0,  # *
+    ),
+    (
+        pcad,
+        "sort-out.yaml",
+        None,
+        [
+            "--configs",
+            "sort-out.yaml",
+            "--pyproject",
+            "pyproject.toml",
+            "--lockfile",
+            "uv.lock",
+        ],
+        False,
+        0,
+    ),
+    (
+        pcad,
+        "extra.yaml",
+        "extra-out.yaml",
+        [
+            "--configs",
+            "extra.yaml",
+            "--pyproject",
+            "pyproject.toml",
+            "--lockfile",
+            "uv.lock",
+        ],
+        False,
+        0,  # *
+    ),
+    (
+        pcad,
+        "extra-out.yaml",
+        None,
+        [
+            "--configs",
+            "extra-out.yaml",
+            "--pyproject",
+            "pyproject.toml",
+            "--lockfile",
+            "uv.lock",
+        ],
+        False,
+        0,  # *
     ),
     (pccs, "basic.yaml", "basic-out.yaml", ["basic.yaml"], False, 0),  # *
     (pccs, "basic-out.yaml", None, ["basic-out.yaml"], False, 0),
@@ -479,7 +583,9 @@ def test_all_test_files_are_used() -> None:
     allow_unused_files = {
         # Any unmodifiable files entered with special args (e.g. --pyproject)
         here / "bumpsync/pyproject.toml",
-        here / "pcad/basic-uv.lock",
+        here / "pcad/pyproject.toml",
+        here / "pcad/remove-pyproject.toml",
+        here / "pcad/uv.lock",
         # Any tests whose output is not clean
         here / "gha/workflow-out.yml",
     }

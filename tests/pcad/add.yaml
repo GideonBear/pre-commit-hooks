@@ -1,0 +1,12 @@
+repos:
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.19.0
+    hooks:
+      - id: mypy
+        pass_filenames: false # Check all files to be thorough
+        args: [.]
+
+  - repo: https://github.com/GideonBear/pre-commit-hooks
+    rev: v1.1.1
+    hooks:
+      - id: pre-commit-additional-dependencies

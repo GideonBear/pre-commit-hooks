@@ -5,17 +5,22 @@ import tomllib
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks.common import line_replace
-from pre_commit_hooks.processors import LineProcessor
+from packaging.requirements import Requirement
+
+from pre_commit_hooks.processors import FileProcessor
+from pre_commit_hooks.yaml import yaml
 
 
 if TYPE_CHECKING:
     from argparse import ArgumentParser
 
+    from ruamel.yaml import CommentedMap  # type: ignore[attr-defined]
+
     import pre_commit_hooks
     from pre_commit_hooks.logger import Logger
 
     class Args(pre_commit_hooks.processors.Args):
+        pyproject: Path
         lockfile: Path
 
 
@@ -23,7 +28,7 @@ def normalize_package(name: str) -> str:
     return re.sub(r"[-_.]+", "-", name).lower()
 
 
-class Processor(LineProcessor):
+class Processor(FileProcessor):
     @classmethod
     def add_arguments(cls, parser: ArgumentParser) -> None:
         parser.add_argument(
@@ -34,6 +39,11 @@ class Processor(LineProcessor):
             type=Path,
         )
         parser.add_argument(
+            "--pyproject",
+            type=Path,
+            default=Path("pyproject.toml"),
+        )
+        parser.add_argument(
             "--lockfile",
             type=Path,
             default=Path("uv.lock"),
@@ -42,64 +52,76 @@ class Processor(LineProcessor):
     def __init__(self, args: Args) -> None:
         super().__init__(args)
 
+        with args.pyproject.open("rb") as f:
+            pyproject_data = tomllib.load(f)
+
+        requirements = list(map(Requirement, pyproject_data["project"]["dependencies"]))
+        for requirement in requirements:
+            if requirement.url:
+                msg = "Requirement urls not supported"
+                raise Exception(msg)  # noqa: TRY002
+            if requirement.marker:
+                msg = "Requirement markers not supported"
+                raise Exception(msg)  # noqa: TRY002
+
+        if (
+            "dependency-groups" in pyproject_data
+            and "typecheck" in pyproject_data["dependency-groups"]
+        ):
+            self.typecheck_requirements = list(
+                map(Requirement, pyproject_data["dependency-groups"]["typecheck"])
+            )
+        else:
+            self.typecheck_requirements = []
+
         with args.lockfile.open("rb") as f:
-            data = tomllib.load(f)
-        self.packages = {package["name"]: package for package in data["package"]}
+            lockfile_data = tomllib.load(f)
+        lockfile_packages = {
+            package["name"]: package for package in lockfile_data["package"]
+        }
 
-        self.in_block = False
+        self.additional_deps = [
+            self.get_dep(requirement.name, lockfile_packages)
+            for requirement in requirements
+        ]
 
-    def process_line_internal(  # noqa: PLR0911
-        self, orig_line: str, line: str, logger: Logger
-    ) -> str | None:
-        if line == "additional_dependencies:":
-            self.in_block = True
-            return None
+    def get_dep(self, pak: str, lockfile_packages: dict[str, dict[str, str]]) -> str:
+        for tc_req in self.typecheck_requirements:
+            # Normally types-X, sometimes types-X-ts
+            if pak.lower() in tc_req.name.lower():
+                pak = tc_req.name
+                break
 
-        if self.in_block:
-            if not line.startswith("- "):
-                self.in_block = False
-                return None
+        lockfile_version = lockfile_packages[pak.lower()]["version"]
 
-            line = line.removeprefix("- ")
-            if "==" in line:
-                package, version = line.split("==")
-            else:
-                package = line
-                version = None
+        return f"{pak}=={lockfile_version}"
 
-            norm = normalize_package(package)
-            if norm != package:
-                logger.error(id="unnormalized", msg=f"{package} is not normalized")
-                orig_line = line_replace(orig_line, package, norm, logger=logger)
-                line = line_replace(line, package, norm, logger=logger)
-                package = norm
+    def process_file_path_internal(self, file: Path, *, logger: Logger) -> None:  # noqa: ARG002
+        with file.open("rb") as f:
+            data = yaml.load(f)
 
-            if package not in self.packages:
-                return orig_line
+        repos = data["repos"]
+        mypy: CommentedMap
+        mypy = next(
+            hook
+            for repo_i, repo in enumerate(repos)
+            for hook in repo["hooks"]
+            if hook["id"] == "mypy"
+        )
 
-            target_version = self.packages[package]["version"]
-            if target_version == version:
-                return orig_line
+        additional_dependencies = self.additional_deps or None
+        # If the correct data is already present
+        if mypy.get("additional_dependencies") == additional_dependencies:
+            # Don't write it for performance, and to keep formatting
+            return
 
-            if version:
-                fix = logger.error(
-                    id="out-of-sync",
-                    msg=f"{package} is {target_version} in lockfile, "
-                    f"but {version} in pre-commit-config.yaml",
-                )
-            else:
-                fix = logger.error(
-                    id="unsynced",
-                    msg=f"{package} is {target_version} in lockfile, "
-                    f"but unpinned in pre-commit-config.yaml",
-                )
-            if fix:
-                return line_replace(
-                    orig_line, line, f"{package}=={target_version}", logger=logger
-                )
-            return orig_line
+        if additional_dependencies:
+            mypy["additional_dependencies"] = additional_dependencies
+        else:
+            mypy.pop("additional_dependencies")
 
-        return None
+        with file.open("wb") as f:
+            yaml.dump(data, f)
 
 
 main = Processor.main

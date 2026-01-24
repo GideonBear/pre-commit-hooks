@@ -1,0 +1,10 @@
+[project]
+dependencies = [
+    "playwright>=1.55",
+    "requests>=2.32.5",
+]
+
+[dependency-groups]
+typecheck = [
+    "types-requests~=2.32.4",
+]
