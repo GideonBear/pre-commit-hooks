@@ -46,7 +46,7 @@ repos:
       - id: debug-statements
       - id: name-tests-test
         args: [--pytest-test-first]
-        exclude: ^tests/add_mock.py$|^tests/[a-z-]*/.*.py$
+        exclude: ^tests/(add_mock|base).py$|^tests/[a-z-]*/.*.py$
 
   - repo: https://github.com/GideonBear/pre-commit-hooks
     rev: v2.0.3
