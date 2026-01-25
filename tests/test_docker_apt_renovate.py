@@ -19,11 +19,11 @@ test_cases = [
     TC("debian.Dockerfile", 1).offline(),
     *TC.out_double("alpine.Dockerfile", 1),
     TC("alpine.Dockerfile", 1).offline(),
-    *TC.out_double("debian-extra-debian.Dockerfile", 1),
-    *TC.out_double("alpine-extra-debian.Dockerfile", 1),
-    *TC.out_double("debian-custom-debian.Dockerfile", 1),
-    *TC.out_double("alpine-custom-debian.Dockerfile", 1),
-    TC("debian-default-debian.Dockerfile", 1),  # No out-check because of the warning
+    *TC.out_double("debian-extra-version.Dockerfile", 1),
+    *TC.out_double("alpine-extra-version.Dockerfile", 1),
+    *TC.out_double("debian-custom-version.Dockerfile", 1),
+    *TC.out_double("alpine-custom-version.Dockerfile", 1),
+    TC("debian-default-version.Dockerfile", 1),  # No out-check because of the warning
     *TC.out_double("debian-add.Dockerfile", 1),
     *TC.out_double("debian-update-suite.Dockerfile", 1),
     TC("debian-update-suite.Dockerfile", 1).offline(),
