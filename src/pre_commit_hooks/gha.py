@@ -2,11 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks.common import (
-    is_valid_sha1,
-    line_replace,
-    process_version,
-)
+from pre_commit_hooks.common import is_valid_sha1, line_replace
+from pre_commit_hooks.common.versions import process_version
 from pre_commit_hooks.logger import Error
 from pre_commit_hooks.network import is_connected, request
 from pre_commit_hooks.processors import LineProcessor
