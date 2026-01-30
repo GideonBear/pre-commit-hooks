@@ -7,7 +7,8 @@ from functools import cache
 from re import Pattern
 from typing import TYPE_CHECKING, ClassVar, Self
 
-from pre_commit_hooks.common import line_replace, remove_ws_splitted_part
+from pre_commit_hooks.common.lines import line_replace
+from pre_commit_hooks.common.util import remove_ws_splitted_part
 from pre_commit_hooks.network import is_connected, request
 from pre_commit_hooks.processors import Bookmark, LineProcessor
 

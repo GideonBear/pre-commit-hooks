@@ -3,7 +3,7 @@ from __future__ import annotations
 import contextlib
 from typing import TYPE_CHECKING
 
-from pre_commit_hooks.common import is_valid_sha256
+from pre_commit_hooks.common.util import is_valid_sha256
 from pre_commit_hooks.common.versions import process_version
 from pre_commit_hooks.processors import LineProcessor
 

@@ -63,7 +63,6 @@ lint.ignore = [
     "G004",    # (project) We don't use `logging`
     "G010",    # (project) We don't use `logging`
     "PLW2901", # (project) Re-assignments are really convenient here
-    "RUF067",  # (project): Disagree
     "S404",    # Uses of subprocess are rejected, no need to reject the imports as well
     "T201",    # (project) Print is allowed
     "TD003",   # (project)
