@@ -84,7 +84,7 @@ Fails if you don't have `set -euo pipefail` at the top of your shell script.
 ## `pre-commit-additional-dependencies`
 
 Syncs packages in `pyproject.toml` to `mypy`'s `additional_dependencies` in `.pre-commit-config.yaml`, using the version
-from `uv.lock`. Meant for use with `mirrors-mypy`.
+from `uv.lock`.
 
 `pre-commit-additional-dependencies` finds the first hook with `id: mypy`. Intended for use
 with [mirrors-mypy](https://github.com/pre-commit/mirrors-mypy). `mirrors-mypy` uses `--ignore-missing-imports` by
