@@ -94,6 +94,9 @@ specifying `args: [.]` for the best experience.
 If you have a dependency group called `typecheck`, e.g. maintained by the `typecheck-group` hook,
 `pre-commit-additional-dependencies` will use those to replace the respective packages in `project.dependencies`.
 
+This hook messes up the formatting of `.pre-commit-config.yaml`. It's recommended to use `pre-commit-config-fmt` after
+this hook.
+
 ## `pre-commit-ci-skip`
 
 Adds `language: system` hooks to `ci: skip:` automatically.
