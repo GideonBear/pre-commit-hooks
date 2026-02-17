@@ -4,6 +4,7 @@ import pytest
 import responses
 
 from pre_commit_hooks import gha
+from pre_commit_hooks.default_allows import default_allows
 from tests.base import TCBase
 
 
@@ -12,6 +13,15 @@ class TC(TCBase):
 
     def __init__(self, inp: str, retval: int) -> None:
         super().__init__(inp, retval, [inp])
+
+    def run(self, *args, **kwargs) -> None:  # noqa: ANN002, ANN003
+        removed = {
+            "dawidd6/action-homebrew-bump-formula": default_allows["gha"].pop(
+                "dawidd6/action-homebrew-bump-formula"
+            ),
+        }
+        super().run(*args, **kwargs)
+        default_allows["gha"].update(removed)
 
 
 test_cases = [

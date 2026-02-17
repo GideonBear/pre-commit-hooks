@@ -12,6 +12,7 @@ default_allows = {
     },
     "gha": {
         "dtolnay/rust-toolchain": "master",
+        "dawidd6/action-homebrew-bump-formula": "major",
     },
 }
 
