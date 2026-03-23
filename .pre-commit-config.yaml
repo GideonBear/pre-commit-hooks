@@ -73,7 +73,7 @@ repos:
         exclude: ^tests/mocks/
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.1
+    rev: v8.30.0
     hooks:
       - id: gitleaks
 
@@ -113,7 +113,7 @@ repos:
   # Python
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.6
+    rev: v0.15.7
     hooks:
       - id: ruff-check
         args: [--fix]
@@ -138,19 +138,19 @@ repos:
           - packaging==26.0
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.18.1
+    rev: v2.20.0
     hooks:
       - id: pyproject-fmt
         exclude: ^tests/
 
   - repo: https://github.com/francescorubbo/deptry-pre-commit
-    rev: v0.24.0.1
+    rev: v0.25.1
     hooks:
       - id: deptry
         args: [src]
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.10
+    rev: 0.10.12
     hooks:
       - id: uv-lock
 
