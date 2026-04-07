@@ -47,7 +47,6 @@ dev = [
 
 [tool.ruff]
 format.preview = true
-format.nested-string-quote-style = "preferred"
 
 lint.select = [ "ALL" ]
 
