@@ -171,7 +171,7 @@ def get_full_version(
 
     logger.warn(
         f"Found multiple tags for commit {digest}: "
-        f"{', '.join(matching_tags)}; but all of them do not satisfy"
+        f"{", ".join(matching_tags)}; but all of them do not satisfy"
     )
 
     return None

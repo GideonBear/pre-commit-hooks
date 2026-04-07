@@ -184,7 +184,7 @@ class DebianRelease(OsRelease):
                         f"{
                             f"or version number ('{release.numeric}') "
                             if release.numeric
-                            else ''
+                            else ""
                         }"
                         f"instead.",
                     )
