@@ -101,7 +101,7 @@ repos:
       - id: actionlint
 
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.24.0
+    rev: v1.24.1
     hooks:
       - id: zizmor
         args: [--no-progress, --persona=auditor]
@@ -113,7 +113,7 @@ repos:
   # Python
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.10
+    rev: v0.15.11
     hooks:
       - id: ruff-check
         args: [--fix]
@@ -150,7 +150,7 @@ repos:
         args: [src]
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.6
+    rev: 0.11.7
     hooks:
       - id: uv-lock
 
