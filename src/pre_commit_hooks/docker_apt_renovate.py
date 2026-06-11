@@ -374,6 +374,7 @@ AlpineRelease.releases = (
     AlpineRelease("edge"),
     # Keep a single extra release, so the hook won't need an update immediately when you
     #  update
+    AlpineRelease("3.25"),
     AlpineRelease("3.24"),
     AlpineRelease("3.23"),
     AlpineRelease("3.22"),

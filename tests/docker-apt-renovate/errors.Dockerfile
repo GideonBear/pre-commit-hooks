@@ -27,7 +27,7 @@ FROM debian:bookworm-slim@sha256:foo AS layer
 # Turned into 3.23
 FROM alpine:3.23.2
 FROM alpine:3.23
-FROM alpine:3  # Error: [dynamic-suite] using dynamic suite name ('3'), which breaks this hook. Use the 'x.y' ('3.23') or 'x.y.z' version instead.
+FROM alpine:3  # Error: [dynamic-suite] using dynamic suite name ('3'), which breaks this hook. Use the 'x.y' ('3.24') or 'x.y.z' version instead.
 FROM alpine:edge
 FROM alpine:20251224
 
