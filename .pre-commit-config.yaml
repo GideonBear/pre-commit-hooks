@@ -118,6 +118,13 @@ repos:
       - id: ruff-check
         args: [--fix]
       - id: ruff-check
+        alias: ruff-check-pyproject
+        name: ruff check (pyproject.toml)
+        types_or: [toml]
+        files: pyproject.toml$
+        args: [--fix]
+        exclude: ^tests/
+      - id: ruff-check
         alias: ruff-fix
         stages: [manual]
         args: [--fix, --unsafe-fixes]
