@@ -123,6 +123,7 @@ repos:
         types_or: [toml]
         files: pyproject.toml$
         args: [--fix]
+        exclude: ^tests/
       - id: ruff-check
         alias: ruff-fix
         stages: [manual]
