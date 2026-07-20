@@ -13,11 +13,11 @@ if TYPE_CHECKING:
 
 
 class Processor(FileProcessor):
-    def process_file_path_internal(  # noqa: PLR6301
+    def process_file_path_internal(  # ruff:ignore[no-self-use]
         self,
         file: Path,
         *,
-        logger: Logger,  # noqa: ARG002
+        logger: Logger,  # ruff:ignore[unused-method-argument]
     ) -> None:
         with file.open("rb") as f:
             data = yaml.load(f)

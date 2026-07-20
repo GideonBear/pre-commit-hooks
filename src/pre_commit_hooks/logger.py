@@ -78,7 +78,7 @@ class Logger:
         self,
         error: Error | str | None = None,
         *,
-        id: str | None = None,  # noqa: A002  # This is nice for caller
+        id: str | None = None,  # ruff:ignore[builtin-argument-shadowing]  # This is nice for caller
         msg: str | None = None,
     ) -> bool:
         """
@@ -90,8 +90,8 @@ class Logger:
         """
         if error is None:
             # Guaranteed because of the overload
-            assert id is not None  # noqa: S101
-            assert msg is not None  # noqa: S101
+            assert id is not None  # ruff:ignore[assert]
+            assert msg is not None  # ruff:ignore[assert]
             error = Error(id, msg)
 
         if isinstance(error, Error) and error.id == self.allow:

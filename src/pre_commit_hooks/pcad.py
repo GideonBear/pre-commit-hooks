@@ -59,10 +59,10 @@ class Processor(FileProcessor):
         for requirement in requirements:
             if requirement.url:
                 msg = "Requirement urls not supported"
-                raise Exception(msg)  # noqa: TRY002
+                raise Exception(msg)  # ruff:ignore[raise-vanilla-class]
             if requirement.marker:
                 msg = "Requirement markers not supported"
-                raise Exception(msg)  # noqa: TRY002
+                raise Exception(msg)  # ruff:ignore[raise-vanilla-class]
 
         if (
             "dependency-groups" in pyproject_data
@@ -96,7 +96,7 @@ class Processor(FileProcessor):
 
         return f"{pak}=={lockfile_version}"
 
-    def process_file_path_internal(self, file: Path, *, logger: Logger) -> None:  # noqa: ARG002
+    def process_file_path_internal(self, file: Path, *, logger: Logger) -> None:  # ruff:ignore[unused-method-argument]
         with file.open("rb") as f:
             data = yaml.load(f)
 

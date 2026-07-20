@@ -12,15 +12,15 @@ if TYPE_CHECKING:
 
 
 class Processor(FileContentProcessor):
-    def process_file_internal(  # noqa: C901, PLR0912, PLR6301
+    def process_file_internal(  # ruff:ignore[complex-structure, too-many-branches, no-self-use]
         self,
         content: str,
         *,
-        logger: Logger,  # noqa: ARG002
+        logger: Logger,  # ruff:ignore[unused-method-argument]
     ) -> str | None:
         output = ""
         it = peekable(content.splitlines(keepends=True))
-        while line := next(it, None):  # noqa: PLR1702
+        while line := next(it, None):  # ruff:ignore[too-many-nested-blocks]
             if line.startswith("#"):
                 output += line
                 continue

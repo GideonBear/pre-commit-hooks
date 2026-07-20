@@ -21,8 +21,8 @@ def is_connected() -> bool:
         # Connect to the host - tells us if the host is actually reachable
         s = socket.create_connection((host, 80), 2)
         s.close()
-        return True  # noqa: TRY300
-    except Exception as err:  # noqa: BLE001
+        return True  # ruff:ignore[try-consider-else]
+    except Exception as err:  # ruff:ignore[blind-except]
         print(
             colored("Warning", "yellow") + f": no network connection detected "
             f"(error: {err}), running without autofixes. "
@@ -41,11 +41,11 @@ def request(
 @overload
 def request(  # type: ignore[explicit-any]
     url: str, params: frozenset[tuple[str, str]] | None = None, *, json: Literal[True]
-) -> Any: ...  # noqa: ANN401
+) -> Any: ...  # ruff:ignore[any-type]
 @overload
 def request(  # type: ignore[explicit-any]
     url: str, params: frozenset[tuple[str, str]] | None = None
-) -> Any: ...  # noqa: ANN401
+) -> Any: ...  # ruff:ignore[any-type]
 @cache
 def request(  # type: ignore[explicit-any, misc]
     url: str, params: frozenset[tuple[str, str]] | None = None, *, json: bool = True

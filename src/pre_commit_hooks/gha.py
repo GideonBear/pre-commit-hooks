@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 class Processor(LineProcessor):
     remove_comments = False  # GHA expects a comment.
 
-    def process_line_internal(  # noqa: PLR6301
+    def process_line_internal(  # ruff:ignore[no-self-use]
         self, orig_line: str, line: str, logger: Logger
     ) -> str | None:
         line = line.strip().removeprefix("- ")
@@ -47,7 +47,7 @@ class Processor(LineProcessor):
         return process_version_gha(orig_line, action, digest, version, logger=logger)
 
 
-def process_line_no_comment(  # noqa: PLR0911
+def process_line_no_comment(  # ruff:ignore[too-many-return-statements]
     orig_line: str, line: str, logger: Logger
 ) -> str | None:
     try:
@@ -91,7 +91,7 @@ def process_line_no_comment(  # noqa: PLR0911
     return process_version_gha(orig_line, action, None, version, logger=logger)
 
 
-def process_version_gha(  # noqa: PLR0911
+def process_version_gha(  # ruff:ignore[too-many-return-statements]
     orig_line: str,
     action: str,
     digest: str | None,
@@ -146,7 +146,7 @@ def process_version_gha(  # noqa: PLR0911
 def get_full_version(
     action: str,
     digest: str,
-    id: str,  # noqa: A002
+    id: str,  # ruff:ignore[builtin-argument-shadowing]
     *,
     logger: Logger,
 ) -> str | None:
@@ -177,7 +177,7 @@ def get_full_version(
     return None
 
 
-def get_digest(action: str, ref: str, *, logger: Logger) -> str | None:  # noqa: ARG001
+def get_digest(action: str, ref: str, *, logger: Logger) -> str | None:  # ruff:ignore[unused-function-argument]
     if not is_connected():
         return None
 

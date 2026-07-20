@@ -11,11 +11,11 @@ if TYPE_CHECKING:
 
 
 class Processor(FileContentProcessor):
-    def process_file_internal(  # noqa: PLR6301
+    def process_file_internal(  # ruff:ignore[no-self-use]
         self,
         content: str,
         *,
-        logger: Logger,  # noqa: ARG002
+        logger: Logger,  # ruff:ignore[unused-method-argument]
     ) -> str | None:
         return re.sub(
             r"^(\s*)(function\s*)?([a-zA-Z_][a-zA-Z0-9_]*)\s*(?:\(\s*\))?\s*\{",
