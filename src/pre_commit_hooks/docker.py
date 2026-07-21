@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 class Processor(LineProcessor):
     # TODO(GideonBear): query and replace the version with latest, if online
     #  also add sha hashes to docker, etc.
-    def process_line_internal(  # noqa: PLR6301
+    def process_line_internal(  # ruff:ignore[no-self-use]
         self, _orig_line: str, line: str, logger: Logger
     ) -> None:
         if not line.strip().startswith(("image:", "FROM")):

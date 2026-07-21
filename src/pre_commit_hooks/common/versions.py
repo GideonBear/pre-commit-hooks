@@ -6,13 +6,13 @@ from pre_commit_hooks.logger import Error
 def process_version(version: str) -> Error | None:
     version = version.removeprefix("v")  # Optional prefix
     parts = version.split(".")
-    if len(parts) > 3:  # noqa: PLR2004
+    if len(parts) > 3:  # ruff:ignore[magic-value-comparison]
         # major.minor.patch.???
         return Error(
             id="weird-version",
             msg="version contains more than three parts (major.minor.patch.???)",
         )
-    if len(parts) == 2:  # noqa: PLR2004
+    if len(parts) == 2:  # ruff:ignore[magic-value-comparison]
         # major.minor
         return Error(
             id="major-minor",
@@ -35,5 +35,5 @@ def process_version(version: str) -> Error | None:
         msg = "Unreachable"
         raise AssertionError(msg)
 
-    assert len(parts) == 3  # noqa: PLR2004, S101
+    assert len(parts) == 3  # ruff:ignore[magic-value-comparison, assert]
     return None

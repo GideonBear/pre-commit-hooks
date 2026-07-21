@@ -7,10 +7,10 @@ if TYPE_CHECKING:
     from pre_commit_hooks.logger import Logger
 
 
-def line_replace(line: str, a: str, b: str, *, logger: Logger) -> str:  # noqa: ARG001
+def line_replace(line: str, a: str, b: str, *, logger: Logger) -> str:  # ruff:ignore[unused-function-argument]
     if line.count(a) == 0:
         msg = f"Expected to find {a!r} in {line!r}"
-        raise Exception(msg)  # noqa: TRY002
+        raise Exception(msg)  # ruff:ignore[raise-vanilla-class]
 
     return line.replace(a, b, 1)
 

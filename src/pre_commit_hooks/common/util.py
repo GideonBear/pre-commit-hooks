@@ -13,13 +13,13 @@ def remove_ws_splitted_part(orig_line: str, s: str) -> str:
                 "a space before or after the result. Are you "
                 "using tabs or other whitespace?"
             )
-            raise Exception(msg)  # noqa: TRY002
+            raise Exception(msg)  # ruff:ignore[raise-vanilla-class]
     return orig_line.replace(to_replace, "")
 
 
 def is_valid_sha256(s: str) -> bool:
-    return len(s) == 64 and all(c in string.hexdigits for c in s)  # noqa: PLR2004
+    return len(s) == 64 and all(c in string.hexdigits for c in s)  # ruff:ignore[magic-value-comparison]
 
 
 def is_valid_sha1(s: str) -> bool:
-    return len(s) == 40 and all(c in string.hexdigits for c in s)  # noqa: PLR2004
+    return len(s) == 40 and all(c in string.hexdigits for c in s)  # ruff:ignore[magic-value-comparison]

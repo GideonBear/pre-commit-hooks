@@ -154,15 +154,15 @@ class TCBase(ABC):
                 assert Path(tmp).read_text(encoding="utf-8") == inp_m.read_text()
 
     @classmethod
-    def out_double(cls, *args: Any, **kwargs: Any) -> Iterator[TCBase]:  # noqa: ANN401
+    def out_double(cls, *args: Any, **kwargs: Any) -> Iterator[TCBase]:  # ruff:ignore[any-type]
         """
         Return two test cases. One with out, and one on that out without out, to verify a second pass will not have any effect.
 
         Any kwargs will be passed to both test cases, any args only to the first.
-        """  # noqa: DOC402
+        """  # ruff:ignore[docstring-missing-yields]
         first = cls(*args, **kwargs).out()
         yield first
-        yield cls(first._out.name, retval=0, **kwargs)  # noqa: SLF001
+        yield cls(first._out.name, retval=0, **kwargs)  # ruff:ignore[private-member-access]
 
 
 class TCFormatterBase(TCBase, ABC):
@@ -170,7 +170,7 @@ class TCFormatterBase(TCBase, ABC):
         super().__init__(inp, 0, args)
 
     @classmethod
-    def out_double(cls, *args: Any, **kwargs: Any) -> Iterator[TCBase]:  # noqa: ANN401
+    def out_double(cls, *args: Any, **kwargs: Any) -> Iterator[TCBase]:  # ruff:ignore[any-type]
         first = cls(*args, **kwargs).out()
         yield first
-        yield cls(first._out.name, **kwargs)  # noqa: SLF001
+        yield cls(first._out.name, **kwargs)  # ruff:ignore[private-member-access]

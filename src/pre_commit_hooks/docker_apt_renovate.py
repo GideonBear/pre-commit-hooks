@@ -70,7 +70,7 @@ class OsRelease(ABC):
     @classmethod
     def from_from_line(cls, line: str, *, logger: Logger) -> OsRelease | None:
         for type_ in cls.types:
-            ret = type_._from_from_line_single(line, logger=logger)  # noqa: SLF001
+            ret = type_._from_from_line_single(line, logger=logger)  # ruff:ignore[private-member-access]
             if ret:
                 return ret
 
@@ -229,7 +229,7 @@ class DebianRelease(OsRelease):
     def get_version(self, depname: str, *, logger: Logger) -> str | None:
         if not is_connected():
             msg = "This function is only supposed to be called in connected contexts"
-            raise Exception(msg)  # noqa: TRY002
+            raise Exception(msg)  # ruff:ignore[raise-vanilla-class]
 
         url = f"https://packages.debian.org/{self.codename}/{depname}"
         text = request(url, json=False)
@@ -301,7 +301,7 @@ class AlpineRelease(OsRelease):
     @classmethod
     def from_docker_tag(cls, tag: str, *, logger: Logger) -> AlpineRelease | None:
         # Tags like 20251224, which is edge
-        if tag.isdecimal() and len(tag) == 8:  # noqa: PLR2004
+        if tag.isdecimal() and len(tag) == 8:  # ruff:ignore[magic-value-comparison]
             return cls("edge")
 
         if tag.count(".") == 0 and tag != "edge":
@@ -353,7 +353,7 @@ class AlpineRelease(OsRelease):
     def get_version(self, depname: str, *, logger: Logger) -> str | None:
         if not is_connected():
             msg = "This function is only supposed to be called in connected contexts"
-            raise Exception(msg)  # noqa: TRY002
+            raise Exception(msg)  # ruff:ignore[raise-vanilla-class]
 
         url = f"https://pkgs.alpinelinux.org/package/{self.version_with_v()}/main/x86_64/{depname}"
         text = request(url, json=False)
@@ -449,7 +449,7 @@ class Processor(LineProcessor):
                 return None
 
             # We checked when setting bump_version_next
-            assert self.current_os is not None  # noqa: S101
+            assert self.current_os is not None  # ruff:ignore[assert]
 
             return self.current_os.make_env_line(depname, logger=logger)
 
@@ -507,7 +507,7 @@ class Processor(LineProcessor):
 
         return None
 
-    def process_line_in_run(  # noqa: C901, PLR0912
+    def process_line_in_run(  # ruff:ignore[complex-structure, too-many-branches]
         self, orig_line: str, line: str, logger: Logger
     ) -> str | None:
         in_run = self.in_run
@@ -536,7 +536,7 @@ class Processor(LineProcessor):
             self.in_install = True
 
         if self.in_install:
-            assert in_run is not None  # noqa: S101
+            assert in_run is not None  # ruff:ignore[assert]
 
             if line.startswith("#"):
                 return None
@@ -567,7 +567,7 @@ class Processor(LineProcessor):
                             return line_replace(
                                 orig_line, arg, replacement, logger=logger
                             )
-                        else:  # If it isn't the only thing on this line  # noqa: RET505
+                        else:  # If it isn't the only thing on this line  # ruff:ignore[superfluous-else-return]
                             # Remove it from the line, keeping the rest intact
                             orig_line = remove_ws_splitted_part(orig_line, arg)
                             indent = " " * self.indent * 2
@@ -586,7 +586,7 @@ class Processor(LineProcessor):
                     # Remove the backslash from the last line
                     new_lines[-1] = new_lines[-1].replace(" \\\n", "\n")
                     # And add it back to the original line
-                    assert "\n" in orig_line  # noqa: S101  # sanity
+                    assert "\n" in orig_line  # ruff:ignore[assert]  # sanity
                     orig_line = orig_line.replace("\n", " \\\n")
                 # If we removed all args from the line, and nothing (only a
                 #  continuation) remains, we remove the line entirely. If it was

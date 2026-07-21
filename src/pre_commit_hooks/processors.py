@@ -21,7 +21,7 @@ class Args(argparse.Namespace):
 
 
 class FileProcessor(ABC):
-    def __init__(self, _args: Args) -> None:  # noqa: B027
+    def __init__(self, _args: Args) -> None:  # ruff:ignore[empty-method-without-abstract-decorator]
         pass
 
     def process_files(self, files: Iterable[Path], *, logger_type: type[Logger]) -> int:
@@ -160,7 +160,7 @@ class LineProcessor(FileContentProcessor, ABC):
 
 class Bookmark:
     def __init__(self) -> None:
-        self.id = "".join(random.choices(string.ascii_letters + string.digits, k=10))  # noqa: S311
+        self.id = "".join(random.choices(string.ascii_letters + string.digits, k=10))  # ruff:ignore[suspicious-non-cryptographic-random-usage]
         self.lines: list[str] = []
 
     def placeholder(self) -> str:

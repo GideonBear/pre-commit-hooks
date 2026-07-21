@@ -14,7 +14,7 @@ class TC(TCBase):
     def __init__(self, inp: str, retval: int) -> None:
         super().__init__(inp, retval, [inp])
 
-    def run(self, *args, **kwargs) -> None:  # noqa: ANN002, ANN003
+    def run(self, *args, **kwargs) -> None:  # ruff:ignore[missing-type-args, missing-type-kwargs]
         removed = {
             "dawidd6/action-homebrew-bump-formula": default_allows["gha"].pop(
                 "dawidd6/action-homebrew-bump-formula"
