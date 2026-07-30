@@ -102,3 +102,23 @@
   entry: pre-commit-config-fmt
   language: python
   files: ^.pre-commit-config.yaml$
+
+- id: no-short-args
+  name: no-short-args
+  description: Deny short args
+  entry: no-short-args
+  language: python
+
+- id: no-short-args-shell
+  name: no-short-args (shell)
+  description: Deny short args
+  entry: no-short-args --backend=pre_commit_hooks.no_short_args.shell
+  language: python
+  types: [shell]
+
+- id: no-short-args-python
+  name: no-short-args (python)
+  description: Deny short args
+  entry: no-short-args --backend=pre_commit_hooks.no_short_args.python
+  language: python
+  types: [python]
