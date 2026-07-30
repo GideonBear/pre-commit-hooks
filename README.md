@@ -16,9 +16,9 @@ Add the following to your `.pre-commit-config.yaml`:
 
 ## Python version support
 
-This project currently supports Python 3.12 and up. This requirement may be increased with a major version bump.
-The Python version shipped with the latest stable Debian and latest LTS Ubuntu releases
-(currently 3.12 and 3.13 respectively) will always be supported.
+This project currently supports Python 3.12 and up. This requirement may be increased with a major version bump. The
+Python version shipped with the latest stable Debian and latest LTS Ubuntu releases (currently 3.12 and 3.13
+respectively) will always be supported.
 
 # Hooks
 
@@ -48,8 +48,8 @@ image: gitea/gitea:1.23.6@sha256:01bb6f98fb9e256554d59c85b9f1cb39f3da68202910ea0
 
 Exactly the same concept applies to GitHub actions.
 
-This has an added benefit when using Dependabot or Renovate, as PRs will bump the version
-instead of just the digest, prompting the bot to link/embed the release notes.
+This has an added benefit when using Dependabot or Renovate, as PRs will bump the version instead of just the digest,
+prompting the bot to link/embed the release notes.
 Example: [before](https://github.com/GideonBear/smb-reshare/pull/32), [after](https://github.com/GideonBear/smb-reshare/pull/61).
 
 Certain actions and Docker images are exempted from certain rules by default (for example `debian` which uses `x.y`
@@ -57,9 +57,8 @@ versioning). Feel free to contribute
 to [default_allows.py](https://github.com/GideonBear/pre-commit-hooks/blob/main/src/pre_commit_hooks/default_allows.py)
 with any other known exceptions!
 
-`gha-pin` provides autofixes for most errors. These autofixes use the GitHub API, which means they will not be
-available when you are offline, or when running in pre-commit.ci. All error detections still work offline and in
-pre-commit.ci.
+`gha-pin` provides autofixes for most errors. These autofixes use the GitHub API, which means they will not be available
+when you are offline, or when running in pre-commit.ci. All error detections still work offline and in pre-commit.ci.
 
 ## `shfuncdecfmt`
 
@@ -119,24 +118,23 @@ This is meant to remind you to add pre-commit hooks when adding a new language t
 
 ## `bumpsync`
 
-Synchronizes the version from `pyproject.toml` to any other file of your choosing.
-On the line where the version resides, or any line above it, put:
-`bumpsync: "{}"`. This will match on anything matching the regex `[0-9]+\.[0-9]+\.[0-9]+`.
-Besides the version (`{}`), other text can be added inside the quotes, to narrow down what to replace.
-See this file (README.md) for an example: in the `## Installation` section, `bumpsync` is used to keep
-the `.pre-commit-config.yaml` example in sync.
+Synchronizes the version from `pyproject.toml` to any other file of your choosing. On the line where the version
+resides, or any line above it, put:
+`bumpsync: "{}"`. This will match on anything matching the regex `[0-9]+\.[0-9]+\.[0-9]+`. Besides the version (`{}`),
+other text can be added inside the quotes, to narrow down what to replace. See this file (README.md) for an example: in
+the `## Installation` section, `bumpsync` is used to keep the `.pre-commit-config.yaml` example in sync.
 
 By default `bumpsync` runs on all text files, but you should probably constrain it using `filenames`.
 
-By default `bumpsync` only properly does it's job when running with `--all-files`, e.g. in pre-commit.ci.
-If you want `bumpsync` to work locally, set `always_run: true`.
+By default `bumpsync` only properly does it's job when running with `--all-files`, e.g. in pre-commit.ci. If you want
+`bumpsync` to work locally, set `always_run: true`.
 
 ## `docker-apt-renovate`
 
 Helps with pinning Debian (apt) or Alpine (apk) packages in Dockerfiles, and bumping them with Renovate.
 
-This repository contains Renovate presets with `customManagers` that work with `docker-apt-renovate`.
-These configs are derived from the Renovate docs
+This repository contains Renovate presets with `customManagers` that work with `docker-apt-renovate`. These configs are
+derived from the Renovate docs
 ([1](https://docs.renovatebot.com/modules/datasource/deb/#usage-example), [2](https://docs.renovatebot.com/modules/datasource/repology/#description)).
 Available presets:
 
@@ -164,5 +162,11 @@ as you wish, but keep in mind `docker-apt-renovate` is only guaranteed to work w
 ## `pre-commit-config-fmt`
 
 Formats your `.pre-commit-config.yaml` with sensible newlines. If you use any other hooks that modify
-`.pre-commit-config.yaml`, like `pre-commit-additional-dependencies` or `pre-commit-ci-skip`, make sure
-to put `pre-commit-config-fmt` after them.
+`.pre-commit-config.yaml`, like `pre-commit-additional-dependencies` or `pre-commit-ci-skip`, make sure to put
+`pre-commit-config-fmt` after them.
+
+## `no-short-args`
+
+### `no-short-args-shell`
+
+### `no-short-args-python`

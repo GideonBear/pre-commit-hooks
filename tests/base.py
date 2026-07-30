@@ -94,8 +94,12 @@ class TCBase(ABC):
         return self.hook_module.__name__.split(".")[1].replace("_", "-")
 
     @property
+    def test_data_dir_name(self) -> str:
+        return self.hook
+
+    @property
     def hookdir(self) -> Path:
-        return Path(__file__).parent / self.hook
+        return Path(__file__).parent / self.test_data_dir_name
 
     def out(self) -> Self:
         self._out = self.inp.with_stem(self.inp.stem + "-out")
