@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 from pre_commit_hooks.processors import FileContentProcessor
 
@@ -11,11 +11,12 @@ if TYPE_CHECKING:
 
 
 class Processor(FileContentProcessor):
-    def process_file_internal(  # ruff:ignore[no-self-use]
+    @override
+    def process_file_internal(
         self,
         content: str,
         *,
-        logger: Logger,  # ruff:ignore[unused-method-argument]
+        logger: Logger,
     ) -> str | None:
         return re.sub(
             r"^(\s*)(function\s*)?([a-zA-Z_][a-zA-Z0-9_]*)\s*(?:\(\s*\))?\s*\{",

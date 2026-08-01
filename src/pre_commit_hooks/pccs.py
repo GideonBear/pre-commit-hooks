@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 from pre_commit_hooks.processors import FileProcessor
 from pre_commit_hooks.yaml import yaml
@@ -13,11 +13,12 @@ if TYPE_CHECKING:
 
 
 class Processor(FileProcessor):
-    def process_file_path_internal(  # ruff:ignore[no-self-use]
+    @override
+    def process_file_path_internal(
         self,
         file: Path,
         *,
-        logger: Logger,  # ruff:ignore[unused-method-argument]
+        logger: Logger,
     ) -> None:
         with file.open("rb") as f:
             data = yaml.load(f)

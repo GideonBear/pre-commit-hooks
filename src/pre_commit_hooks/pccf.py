@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 from more_itertools import peekable
 
@@ -12,11 +12,12 @@ if TYPE_CHECKING:
 
 
 class Processor(FileContentProcessor):
-    def process_file_internal(  # ruff:ignore[complex-structure, too-many-branches, no-self-use]
+    @override
+    def process_file_internal(  # ruff:ignore[complex-structure, too-many-branches]
         self,
         content: str,
         *,
-        logger: Logger,  # ruff:ignore[unused-method-argument]
+        logger: Logger,
     ) -> str | None:
         output = ""
         it = peekable(content.splitlines(keepends=True))
