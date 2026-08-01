@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 from pre_commit_hooks.common.lines import line_replace
 from pre_commit_hooks.common.util import is_valid_sha1
@@ -17,7 +17,8 @@ if TYPE_CHECKING:
 class Processor(LineProcessor):
     remove_comments = False  # GHA expects a comment.
 
-    def process_line_internal(  # ruff:ignore[no-self-use]
+    @override
+    def process_line_internal(
         self, orig_line: str, line: str, logger: Logger
     ) -> str | None:
         line = line.strip().removeprefix("- ")

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import contextlib
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 from pre_commit_hooks.common.util import is_valid_sha256
 from pre_commit_hooks.common.versions import process_version
@@ -15,9 +15,8 @@ if TYPE_CHECKING:
 class Processor(LineProcessor):
     # TODO(GideonBear): query and replace the version with latest, if online
     #  also add sha hashes to docker, etc.
-    def process_line_internal(  # ruff:ignore[no-self-use]
-        self, _orig_line: str, line: str, logger: Logger
-    ) -> None:
+    @override
+    def process_line_internal(self, _orig_line: str, line: str, logger: Logger) -> None:
         if not line.strip().startswith(("image:", "FROM")):
             return
 
