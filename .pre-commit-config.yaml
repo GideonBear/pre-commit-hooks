@@ -136,7 +136,7 @@ repos:
           - ruamel-yaml==0.19.1
           - ghtoken==0.1.2
           - termcolor==3.3.0
-          - more-itertools==11.1.0
+          - more-itertools==11.2.1
           - packaging==26.3
 
   - repo: https://github.com/tox-dev/pyproject-fmt
