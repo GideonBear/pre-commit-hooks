@@ -24,6 +24,9 @@ The Python version shipped with the latest stable Debian and latest LTS Ubuntu r
 
 ## `docker-image-pin` & `gha-pin`
 
+`docker-image-pin`: Checks that Docker images are properly pinned in docker-compose.yml and Dockerfile files
+`gha-pin`: Checks that GitHub Actions are properly pinned in workflow files
+
 Based
 on https://nickcunningh.am/blog/how-to-automate-version-updates-for-your-self-hosted-docker-containers-with-gitea-renovate-and-komodo
 
