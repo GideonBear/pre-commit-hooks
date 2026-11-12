@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import shutil
 import tempfile
 import urllib.parse
 from abc import ABC, abstractmethod
@@ -126,7 +125,7 @@ class TCBase(ABC):
             expected_logs = [
                 (tmp, lnr, msg) for lnr, msg in extract_expected(self.inp, inp_m)
             ]
-            shutil.copy(inp_m, tmp)
+            inp_m.copy(tmp)
 
             logs = []
 
